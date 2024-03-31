@@ -1,9 +1,9 @@
--- phpMyAdmin SQL Dump
+- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 28, 2024 at 09:05 PM
+-- Generation Time: Mar 31, 2024 at 11:56 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,19 @@ SET time_zone = "+00:00";
 --
 -- Database: `cooking_contest`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `assignments`
+--
+
+CREATE TABLE `assignments` (
+  `episode_id` int(11) NOT NULL,
+  `chef_id` int(11) NOT NULL,
+  `national_cuisine_id` int(11) NOT NULL,
+  `recipe_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -158,8 +171,7 @@ CREATE TABLE `judges` (
 
 CREATE TABLE `labels` (
   `label_id` int(11) NOT NULL,
-  `recipe_id` int(11) NOT NULL,
-  `lunch_type` varchar(45) NOT NULL
+  `meal_type` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -226,6 +238,17 @@ CREATE TABLE `recipes` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `recipe_labels`
+--
+
+CREATE TABLE `recipe_labels` (
+  `label_id` int(11) NOT NULL,
+  `recipe_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `specializes`
 --
 
@@ -275,6 +298,15 @@ CREATE TABLE `unit_conversions` (
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `assignments`
+--
+ALTER TABLE `assignments`
+  ADD PRIMARY KEY (`episode_id`,`chef_id`),
+  ADD KEY `chef_id` (`chef_id`),
+  ADD KEY `national_cuisine_id` (`national_cuisine_id`),
+  ADD KEY `recipe_id` (`recipe_id`);
 
 --
 -- Indexes for table `chefs`
@@ -347,8 +379,7 @@ ALTER TABLE `judges`
 -- Indexes for table `labels`
 --
 ALTER TABLE `labels`
-  ADD PRIMARY KEY (`label_id`),
-  ADD KEY `recipe_id` (`recipe_id`);
+  ADD PRIMARY KEY (`label_id`);
 
 --
 -- Indexes for table `national_cuisines`
@@ -380,6 +411,13 @@ ALTER TABLE `recipes`
   ADD KEY `basic_ingredient_id` (`basic_ingredient_id`);
 
 --
+-- Indexes for table `recipe_labels`
+--
+ALTER TABLE `recipe_labels`
+  ADD PRIMARY KEY (`label_id`),
+  ADD KEY `recipe_id` (`recipe_id`);
+
+--
 -- Indexes for table `specializes`
 --
 ALTER TABLE `specializes`
@@ -396,6 +434,7 @@ ALTER TABLE `steps`
 -- Indexes for table `tips`
 --
 ALTER TABLE `tips`
+  ADD PRIMARY KEY (`tips_id`),
   ADD KEY `recipe_id` (`recipe_id`);
 
 --
@@ -439,12 +478,6 @@ ALTER TABLE `ingredients`
   MODIFY `ingredient_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `labels`
---
-ALTER TABLE `labels`
-  MODIFY `label_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `national_cuisines`
 --
 ALTER TABLE `national_cuisines`
@@ -463,6 +496,12 @@ ALTER TABLE `recipes`
   MODIFY `recipe_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `recipe_labels`
+--
+ALTER TABLE `recipe_labels`
+  MODIFY `label_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `steps`
 --
 ALTER TABLE `steps`
@@ -471,6 +510,15 @@ ALTER TABLE `steps`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `assignments`
+--
+ALTER TABLE `assignments`
+  ADD CONSTRAINT `assignments_ibfk_1` FOREIGN KEY (`chef_id`) REFERENCES `chefs` (`chef_id`),
+  ADD CONSTRAINT `assignments_ibfk_2` FOREIGN KEY (`episode_id`) REFERENCES `episodes` (`episode_id`),
+  ADD CONSTRAINT `assignments_ibfk_3` FOREIGN KEY (`national_cuisine_id`) REFERENCES `national_cuisines` (`national_cuisine_id`),
+  ADD CONSTRAINT `assignments_ibfk_4` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`recipe_id`);
 
 --
 -- Constraints for table `contests`
@@ -508,12 +556,6 @@ ALTER TABLE `judges`
   ADD CONSTRAINT `judges_ibfk_2` FOREIGN KEY (`episode_id`) REFERENCES `episodes` (`episode_id`);
 
 --
--- Constraints for table `labels`
---
-ALTER TABLE `labels`
-  ADD CONSTRAINT `Labels_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`recipe_id`);
-
---
 -- Constraints for table `nutritional_info`
 --
 ALTER TABLE `nutritional_info`
@@ -533,6 +575,13 @@ ALTER TABLE `ratings`
 ALTER TABLE `recipes`
   ADD CONSTRAINT `Recipe_ibfk_1` FOREIGN KEY (`national_cuisine_id`) REFERENCES `national_cuisines` (`national_cuisine_id`),
   ADD CONSTRAINT `Recipe_ibfk_2` FOREIGN KEY (`basic_ingredient_id`) REFERENCES `ingredients` (`ingredient_id`);
+
+--
+-- Constraints for table `recipe_labels`
+--
+ALTER TABLE `recipe_labels`
+  ADD CONSTRAINT `Labels_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`recipe_id`),
+  ADD CONSTRAINT `recipe_labels_ibfk_1` FOREIGN KEY (`label_id`) REFERENCES `labels` (`label_id`);
 
 --
 -- Constraints for table `steps`
