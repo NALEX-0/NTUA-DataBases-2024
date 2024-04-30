@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 31, 2024 at 11:56 PM
+-- Generation Time: Apr 30, 2024 at 10:56 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -209,6 +209,7 @@ CREATE TABLE `nutritional_info` (
 --
 
 CREATE TABLE `ratings` (
+  `rating_id` int(11) NOT NULL,
   `judge_id` int(11) NOT NULL,
   `chef_id` int(11) NOT NULL,
   `episode_id` int(11) NOT NULL,
@@ -278,7 +279,7 @@ CREATE TABLE `steps` (
 --
 
 CREATE TABLE `tips` (
-  `tips_id` int(11) NOT NULL,
+  `tip_id` int(11) NOT NULL,
   `recipe_id` int(11) NOT NULL,
   `tip_text` text NOT NULL,
   `last_update` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -291,6 +292,7 @@ CREATE TABLE `tips` (
 --
 
 CREATE TABLE `unit_conversions` (
+  `conversion_id` int(11) NOT NULL,
   `measurement_unit` varchar(15) NOT NULL,
   `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -398,9 +400,10 @@ ALTER TABLE `nutritional_info`
 -- Indexes for table `ratings`
 --
 ALTER TABLE `ratings`
-  ADD PRIMARY KEY (`judge_id`,`chef_id`,`episode_id`),
+  ADD PRIMARY KEY (`rating_id`),
   ADD KEY `chef_id` (`chef_id`),
-  ADD KEY `episode_id` (`episode_id`);
+  ADD KEY `episode_id` (`episode_id`),
+  ADD KEY `judge_id` (`judge_id`);
 
 --
 -- Indexes for table `recipes`
@@ -434,14 +437,14 @@ ALTER TABLE `steps`
 -- Indexes for table `tips`
 --
 ALTER TABLE `tips`
-  ADD PRIMARY KEY (`tips_id`),
+  ADD PRIMARY KEY (`tip_id`),
   ADD KEY `recipe_id` (`recipe_id`);
 
 --
 -- Indexes for table `unit_conversions`
 --
 ALTER TABLE `unit_conversions`
-  ADD PRIMARY KEY (`measurement_unit`);
+  ADD PRIMARY KEY (`conversion_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -460,142 +463,17 @@ ALTER TABLE `equipment`
   MODIFY `equipment_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `food_groups`
---
-ALTER TABLE `food_groups`
-  MODIFY `food_group_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `images`
---
-ALTER TABLE `images`
-  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `ingredients`
---
-ALTER TABLE `ingredients`
-  MODIFY `ingredient_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `national_cuisines`
---
-ALTER TABLE `national_cuisines`
-  MODIFY `national_cuisine_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `nutritional_info`
---
-ALTER TABLE `nutritional_info`
-  MODIFY `nutritional_info_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `recipes`
---
-ALTER TABLE `recipes`
-  MODIFY `recipe_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `recipe_labels`
---
-ALTER TABLE `recipe_labels`
-  MODIFY `label_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `steps`
---
-ALTER TABLE `steps`
-  MODIFY `steps_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `assignments`
---
-ALTER TABLE `assignments`
-  ADD CONSTRAINT `assignments_ibfk_1` FOREIGN KEY (`chef_id`) REFERENCES `chefs` (`chef_id`),
-  ADD CONSTRAINT `assignments_ibfk_2` FOREIGN KEY (`episode_id`) REFERENCES `episodes` (`episode_id`),
-  ADD CONSTRAINT `assignments_ibfk_3` FOREIGN KEY (`national_cuisine_id`) REFERENCES `national_cuisines` (`national_cuisine_id`),
-  ADD CONSTRAINT `assignments_ibfk_4` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`recipe_id`);
-
---
--- Constraints for table `contests`
---
-ALTER TABLE `contests`
-  ADD CONSTRAINT `contests_ibfk_1` FOREIGN KEY (`chef_id`) REFERENCES `chefs` (`chef_id`),
-  ADD CONSTRAINT `contests_ibfk_2` FOREIGN KEY (`episode_id`) REFERENCES `episodes` (`episode_id`);
-
---
--- Constraints for table `equipment_requirements`
---
-ALTER TABLE `equipment_requirements`
-  ADD CONSTRAINT `eq` FOREIGN KEY (`equipment_id`) REFERENCES `equipment` (`equipment_id`),
-  ADD CONSTRAINT `re` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`recipe_id`);
-
---
--- Constraints for table `ingredients`
---
-ALTER TABLE `ingredients`
-  ADD CONSTRAINT `Ingredient_ibfk_1` FOREIGN KEY (`food_group_id`) REFERENCES `food_groups` (`food_group_id`);
-
---
--- Constraints for table `ingredient_quantities`
---
-ALTER TABLE `ingredient_quantities`
-  ADD CONSTRAINT `ingredient_quantities_ibfk_1` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredients` (`ingredient_id`),
-  ADD CONSTRAINT `ingredient_quantities_ibfk_2` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`recipe_id`),
-  ADD CONSTRAINT `ingredient_quantities_ibfk_3` FOREIGN KEY (`measurement_unit`) REFERENCES `unit_conversions` (`measurement_unit`);
-
---
--- Constraints for table `judges`
---
-ALTER TABLE `judges`
-  ADD CONSTRAINT `judges_ibfk_1` FOREIGN KEY (`chef_id`) REFERENCES `chefs` (`chef_id`),
-  ADD CONSTRAINT `judges_ibfk_2` FOREIGN KEY (`episode_id`) REFERENCES `episodes` (`episode_id`);
-
---
--- Constraints for table `nutritional_info`
---
-ALTER TABLE `nutritional_info`
-  ADD CONSTRAINT `Nutritional_info_ibfk_1` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredients` (`ingredient_id`);
 
 --
 -- Constraints for table `ratings`
 --
 ALTER TABLE `ratings`
-  ADD CONSTRAINT `ratings_ibfk_1` FOREIGN KEY (`chef_id`) REFERENCES `chefs` (`chef_id`),
-  ADD CONSTRAINT `ratings_ibfk_2` FOREIGN KEY (`episode_id`) REFERENCES `episodes` (`episode_id`),
-  ADD CONSTRAINT `ratings_ibfk_3` FOREIGN KEY (`judge_id`) REFERENCES `chefs` (`chef_id`);
-
---
--- Constraints for table `recipes`
---
-ALTER TABLE `recipes`
-  ADD CONSTRAINT `Recipe_ibfk_1` FOREIGN KEY (`national_cuisine_id`) REFERENCES `national_cuisines` (`national_cuisine_id`),
-  ADD CONSTRAINT `Recipe_ibfk_2` FOREIGN KEY (`basic_ingredient_id`) REFERENCES `ingredients` (`ingredient_id`);
-
---
--- Constraints for table `recipe_labels`
---
-ALTER TABLE `recipe_labels`
-  ADD CONSTRAINT `Labels_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`recipe_id`),
-  ADD CONSTRAINT `recipe_labels_ibfk_1` FOREIGN KEY (`label_id`) REFERENCES `labels` (`label_id`);
-
---
--- Constraints for table `steps`
---
-ALTER TABLE `steps`
-  ADD CONSTRAINT `Steps_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`recipe_id`);
-
---
--- Constraints for table `tips`
---
-ALTER TABLE `tips`
-  ADD CONSTRAINT `Tips_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`recipe_id`);
+  ADD CONSTRAINT `ratings_ibfk_1` FOREIGN KEY (`judge_id`) REFERENCES `chefs` (`chef_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
