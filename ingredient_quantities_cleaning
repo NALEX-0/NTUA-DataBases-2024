@@ -81,6 +81,11 @@ UPDATE
 SET 
 	unit = REPLACE(unit, '.', '');
 
+UPDATE 
+	ingredient_quantities
+SET 
+	unit = LOWER(unit);
+
 -- Η μονάδα "units" εκφράζει ποσότητες στερεών υλικών.
 -- Θα αντιστοιχιστεί σε x γραμμάρια.
 UPDATE
