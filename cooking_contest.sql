@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Εξυπηρετητής: 127.0.0.1
--- Χρόνος δημιουργίας: 09 Μάη 2024 στις 21:56:35
--- Έκδοση διακομιστή: 10.4.32-MariaDB
--- Έκδοση PHP: 8.0.30
+-- Host: 127.0.0.1
+-- Generation Time: May 13, 2024 at 11:20 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Βάση δεδομένων: `cooking_contest`
+-- Database: `cooking_contest`
 --
 
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `assignments`
+-- Table structure for table `assignments`
 --
 
 CREATE TABLE `assignments` (
@@ -37,7 +37,7 @@ CREATE TABLE `assignments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Άδειασμα δεδομένων του πίνακα `assignments`
+-- Dumping data for table `assignments`
 --
 
 INSERT INTO `assignments` (`id`, `episode_id`, `national_cuisine_id`, `chef_id`, `recipe_id`, `updated_at`) VALUES
@@ -145,7 +145,7 @@ INSERT INTO `assignments` (`id`, `episode_id`, `national_cuisine_id`, `chef_id`,
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `chef`
+-- Table structure for table `chef`
 --
 
 CREATE TABLE `chef` (
@@ -162,7 +162,7 @@ CREATE TABLE `chef` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Άδειασμα δεδομένων του πίνακα `chef`
+-- Dumping data for table `chef`
 --
 
 INSERT INTO `chef` (`id`, `first_name`, `last_name`, `age`, `email`, `phone`, `date_of_birth`, `years_of_experience`, `chef_level`, `updated_at`) VALUES
@@ -320,7 +320,7 @@ INSERT INTO `chef` (`id`, `first_name`, `last_name`, `age`, `email`, `phone`, `d
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `contests`
+-- Table structure for table `contests`
 --
 
 CREATE TABLE `contests` (
@@ -333,7 +333,7 @@ CREATE TABLE `contests` (
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `episodes`
+-- Table structure for table `episodes`
 --
 
 CREATE TABLE `episodes` (
@@ -344,7 +344,7 @@ CREATE TABLE `episodes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Άδειασμα δεδομένων του πίνακα `episodes`
+-- Dumping data for table `episodes`
 --
 
 INSERT INTO `episodes` (`id`, `season`, `episode`, `updated_at`) VALUES
@@ -362,7 +362,7 @@ INSERT INTO `episodes` (`id`, `season`, `episode`, `updated_at`) VALUES
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `equipment`
+-- Table structure for table `equipment`
 --
 
 CREATE TABLE `equipment` (
@@ -373,7 +373,7 @@ CREATE TABLE `equipment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Άδειασμα δεδομένων του πίνακα `equipment`
+-- Dumping data for table `equipment`
 --
 
 INSERT INTO `equipment` (`id`, `name`, `usage_instructions`, `updated_at`) VALUES
@@ -468,7 +468,7 @@ INSERT INTO `equipment` (`id`, `name`, `usage_instructions`, `updated_at`) VALUE
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `equipment_requirements`
+-- Table structure for table `equipment_requirements`
 --
 
 CREATE TABLE `equipment_requirements` (
@@ -480,7 +480,7 @@ CREATE TABLE `equipment_requirements` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Άδειασμα δεδομένων του πίνακα `equipment_requirements`
+-- Dumping data for table `equipment_requirements`
 --
 
 INSERT INTO `equipment_requirements` (`id`, `recipe_id`, `equipment_id`, `quantity`, `updated_at`) VALUES
@@ -785,7 +785,7 @@ INSERT INTO `equipment_requirements` (`id`, `recipe_id`, `equipment_id`, `quanti
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `food_group`
+-- Table structure for table `food_group`
 --
 
 CREATE TABLE `food_group` (
@@ -796,7 +796,7 @@ CREATE TABLE `food_group` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Άδειασμα δεδομένων του πίνακα `food_group`
+-- Dumping data for table `food_group`
 --
 
 INSERT INTO `food_group` (`id`, `name`, `description`, `updated_at`) VALUES
@@ -816,7 +816,7 @@ INSERT INTO `food_group` (`id`, `name`, `description`, `updated_at`) VALUES
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `image_recipes`
+-- Table structure for table `image_recipes`
 --
 
 CREATE TABLE `image_recipes` (
@@ -827,7 +827,7 @@ CREATE TABLE `image_recipes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Άδειασμα δεδομένων του πίνακα `image_recipes`
+-- Dumping data for table `image_recipes`
 --
 
 INSERT INTO `image_recipes` (`id`, `recipe_id`, `image_URL`, `updated_at`) VALUES
@@ -934,7 +934,7 @@ INSERT INTO `image_recipes` (`id`, `recipe_id`, `image_URL`, `updated_at`) VALUE
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `ingredient`
+-- Table structure for table `ingredient`
 --
 
 CREATE TABLE `ingredient` (
@@ -945,7 +945,7 @@ CREATE TABLE `ingredient` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Άδειασμα δεδομένων του πίνακα `ingredient`
+-- Dumping data for table `ingredient`
 --
 
 INSERT INTO `ingredient` (`id`, `name`, `food_group_id`, `updated_at`) VALUES
@@ -1207,7 +1207,7 @@ INSERT INTO `ingredient` (`id`, `name`, `food_group_id`, `updated_at`) VALUES
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `ingredient_quantities`
+-- Table structure for table `ingredient_quantities`
 --
 
 CREATE TABLE `ingredient_quantities` (
@@ -1220,7 +1220,7 @@ CREATE TABLE `ingredient_quantities` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Άδειασμα δεδομένων του πίνακα `ingredient_quantities`
+-- Dumping data for table `ingredient_quantities`
 --
 
 INSERT INTO `ingredient_quantities` (`id`, `recipe_id`, `ingredient_id`, `quantity`, `unit`, `updated_at`) VALUES
@@ -1773,7 +1773,7 @@ INSERT INTO `ingredient_quantities` (`id`, `recipe_id`, `ingredient_id`, `quanti
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `judges`
+-- Table structure for table `judges`
 --
 
 CREATE TABLE `judges` (
@@ -1786,7 +1786,7 @@ CREATE TABLE `judges` (
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `labels`
+-- Table structure for table `labels`
 --
 
 CREATE TABLE `labels` (
@@ -1796,7 +1796,7 @@ CREATE TABLE `labels` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Άδειασμα δεδομένων του πίνακα `labels`
+-- Dumping data for table `labels`
 --
 
 INSERT INTO `labels` (`id`, `name`, `updated_at`) VALUES
@@ -1867,7 +1867,7 @@ INSERT INTO `labels` (`id`, `name`, `updated_at`) VALUES
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `meal_type`
+-- Table structure for table `meal_type`
 --
 
 CREATE TABLE `meal_type` (
@@ -1877,7 +1877,7 @@ CREATE TABLE `meal_type` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Άδειασμα δεδομένων του πίνακα `meal_type`
+-- Dumping data for table `meal_type`
 --
 
 INSERT INTO `meal_type` (`id`, `name`, `updated_at`) VALUES
@@ -1890,7 +1890,7 @@ INSERT INTO `meal_type` (`id`, `name`, `updated_at`) VALUES
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `national_cuisine`
+-- Table structure for table `national_cuisine`
 --
 
 CREATE TABLE `national_cuisine` (
@@ -1900,7 +1900,7 @@ CREATE TABLE `national_cuisine` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Άδειασμα δεδομένων του πίνακα `national_cuisine`
+-- Dumping data for table `national_cuisine`
 --
 
 INSERT INTO `national_cuisine` (`id`, `national_cuisine`, `updated_at`) VALUES
@@ -1934,7 +1934,7 @@ INSERT INTO `national_cuisine` (`id`, `national_cuisine`, `updated_at`) VALUES
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `nutritional_info`
+-- Table structure for table `nutritional_info`
 --
 
 CREATE TABLE `nutritional_info` (
@@ -1943,14 +1943,274 @@ CREATE TABLE `nutritional_info` (
   `calories_per_100` int(11) NOT NULL,
   `proteins_per_100` int(11) NOT NULL,
   `fat_per_100` int(11) NOT NULL,
-  `other_nutriants` text NOT NULL,
+  `carbohydrates_per_100` float NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `nutritional_info`
+--
+
+INSERT INTO `nutritional_info` (`id`, `ingredient_id`, `calories_per_100`, `proteins_per_100`, `fat_per_100`, `carbohydrates_per_100`, `updated_at`) VALUES
+(1, 1, 239, 27, 14, 0, '2024-05-13 21:04:24'),
+(2, 2, 280, 13, 25, 2, '2024-05-13 21:04:24'),
+(3, 3, 138, 4, 1, 25, '2024-05-13 21:04:24'),
+(4, 4, 297, 12, 26, 1, '2024-05-13 21:04:24'),
+(5, 5, 42, 3, 2, 5, '2024-05-13 21:04:24'),
+(6, 6, 155, 13, 11, 1, '2024-05-13 21:04:24'),
+(7, 7, 77, 2, 0, 17, '2024-05-13 21:04:24'),
+(8, 8, 130, 2, 0, 28, '2024-05-13 21:04:24'),
+(9, 9, 127, 9, 1, 22, '2024-05-13 21:04:24'),
+(10, 10, 70, 2, 4, 6, '2024-05-13 21:04:24'),
+(11, 11, 402, 25, 33, 1.3, '2024-05-13 21:04:24'),
+(12, 12, 250, 26, 15, 0, '2024-05-13 21:04:24'),
+(13, 13, 242, 26, 16, 0, '2024-05-13 21:04:24'),
+(14, 14, 145, 17, 7, 0, '2024-05-13 21:04:24'),
+(15, 15, 181, 12, 14, 0.4, '2024-05-13 21:04:24'),
+(16, 16, 125, 29, 1, 0, '2024-05-13 21:04:24'),
+(17, 17, 43, 2, 0, 9.6, '2024-05-13 21:04:24'),
+(18, 18, 337, 10, 6, 60, '2024-05-13 21:04:24'),
+(19, 19, 116, 9, 0, 20, '2024-05-13 21:04:24'),
+(20, 20, 41, 1, 0, 10, '2024-05-13 21:04:24'),
+(21, 21, 40, 1, 0, 9.3, '2024-05-13 21:04:24'),
+(22, 22, 343, 13, 3, 71, '2024-05-13 21:04:24'),
+(23, 23, 364, 10, 1, 76, '2024-05-13 21:04:24'),
+(24, 24, 105, 16, 1, 4.8, '2024-05-13 21:04:24'),
+(25, 25, 81, 5, 0, 14, '2024-05-13 21:04:24'),
+(26, 26, 52, 0, 0, 14, '2024-05-13 21:04:24'),
+(27, 27, 18, 1, 0, 3.9, '2024-05-13 21:04:24'),
+(28, 28, 206, 20, 13, 0, '2024-05-13 21:04:24'),
+(29, 29, 61, 4, 3, 4.7, '2024-05-13 21:04:24'),
+(30, 30, 717, 1, 81, 0.1, '2024-05-13 21:04:24'),
+(31, 31, 198, 3, 20, 3.3, '2024-05-13 21:04:24'),
+(32, 32, 75, 1, 0, 17, '2024-05-13 21:04:24'),
+(33, 33, 479, 4, 24, 68, '2024-05-13 21:04:24'),
+(34, 34, 164, 9, 3, 27, '2024-05-13 21:04:24'),
+(35, 35, 230, 2, 24, 3.3, '2024-05-13 21:04:24'),
+(36, 36, 34, 3, 0, 7, '2024-05-13 21:04:24'),
+(37, 37, 20, 2, 0, 3.9, '2024-05-13 21:04:24'),
+(38, 38, 120, 4, 2, 21, '2024-05-13 21:04:24'),
+(39, 39, 43, 3, 0, 9, '2024-05-13 21:04:24'),
+(40, 40, 86, 2, 0, 20, '2024-05-13 21:04:24'),
+(41, 41, 25, 1, 0, 6, '2024-05-13 21:04:24'),
+(42, 42, 567, 25, 49, 16, '2024-05-13 21:04:24'),
+(43, 43, 23, 3, 0, 3.6, '2024-05-13 21:04:24'),
+(44, 44, 208, 20, 13, 0, '2024-05-13 21:04:24'),
+(45, 45, 486, 17, 31, 42.1, '2024-05-13 21:04:24'),
+(46, 46, 32, 1, 0, 6.1, '2024-05-13 21:04:24'),
+(47, 47, 30, 1, 0, 10.5, '2024-05-13 21:04:24'),
+(48, 48, 149, 6, 1, 33, '2024-05-13 21:04:24'),
+(49, 49, 18, 1, 0, 4.6, '2024-05-13 21:04:24'),
+(50, 50, 23, 2, 1, 3.7, '2024-05-13 21:04:24'),
+(51, 51, 83, 0, 0, 2.6, '2024-05-13 21:04:24'),
+(52, 52, 61, 5, 0, 8.2, '2024-05-13 21:04:24'),
+(53, 53, 66, 5, 4, 3.6, '2024-05-13 21:04:24'),
+(54, 54, 80, 2, 1, 18, '2024-05-13 21:04:24'),
+(55, 55, 60, 1, 0, 15, '2024-05-13 21:04:24'),
+(56, 56, 299, 3, 1, 79, '2024-05-13 21:04:24'),
+(57, 57, 31, 1, 0, 6, '2024-05-13 21:04:24'),
+(58, 58, 29, 1, 0, 6, '2024-05-13 21:04:24'),
+(59, 59, 16, 1, 0, 3, '2024-05-13 21:04:24'),
+(60, 60, 5, 0, 0, 2, '2024-05-13 21:04:24'),
+(61, 61, 131, 4, 1, 25, '2024-05-13 21:04:24'),
+(62, 62, 97, 2, 0, 23.9, '2024-05-13 21:04:24'),
+(63, 63, 116, 26, 1, 0, '2024-05-13 21:04:24'),
+(64, 64, 23, 2, 1, 3.5, '2024-05-13 21:04:24'),
+(65, 65, 25, 1, 1, 5, '2024-05-13 21:04:24'),
+(66, 66, 23, 3, 1, 2.7, '2024-05-13 21:04:24'),
+(67, 67, 50, 3, 1, 8.8, '2024-05-13 21:04:24'),
+(68, 68, 40, 1, 0, 9.3, '2024-05-13 21:04:24'),
+(69, 69, 208, 26, 12, 0, '2024-05-13 21:04:24'),
+(71, 70, 72, 3, 0, 16.8, '2024-05-13 21:04:24'),
+(72, 71, 29, 1, 0, 9.3, '2024-05-13 21:04:24'),
+(73, 72, 36, 3, 1, 6.3, '2024-05-13 21:04:24'),
+(74, 73, 195, 22, 11, 0, '2024-05-13 21:04:24'),
+(75, 74, 16, 1, 0, 3.6, '2024-05-13 21:04:24'),
+(76, 75, 43, 4, 1, 7.9, '2024-05-13 21:04:24'),
+(77, 76, 112, 4, 0, 23, '2024-05-13 21:04:24'),
+(78, 77, 32, 2, 0, 7.3, '2024-05-13 21:04:24'),
+(79, 78, 96, 22, 1, 0, '2024-05-13 21:04:24'),
+(80, 79, 454, 7, 44, 17, '2024-05-13 21:04:24'),
+(81, 80, 546, 7, 31, 61, '2024-05-13 21:04:24'),
+(82, 81, 25, 1, 0, 6, '2024-05-13 21:04:24'),
+(83, 82, 345, 34, 23, 0, '2024-05-13 21:04:24'),
+(84, 83, 266, 9, 3, 42, '2024-05-13 21:04:24'),
+(85, 84, 43, 2, 0, 9.6, '2024-05-13 21:04:24'),
+(86, 85, 315, 4, 20, 35, '2024-05-13 21:04:24'),
+(87, 86, 884, 0, 100, 0, '2024-05-13 21:04:24'),
+(88, 87, 15, 1, 0, 1.8, '2024-05-13 21:04:24'),
+(89, 88, 260, 3, 12, 36, '2024-05-13 21:04:24'),
+(90, 89, 43, 1, 0, 8.2, '2024-05-13 21:04:24'),
+(91, 90, 250, 26, 16, 0, '2024-05-13 21:04:24'),
+(92, 91, 300, 22, 2, 60, '2024-05-13 21:04:24'),
+(93, 92, 500, 5, 50, 5, '2024-05-13 21:04:24'),
+(94, 93, 350, 12, 1, 70, '2024-05-13 21:04:24'),
+(95, 94, 70, 15, 1, 0, '2024-05-13 21:04:24'),
+(96, 95, 370, 13, 1, 75, '2024-05-13 21:04:24'),
+(97, 96, 150, 2, 0, 35, '2024-05-13 21:04:24'),
+(98, 97, 300, 30, 20, 0, '2024-05-13 21:04:24'),
+(99, 98, 20, 3, 0, 3, '2024-05-13 21:04:24'),
+(100, 99, 900, 0, 100, 0, '2024-05-13 21:04:24'),
+(101, 100, 40, 4, 1, 5, '2024-05-13 21:04:24'),
+(102, 101, 150, 30, 5, 0, '2024-05-13 21:04:24'),
+(103, 102, 250, 30, 15, 0, '2024-05-13 21:04:24'),
+(104, 103, 40, 1, 0, 10, '2024-05-13 21:04:24'),
+(105, 104, 0, 0, 0, 0, '2024-05-13 21:04:24'),
+(106, 105, 150, 12, 10, 0, '2024-05-13 21:04:24'),
+(107, 106, 300, 15, 20, 60, '2024-05-13 21:04:24'),
+(108, 107, 160, 30, 4, 0, '2024-05-13 21:04:24'),
+(109, 108, 400, 0, 0, 100, '2024-05-13 21:04:24'),
+(110, 109, 300, 15, 25, 2, '2024-05-13 21:04:24'),
+(111, 110, 240, 15, 20, 1, '2024-05-13 21:04:24'),
+(112, 111, 0, 0, 0, 0, '2024-05-13 21:04:24'),
+(113, 112, 350, 10, 1, 70, '2024-05-13 21:04:24'),
+(114, 113, 60, 2, 1, 15, '2024-05-13 21:04:24'),
+(115, 114, 350, 2, 35, 3, '2024-05-13 21:04:24'),
+(116, 115, 300, 0, 0, 30, '2024-05-13 21:04:24'),
+(117, 116, 40, 2, 0, 10, '2024-05-13 21:04:24'),
+(118, 117, 130, 3, 1, 30, '2024-05-13 21:04:24'),
+(119, 118, 400, 0, 0, 100, '2024-05-13 21:04:24'),
+(120, 119, 40, 2, 0, 10, '2024-05-13 21:04:24'),
+(121, 120, 250, 20, 15, 0, '2024-05-13 21:04:24'),
+(122, 121, 30, 1, 0, 5, '2024-05-13 21:04:24'),
+(123, 122, 30, 1, 0, 5, '2024-05-13 21:04:24'),
+(124, 123, 5, 1, 0, 0.2, '2024-05-13 21:04:24'),
+(125, 124, 250, 5, 2, 70, '2024-05-13 21:04:24'),
+(126, 125, 150, 15, 10, 5, '2024-05-13 21:04:24'),
+(127, 126, 90, 20, 1, 0, '2024-05-13 21:04:24'),
+(128, 127, 380, 5, 1, 80, '2024-05-13 21:04:24'),
+(129, 128, 300, 0, 0, 40, '2024-05-13 21:04:24'),
+(130, 129, 370, 6, 1, 86, '2024-05-13 21:04:24'),
+(131, 130, 40, 1, 0, 9, '2024-05-13 21:04:24'),
+(132, 131, 347, 26, 12, 38, '2024-05-13 21:04:24'),
+(133, 132, 11, 0, 0, 2.8, '2024-05-13 21:04:24'),
+(134, 133, 189, 5, 14, 9, '2024-05-13 21:04:24'),
+(136, 134, 72, 3, 0, 16.8, '2024-05-13 21:04:24'),
+(137, 135, 32, 2, 0, 4.7, '2024-05-13 21:04:24'),
+(138, 136, 17, 1, 0, 3.1, '2024-05-13 21:04:24'),
+(139, 137, 23, 2, 1, 3.7, '2024-05-13 21:04:24'),
+(140, 138, 884, 0, 100, 0, '2024-05-13 21:04:24'),
+(141, 139, 149, 6, 1, 33.06, '2024-05-13 21:04:24'),
+(142, 140, 323, 6, 12, 61.2, '2024-05-13 21:04:24'),
+(143, 141, 172, 25, 7, 0, '2024-05-13 21:04:24'),
+(144, 142, 55, 0, 0, 12.7, '2024-05-13 21:04:24'),
+(145, 143, 535, 7, 29, 59.8, '2024-05-13 21:04:24'),
+(146, 144, 3, 1, 0, 0.2, '2024-05-13 21:04:24'),
+(147, 145, 354, 10, 10, 68, '2024-05-13 21:04:24'),
+(148, 146, 420, 36, 29, 3.2, '2024-05-13 21:04:24'),
+(149, 147, 300, 2, 30, 1.5, '2024-05-13 21:04:24'),
+(150, 148, 717, 1, 81, 0.06, '2024-05-13 21:04:24'),
+(151, 149, 420, 36, 29, 3.2, '2024-05-13 21:04:24'),
+(152, 150, 36, 3, 1, 6.3, '2024-05-13 21:04:24'),
+(153, 151, 331, 17, 1, 72.7, '2024-05-13 21:04:24'),
+(154, 152, 134, 0, 0, 1.4, '2024-05-13 21:04:24'),
+(155, 153, 150, 15, 10, 5, '2024-05-13 21:04:24'),
+(156, 154, 260, 21, 19, 0, '2024-05-13 21:04:24'),
+(157, 155, 3, 0, 0, 0.5, '2024-05-13 21:04:24'),
+(158, 156, 82, 4, 0, 14.8, '2024-05-13 21:04:24'),
+(159, 157, 360, 10, 1, 74.9, '2024-05-13 21:04:24'),
+(160, 158, 66, 4, 4, 3.6, '2024-05-13 21:04:24'),
+(161, 159, 884, 0, 100, 0, '2024-05-13 21:04:24'),
+(162, 160, 321, 0, 0, 79, '2024-05-13 21:04:24'),
+(163, 161, 18, 0, 0, 4.2, '2024-05-13 21:04:24'),
+(164, 162, 20, 0, 0, 5, '2024-05-13 21:04:24'),
+(165, 163, 387, 0, 0, 99.98, '2024-05-13 21:04:24'),
+(166, 164, 40, 2, 0, 8.1, '2024-05-13 21:04:24'),
+(167, 165, 101, 2, 2, 23, '2024-05-13 21:04:24'),
+(168, 166, 260, 0, 0, 67, '2024-05-13 21:04:24'),
+(169, 167, 337, 16, 16, 50.1, '2024-05-13 21:04:24'),
+(170, 168, 78, 2, 1, 17.8, '2024-05-13 21:04:24'),
+(171, 169, 300, 6, 8, 47, '2024-05-13 21:04:24'),
+(172, 170, 209, 24, 15, 0, '2024-05-13 21:04:24'),
+(173, 171, 101, 3, 3, 14.6, '2024-05-13 21:04:24'),
+(174, 172, 900, 0, 100, 0, '2024-05-13 21:04:24'),
+(175, 173, 299, 4, 1, 68, '2024-05-13 21:04:24'),
+(176, 174, 525, 6, 36, 49.3, '2024-05-13 21:04:24'),
+(177, 175, 82, 0, 0, 2.6, '2024-05-13 21:04:24'),
+(178, 176, 0, 0, 0, 0, '2024-05-13 21:04:24'),
+(179, 177, 573, 17, 49, 23, '2024-05-13 21:04:24'),
+(180, 178, 375, 18, 22, 44.2, '2024-05-13 21:04:24'),
+(181, 179, 131, 3, 6, 20.7, '2024-05-13 21:04:24'),
+(182, 180, 387, 0, 0, 99.98, '2024-05-13 21:04:24'),
+(183, 181, 302, 1, 0, 69, '2024-05-13 21:04:24'),
+(184, 182, 265, 9, 4, 68.9, '2024-05-13 21:04:24'),
+(185, 183, 282, 10, 11, 46, '2024-05-13 21:04:24'),
+(186, 184, 381, 0, 0, 91, '2024-05-13 21:04:24'),
+(187, 185, 311, 11, 7, 68.5, '2024-05-13 21:04:24'),
+(188, 186, 160, 9, 1, 23, '2024-05-13 21:04:24'),
+(189, 187, 160, 2, 15, 9, '2024-05-13 21:04:24'),
+(190, 188, 165, 31, 4, 0, '2024-05-13 21:04:24'),
+(191, 189, 429, 3, 44, 2.1, '2024-05-13 21:04:24'),
+(192, 190, 34, 2, 0, 6, '2024-05-13 21:04:24'),
+(193, 191, 282, 14, 13, 46.7, '2024-05-13 21:04:24'),
+(194, 192, 32, 1, 0, 7, '2024-05-13 21:04:24'),
+(195, 193, 290, 1, 0, 76, '2024-05-13 21:04:24'),
+(196, 194, 322, 16, 28, 1.2, '2024-05-13 21:04:24'),
+(197, 195, 251, 10, 3, 64.8, '2024-05-13 21:04:24'),
+(198, 196, 134, 6, 1, 25, '2024-05-13 21:04:24'),
+(199, 197, 22, 3, 0, 3.3, '2024-05-13 21:04:24'),
+(200, 198, 41, 1, 0, 9.6, '2024-05-13 21:04:24'),
+(201, 199, 43, 2, 1, 8.9, '2024-05-13 21:04:24'),
+(202, 200, 52, 2, 1, 11.9, '2024-05-13 21:04:24'),
+(203, 201, 387, 0, 0, 99.98, '2024-05-13 21:04:24'),
+(204, 202, 250, 10, 1, 49, '2024-05-13 21:04:24'),
+(205, 203, 82, 0, 0, 2.6, '2024-05-13 21:04:24'),
+(206, 204, 279, 13, 23, 1, '2024-05-13 21:04:24'),
+(207, 205, 884, 0, 100, 0, '2024-05-13 21:04:24'),
+(208, 206, 313, 8, 8, 74.5, '2024-05-13 21:04:24'),
+(209, 207, 313, 8, 8, 74.5, '2024-05-13 21:04:24'),
+(210, 208, 330, 3, 33, 3.3, '2024-05-13 21:04:24'),
+(211, 209, 375, 18, 22, 44.2, '2024-05-13 21:04:24'),
+(212, 210, 15, 1, 0, 2.9, '2024-05-13 21:04:24'),
+(213, 211, 345, 2, 37, 2.9, '2024-05-13 21:04:24'),
+(214, 212, 380, 0, 0, 98, '2024-05-13 21:04:24'),
+(215, 213, 149, 8, 1, 33.1, '2024-05-13 21:04:24'),
+(216, 214, 364, 7, 1, 79, '2024-05-13 21:04:24'),
+(217, 215, 57, 1, 0, 14.5, '2024-05-13 21:04:24'),
+(218, 216, 379, 13, 7, 67, '2024-05-13 21:04:24'),
+(219, 217, 25, 3, 1, 3.7, '2024-05-13 21:04:24'),
+(220, 218, 310, 12, 6, 65.4, '2024-05-13 21:04:24'),
+(221, 219, 23, 2, 1, 3.7, '2024-05-13 21:04:24'),
+(222, 220, 42, 0, 0, 3, '2024-05-13 21:04:24'),
+(223, 221, 298, 12, 18, 27.3, '2024-05-13 21:04:24'),
+(224, 222, 32, 2, 0, 7.3, '2024-05-13 21:04:24'),
+(225, 223, 231, 0, 0, 2.5, '2024-05-13 21:04:24'),
+(226, 224, 579, 21, 50, 21, '2024-05-13 21:04:24'),
+(227, 225, 508, 26, 36, 28, '2024-05-13 21:04:24'),
+(228, 226, 247, 4, 1, 80.6, '2024-05-13 21:04:24'),
+(229, 227, 264, 14, 21, 2.2, '2024-05-13 21:04:24'),
+(230, 228, 457, 5, 23, 60, '2024-05-13 21:04:24'),
+(231, 229, 27, 1, 2, 4.4, '2024-05-13 21:04:24'),
+(232, 230, 78, 1, 0, 17, '2024-05-13 21:04:24'),
+(233, 231, 31, 1, 0, 7.3, '2024-05-13 21:04:24'),
+(234, 232, 101, 6, 2, 24.4, '2024-05-13 21:04:24'),
+(235, 233, 342, 6, 34, 2.9, '2024-05-13 21:04:24'),
+(236, 234, 19, 0, 0, 4.5, '2024-05-13 21:04:24'),
+(237, 235, 23, 3, 1, 2.7, '2024-05-13 21:04:24'),
+(238, 236, 263, 6, 9, 72.1, '2024-05-13 21:04:24'),
+(239, 237, 239, 3, 1, 62.5, '2024-05-13 21:04:24'),
+(240, 238, 312, 10, 3, 67.1, '2024-05-13 21:04:24'),
+(241, 239, 25, 1, 0, 5, '2024-05-13 21:04:24'),
+(242, 240, 83, 0, 0, 2.6, '2024-05-13 21:04:24'),
+(243, 241, 86, 3, 2, 18.7, '2024-05-13 21:04:24'),
+(244, 242, 546, 5, 33, 56, '2024-05-13 21:04:24'),
+(245, 243, 61, 3, 4, 4.7, '2024-05-13 21:04:24'),
+(246, 244, 71, 17, 1, 0, '2024-05-13 21:04:24'),
+(247, 245, 131, 12, 2, 64, '2024-05-13 21:04:24'),
+(248, 246, 335, 9, 1, 71.2, '2024-05-13 21:04:24'),
+(249, 247, 282, 12, 13, 50, '2024-05-13 21:04:24'),
+(250, 248, 304, 0, 0, 82.4, '2024-05-13 21:04:24'),
+(251, 249, 97, 2, 0, 25, '2024-05-13 21:04:24'),
+(252, 250, 30, 3, 1, 3.2, '2024-05-13 21:04:24'),
+(253, 251, 40, 1, 0, 9, '2024-05-13 21:04:24'),
+(254, 252, 27, 1, 0, 6, '2024-05-13 21:04:24'),
+(255, 253, 18, 1, 0, 3.9, '2024-05-13 21:04:24'),
+(256, 254, 680, 1, 75, 0.6, '2024-05-13 21:04:24');
 
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `ratings`
+-- Table structure for table `ratings`
 --
 
 CREATE TABLE `ratings` (
@@ -1965,7 +2225,7 @@ CREATE TABLE `ratings` (
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `recipe-labels`
+-- Table structure for table `recipe-labels`
 --
 
 CREATE TABLE `recipe-labels` (
@@ -1976,7 +2236,7 @@ CREATE TABLE `recipe-labels` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Άδειασμα δεδομένων του πίνακα `recipe-labels`
+-- Dumping data for table `recipe-labels`
 --
 
 INSERT INTO `recipe-labels` (`id`, `labels_id`, `recipe_id`, `updated_at`) VALUES
@@ -2230,7 +2490,7 @@ INSERT INTO `recipe-labels` (`id`, `labels_id`, `recipe_id`, `updated_at`) VALUE
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `recipe-meal_type`
+-- Table structure for table `recipe-meal_type`
 --
 
 CREATE TABLE `recipe-meal_type` (
@@ -2241,7 +2501,7 @@ CREATE TABLE `recipe-meal_type` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Άδειασμα δεδομένων του πίνακα `recipe-meal_type`
+-- Dumping data for table `recipe-meal_type`
 --
 
 INSERT INTO `recipe-meal_type` (`id`, `recipe_id`, `meal_type_id`, `updated_at`) VALUES
@@ -2381,7 +2641,7 @@ INSERT INTO `recipe-meal_type` (`id`, `recipe_id`, `meal_type_id`, `updated_at`)
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `recipes`
+-- Table structure for table `recipes`
 --
 
 CREATE TABLE `recipes` (
@@ -2399,7 +2659,7 @@ CREATE TABLE `recipes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Άδειασμα δεδομένων του πίνακα `recipes`
+-- Dumping data for table `recipes`
 --
 
 INSERT INTO `recipes` (`id`, `name`, `short_description`, `basic_ingredient_id`, `national_cuisine_id`, `difficulty_level`, `portions`, `cooking_time`, `preparation_time`, `updated_at`, `API_id`) VALUES
@@ -2506,7 +2766,7 @@ INSERT INTO `recipes` (`id`, `name`, `short_description`, `basic_ingredient_id`,
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `recipes-themes`
+-- Table structure for table `recipes-themes`
 --
 
 CREATE TABLE `recipes-themes` (
@@ -2519,7 +2779,7 @@ CREATE TABLE `recipes-themes` (
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `specializes`
+-- Table structure for table `specializes`
 --
 
 CREATE TABLE `specializes` (
@@ -2530,7 +2790,7 @@ CREATE TABLE `specializes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Άδειασμα δεδομένων του πίνακα `specializes`
+-- Dumping data for table `specializes`
 --
 
 INSERT INTO `specializes` (`id`, `chef_id`, `national_cuisine_id`, `updated_at`) VALUES
@@ -2688,7 +2948,7 @@ INSERT INTO `specializes` (`id`, `chef_id`, `national_cuisine_id`, `updated_at`)
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `steps`
+-- Table structure for table `steps`
 --
 
 CREATE TABLE `steps` (
@@ -2700,7 +2960,7 @@ CREATE TABLE `steps` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Άδειασμα δεδομένων του πίνακα `steps`
+-- Dumping data for table `steps`
 --
 
 INSERT INTO `steps` (`id`, `step_number`, `step_description`, `recipe_id`, `updated_at`) VALUES
@@ -3174,7 +3434,7 @@ INSERT INTO `steps` (`id`, `step_number`, `step_description`, `recipe_id`, `upda
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `themes`
+-- Table structure for table `themes`
 --
 
 CREATE TABLE `themes` (
@@ -3186,7 +3446,7 @@ CREATE TABLE `themes` (
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `tips`
+-- Table structure for table `tips`
 --
 
 CREATE TABLE `tips` (
@@ -3197,7 +3457,7 @@ CREATE TABLE `tips` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Άδειασμα δεδομένων του πίνακα `tips`
+-- Dumping data for table `tips`
 --
 
 INSERT INTO `tips` (`id`, `recipe_id`, `tip`, `updated_at`) VALUES
@@ -3329,7 +3589,7 @@ INSERT INTO `tips` (`id`, `recipe_id`, `tip`, `updated_at`) VALUES
 -- --------------------------------------------------------
 
 --
--- Δομή πίνακα για τον πίνακα `unit_conversions`
+-- Table structure for table `unit_conversions`
 --
 
 CREATE TABLE `unit_conversions` (
@@ -3340,7 +3600,7 @@ CREATE TABLE `unit_conversions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Άδειασμα δεδομένων του πίνακα `unit_conversions`
+-- Dumping data for table `unit_conversions`
 --
 
 INSERT INTO `unit_conversions` (`id`, `measurement_unit`, `quantity`, `updated_at`) VALUES
@@ -3386,11 +3646,11 @@ INSERT INTO `unit_conversions` (`id`, `measurement_unit`, `quantity`, `updated_a
 (40, 'halved', 50, '2024-05-09 16:32:28');
 
 --
--- Ευρετήρια για άχρηστους πίνακες
+-- Indexes for dumped tables
 --
 
 --
--- Ευρετήρια για πίνακα `assignments`
+-- Indexes for table `assignments`
 --
 ALTER TABLE `assignments`
   ADD PRIMARY KEY (`id`),
@@ -3400,13 +3660,13 @@ ALTER TABLE `assignments`
   ADD KEY `recipe_id` (`recipe_id`);
 
 --
--- Ευρετήρια για πίνακα `chef`
+-- Indexes for table `chef`
 --
 ALTER TABLE `chef`
   ADD PRIMARY KEY (`id`);
 
 --
--- Ευρετήρια για πίνακα `contests`
+-- Indexes for table `contests`
 --
 ALTER TABLE `contests`
   ADD PRIMARY KEY (`id`),
@@ -3414,19 +3674,19 @@ ALTER TABLE `contests`
   ADD KEY `chef_id` (`chef_id`);
 
 --
--- Ευρετήρια για πίνακα `episodes`
+-- Indexes for table `episodes`
 --
 ALTER TABLE `episodes`
   ADD PRIMARY KEY (`id`);
 
 --
--- Ευρετήρια για πίνακα `equipment`
+-- Indexes for table `equipment`
 --
 ALTER TABLE `equipment`
   ADD PRIMARY KEY (`id`);
 
 --
--- Ευρετήρια για πίνακα `equipment_requirements`
+-- Indexes for table `equipment_requirements`
 --
 ALTER TABLE `equipment_requirements`
   ADD PRIMARY KEY (`id`),
@@ -3434,27 +3694,27 @@ ALTER TABLE `equipment_requirements`
   ADD KEY `recipe_id` (`recipe_id`);
 
 --
--- Ευρετήρια για πίνακα `food_group`
+-- Indexes for table `food_group`
 --
 ALTER TABLE `food_group`
   ADD PRIMARY KEY (`id`);
 
 --
--- Ευρετήρια για πίνακα `image_recipes`
+-- Indexes for table `image_recipes`
 --
 ALTER TABLE `image_recipes`
   ADD PRIMARY KEY (`id`),
   ADD KEY `recipe_id` (`recipe_id`);
 
 --
--- Ευρετήρια για πίνακα `ingredient`
+-- Indexes for table `ingredient`
 --
 ALTER TABLE `ingredient`
   ADD PRIMARY KEY (`id`),
   ADD KEY `food_group_id` (`food_group_id`);
 
 --
--- Ευρετήρια για πίνακα `ingredient_quantities`
+-- Indexes for table `ingredient_quantities`
 --
 ALTER TABLE `ingredient_quantities`
   ADD PRIMARY KEY (`id`),
@@ -3462,7 +3722,7 @@ ALTER TABLE `ingredient_quantities`
   ADD KEY `recipe_id` (`recipe_id`);
 
 --
--- Ευρετήρια για πίνακα `judges`
+-- Indexes for table `judges`
 --
 ALTER TABLE `judges`
   ADD PRIMARY KEY (`id`),
@@ -3470,33 +3730,33 @@ ALTER TABLE `judges`
   ADD KEY `chef_id` (`chef_id`);
 
 --
--- Ευρετήρια για πίνακα `labels`
+-- Indexes for table `labels`
 --
 ALTER TABLE `labels`
   ADD PRIMARY KEY (`id`),
   ADD KEY `recipe_id` (`updated_at`);
 
 --
--- Ευρετήρια για πίνακα `meal_type`
+-- Indexes for table `meal_type`
 --
 ALTER TABLE `meal_type`
   ADD PRIMARY KEY (`id`);
 
 --
--- Ευρετήρια για πίνακα `national_cuisine`
+-- Indexes for table `national_cuisine`
 --
 ALTER TABLE `national_cuisine`
   ADD PRIMARY KEY (`id`);
 
 --
--- Ευρετήρια για πίνακα `nutritional_info`
+-- Indexes for table `nutritional_info`
 --
 ALTER TABLE `nutritional_info`
   ADD PRIMARY KEY (`id`),
   ADD KEY `ingredient_id` (`ingredient_id`);
 
 --
--- Ευρετήρια για πίνακα `ratings`
+-- Indexes for table `ratings`
 --
 ALTER TABLE `ratings`
   ADD PRIMARY KEY (`id`),
@@ -3505,7 +3765,7 @@ ALTER TABLE `ratings`
   ADD KEY `episode_id` (`episode_id`);
 
 --
--- Ευρετήρια για πίνακα `recipe-labels`
+-- Indexes for table `recipe-labels`
 --
 ALTER TABLE `recipe-labels`
   ADD PRIMARY KEY (`id`),
@@ -3513,7 +3773,7 @@ ALTER TABLE `recipe-labels`
   ADD KEY `recipe_id` (`recipe_id`);
 
 --
--- Ευρετήρια για πίνακα `recipe-meal_type`
+-- Indexes for table `recipe-meal_type`
 --
 ALTER TABLE `recipe-meal_type`
   ADD PRIMARY KEY (`id`),
@@ -3521,7 +3781,7 @@ ALTER TABLE `recipe-meal_type`
   ADD KEY `meal_type_id` (`meal_type_id`);
 
 --
--- Ευρετήρια για πίνακα `recipes`
+-- Indexes for table `recipes`
 --
 ALTER TABLE `recipes`
   ADD PRIMARY KEY (`id`),
@@ -3530,7 +3790,7 @@ ALTER TABLE `recipes`
   ADD KEY `national_cuisine_id` (`national_cuisine_id`);
 
 --
--- Ευρετήρια για πίνακα `recipes-themes`
+-- Indexes for table `recipes-themes`
 --
 ALTER TABLE `recipes-themes`
   ADD PRIMARY KEY (`id`),
@@ -3538,7 +3798,7 @@ ALTER TABLE `recipes-themes`
   ADD KEY `themes_id` (`themes_id`);
 
 --
--- Ευρετήρια για πίνακα `specializes`
+-- Indexes for table `specializes`
 --
 ALTER TABLE `specializes`
   ADD PRIMARY KEY (`id`),
@@ -3546,191 +3806,191 @@ ALTER TABLE `specializes`
   ADD KEY `national_cuisine_id` (`national_cuisine_id`);
 
 --
--- Ευρετήρια για πίνακα `steps`
+-- Indexes for table `steps`
 --
 ALTER TABLE `steps`
   ADD PRIMARY KEY (`id`),
   ADD KEY `recipe_id` (`recipe_id`);
 
 --
--- Ευρετήρια για πίνακα `themes`
+-- Indexes for table `themes`
 --
 ALTER TABLE `themes`
   ADD PRIMARY KEY (`id`);
 
 --
--- Ευρετήρια για πίνακα `tips`
+-- Indexes for table `tips`
 --
 ALTER TABLE `tips`
   ADD PRIMARY KEY (`id`),
   ADD KEY `recipe_id` (`recipe_id`);
 
 --
--- Ευρετήρια για πίνακα `unit_conversions`
+-- Indexes for table `unit_conversions`
 --
 ALTER TABLE `unit_conversions`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT για άχρηστους πίνακες
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT για πίνακα `assignments`
+-- AUTO_INCREMENT for table `assignments`
 --
 ALTER TABLE `assignments`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
--- AUTO_INCREMENT για πίνακα `chef`
+-- AUTO_INCREMENT for table `chef`
 --
 ALTER TABLE `chef`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=151;
 
 --
--- AUTO_INCREMENT για πίνακα `contests`
+-- AUTO_INCREMENT for table `contests`
 --
 ALTER TABLE `contests`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT για πίνακα `episodes`
+-- AUTO_INCREMENT for table `episodes`
 --
 ALTER TABLE `episodes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT για πίνακα `equipment`
+-- AUTO_INCREMENT for table `equipment`
 --
 ALTER TABLE `equipment`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 
 --
--- AUTO_INCREMENT για πίνακα `equipment_requirements`
+-- AUTO_INCREMENT for table `equipment_requirements`
 --
 ALTER TABLE `equipment_requirements`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=313;
 
 --
--- AUTO_INCREMENT για πίνακα `food_group`
+-- AUTO_INCREMENT for table `food_group`
 --
 ALTER TABLE `food_group`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT για πίνακα `image_recipes`
+-- AUTO_INCREMENT for table `image_recipes`
 --
 ALTER TABLE `image_recipes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
 
 --
--- AUTO_INCREMENT για πίνακα `ingredient`
+-- AUTO_INCREMENT for table `ingredient`
 --
 ALTER TABLE `ingredient`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=255;
 
 --
--- AUTO_INCREMENT για πίνακα `ingredient_quantities`
+-- AUTO_INCREMENT for table `ingredient_quantities`
 --
 ALTER TABLE `ingredient_quantities`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1037;
 
 --
--- AUTO_INCREMENT για πίνακα `judges`
+-- AUTO_INCREMENT for table `judges`
 --
 ALTER TABLE `judges`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT για πίνακα `labels`
+-- AUTO_INCREMENT for table `labels`
 --
 ALTER TABLE `labels`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
--- AUTO_INCREMENT για πίνακα `meal_type`
+-- AUTO_INCREMENT for table `meal_type`
 --
 ALTER TABLE `meal_type`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT για πίνακα `national_cuisine`
+-- AUTO_INCREMENT for table `national_cuisine`
 --
 ALTER TABLE `national_cuisine`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
--- AUTO_INCREMENT για πίνακα `nutritional_info`
+-- AUTO_INCREMENT for table `nutritional_info`
 --
 ALTER TABLE `nutritional_info`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=512;
 
 --
--- AUTO_INCREMENT για πίνακα `ratings`
+-- AUTO_INCREMENT for table `ratings`
 --
 ALTER TABLE `ratings`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT για πίνακα `recipe-labels`
+-- AUTO_INCREMENT for table `recipe-labels`
 --
 ALTER TABLE `recipe-labels`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=577;
 
 --
--- AUTO_INCREMENT για πίνακα `recipe-meal_type`
+-- AUTO_INCREMENT for table `recipe-meal_type`
 --
 ALTER TABLE `recipe-meal_type`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=303;
 
 --
--- AUTO_INCREMENT για πίνακα `recipes`
+-- AUTO_INCREMENT for table `recipes`
 --
 ALTER TABLE `recipes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
 
 --
--- AUTO_INCREMENT για πίνακα `recipes-themes`
+-- AUTO_INCREMENT for table `recipes-themes`
 --
 ALTER TABLE `recipes-themes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT για πίνακα `specializes`
+-- AUTO_INCREMENT for table `specializes`
 --
 ALTER TABLE `specializes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=151;
 
 --
--- AUTO_INCREMENT για πίνακα `steps`
+-- AUTO_INCREMENT for table `steps`
 --
 ALTER TABLE `steps`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=513;
 
 --
--- AUTO_INCREMENT για πίνακα `themes`
+-- AUTO_INCREMENT for table `themes`
 --
 ALTER TABLE `themes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT για πίνακα `tips`
+-- AUTO_INCREMENT for table `tips`
 --
 ALTER TABLE `tips`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=141;
 
 --
--- AUTO_INCREMENT για πίνακα `unit_conversions`
+-- AUTO_INCREMENT for table `unit_conversions`
 --
 ALTER TABLE `unit_conversions`
   MODIFY `id` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
--- Περιορισμοί για άχρηστους πίνακες
+-- Constraints for dumped tables
 --
 
 --
--- Περιορισμοί για πίνακα `assignments`
+-- Constraints for table `assignments`
 --
 ALTER TABLE `assignments`
   ADD CONSTRAINT `assignments_ibfk_1` FOREIGN KEY (`episode_id`) REFERENCES `episodes` (`id`),
@@ -3739,53 +3999,53 @@ ALTER TABLE `assignments`
   ADD CONSTRAINT `assignments_ibfk_4` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`);
 
 --
--- Περιορισμοί για πίνακα `contests`
+-- Constraints for table `contests`
 --
 ALTER TABLE `contests`
   ADD CONSTRAINT `contests_ibfk_1` FOREIGN KEY (`episode_id`) REFERENCES `episodes` (`id`),
   ADD CONSTRAINT `contests_ibfk_2` FOREIGN KEY (`chef_id`) REFERENCES `chef` (`id`);
 
 --
--- Περιορισμοί για πίνακα `equipment_requirements`
+-- Constraints for table `equipment_requirements`
 --
 ALTER TABLE `equipment_requirements`
   ADD CONSTRAINT `eq` FOREIGN KEY (`equipment_id`) REFERENCES `equipment` (`id`),
   ADD CONSTRAINT `equipment_requirements_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`);
 
 --
--- Περιορισμοί για πίνακα `image_recipes`
+-- Constraints for table `image_recipes`
 --
 ALTER TABLE `image_recipes`
   ADD CONSTRAINT `image_recipes_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`);
 
 --
--- Περιορισμοί για πίνακα `ingredient`
+-- Constraints for table `ingredient`
 --
 ALTER TABLE `ingredient`
   ADD CONSTRAINT `Ingredient_ibfk_1` FOREIGN KEY (`food_group_id`) REFERENCES `food_group` (`id`);
 
 --
--- Περιορισμοί για πίνακα `ingredient_quantities`
+-- Constraints for table `ingredient_quantities`
 --
 ALTER TABLE `ingredient_quantities`
   ADD CONSTRAINT `ingredient_quantities_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`),
   ADD CONSTRAINT `ingredient_quantities_ibfk_2` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredient` (`id`);
 
 --
--- Περιορισμοί για πίνακα `judges`
+-- Constraints for table `judges`
 --
 ALTER TABLE `judges`
   ADD CONSTRAINT `judges_ibfk_1` FOREIGN KEY (`episode_id`) REFERENCES `episodes` (`id`),
   ADD CONSTRAINT `judges_ibfk_2` FOREIGN KEY (`chef_id`) REFERENCES `chef` (`id`);
 
 --
--- Περιορισμοί για πίνακα `nutritional_info`
+-- Constraints for table `nutritional_info`
 --
 ALTER TABLE `nutritional_info`
   ADD CONSTRAINT `Nutritional_info_ibfk_1` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredient` (`id`);
 
 --
--- Περιορισμοί για πίνακα `ratings`
+-- Constraints for table `ratings`
 --
 ALTER TABLE `ratings`
   ADD CONSTRAINT `ratings_ibfk_1` FOREIGN KEY (`judge_id`) REFERENCES `judges` (`id`),
@@ -3793,48 +4053,48 @@ ALTER TABLE `ratings`
   ADD CONSTRAINT `ratings_ibfk_3` FOREIGN KEY (`episode_id`) REFERENCES `episodes` (`id`);
 
 --
--- Περιορισμοί για πίνακα `recipe-labels`
+-- Constraints for table `recipe-labels`
 --
 ALTER TABLE `recipe-labels`
   ADD CONSTRAINT `recipe-labels_ibfk_1` FOREIGN KEY (`labels_id`) REFERENCES `labels` (`id`),
   ADD CONSTRAINT `recipe-labels_ibfk_2` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`);
 
 --
--- Περιορισμοί για πίνακα `recipe-meal_type`
+-- Constraints for table `recipe-meal_type`
 --
 ALTER TABLE `recipe-meal_type`
   ADD CONSTRAINT `recipe-meal_type_ibfk_3` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`),
   ADD CONSTRAINT `recipe-meal_type_ibfk_4` FOREIGN KEY (`meal_type_id`) REFERENCES `meal_type` (`id`);
 
 --
--- Περιορισμοί για πίνακα `recipes`
+-- Constraints for table `recipes`
 --
 ALTER TABLE `recipes`
   ADD CONSTRAINT `recipes_ibfk_1` FOREIGN KEY (`basic_ingredient_id`) REFERENCES `ingredient` (`id`),
   ADD CONSTRAINT `recipes_ibfk_2` FOREIGN KEY (`national_cuisine_id`) REFERENCES `national_cuisine` (`id`);
 
 --
--- Περιορισμοί για πίνακα `recipes-themes`
+-- Constraints for table `recipes-themes`
 --
 ALTER TABLE `recipes-themes`
   ADD CONSTRAINT `recipes-themes_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`),
   ADD CONSTRAINT `recipes-themes_ibfk_2` FOREIGN KEY (`themes_id`) REFERENCES `themes` (`id`);
 
 --
--- Περιορισμοί για πίνακα `specializes`
+-- Constraints for table `specializes`
 --
 ALTER TABLE `specializes`
   ADD CONSTRAINT `specializes_ibfk_1` FOREIGN KEY (`chef_id`) REFERENCES `chef` (`id`),
   ADD CONSTRAINT `specializes_ibfk_2` FOREIGN KEY (`national_cuisine_id`) REFERENCES `national_cuisine` (`id`);
 
 --
--- Περιορισμοί για πίνακα `steps`
+-- Constraints for table `steps`
 --
 ALTER TABLE `steps`
   ADD CONSTRAINT `steps_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`);
 
 --
--- Περιορισμοί για πίνακα `tips`
+-- Constraints for table `tips`
 --
 ALTER TABLE `tips`
   ADD CONSTRAINT `tips_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`);
