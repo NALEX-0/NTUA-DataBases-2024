@@ -5,6 +5,21 @@ SET time_zone = '+00:00';
 SET foreign_key_checks = 0;
 SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
+DELIMITER ;;
+
+DROP PROCEDURE IF EXISTS `InsertChefs`;;
+CREATE PROCEDURE `InsertChefs`()
+BEGIN
+    DECLARE i INT DEFAULT 1;
+    WHILE i <= 150 DO
+        INSERT INTO specializes (chef_id, national_cuisine_id) 
+        VALUES (i, FLOOR(RAND() * 26) + 1);
+        SET i = i + 1;
+    END WHILE;
+END;;
+
+DELIMITER ;
+
 SET NAMES utf8mb4;
 
 DROP TABLE IF EXISTS `assignments`;
@@ -40,6 +55,20 @@ CREATE TABLE `chef` (
   `chef_level` varchar(20) DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+DROP TABLE IF EXISTS `chef-recipes`;
+CREATE TABLE `chef-recipes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `chef_id` int(11) NOT NULL,
+  `recipe_id` int(11) NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `chef_id` (`chef_id`),
+  KEY `recipe_id` (`recipe_id`),
+  CONSTRAINT `chef-recipes_ibfk_1` FOREIGN KEY (`chef_id`) REFERENCES `chef` (`id`),
+  CONSTRAINT `chef-recipes_ibfk_2` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -191,7 +220,7 @@ CREATE TABLE `nutritional_info` (
   `calories_per_100` int(11) NOT NULL,
   `proteins_per_100` int(11) NOT NULL,
   `fat_per_100` int(11) NOT NULL,
-  `other_nutriants` text NOT NULL,
+  `?other_nutriants` text NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `ingredient_id` (`ingredient_id`),
@@ -253,7 +282,6 @@ CREATE TABLE `recipes` (
   `basic_ingredient_id` int(11) NOT NULL,
   `national_cuisine_id` int(11) NOT NULL,
   `difficulty_level` text NOT NULL,
-  `image` text DEFAULT NULL,
   `portions` int(11) DEFAULT NULL,
   `cooking_time` int(11) DEFAULT NULL,
   `preparation_time` int(11) DEFAULT NULL,
@@ -340,4 +368,4 @@ CREATE TABLE `unit_conversions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
--- 2024-05-08 13:12:54
+-- 2024-05-14 16:36:31
