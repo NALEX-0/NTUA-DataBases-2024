@@ -17,9 +17,10 @@ ON
 UPDATE `ingredient_quantities`
 SET quantity = 1.0
 WHERE
+    quantity = '' OR
     quantity LIKE '%/%' OR
     quantity LIKE '%-%';
-
+    
 
 -- Επερώτηση που χρησιμοποιήθηκε για τη δημιουργία
 -- της όψης 'recipe_nut_info'.
