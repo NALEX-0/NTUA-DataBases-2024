@@ -348,6 +348,10 @@ CREATE TABLE `recipe_meal_type` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
+DROP VIEW IF EXISTS `recipe_nut_info`;
+CREATE TABLE `recipe_nut_info` (`recipe_id` int(11), `recipe_name` varchar(45), `calories` double(19,2), `proteins` double(19,2), `fat` double(19,2), `carbohydrates` double(19,2));
+
+
 DROP TABLE IF EXISTS `specializes`;
 CREATE TABLE `specializes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -415,4 +419,7 @@ CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `knows_view` AS select `c`.
 DROP TABLE IF EXISTS `recipes_view`;
 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `recipes_view` AS select `recipes`.`id` AS `ID`,`recipes`.`name` AS `Name`,`recipes`.`short_description` AS `Description`,`ingredient`.`name` AS `Basic Ingredient`,`national_cuisine`.`name` AS `National Cuisine`,`recipes`.`difficulty_level` AS `Difficulty Level`,`recipes`.`portions` AS `Portions`,`recipes`.`cooking_time` AS `Cooking Time`,`recipes`.`preparation_time` AS `Preparation Time` from ((`recipes` join `ingredient` on(`recipes`.`basic_ingredient_id` = `ingredient`.`id`)) join `national_cuisine` on(`recipes`.`national_cuisine_id` = `national_cuisine`.`id`));
 
--- 2024-05-18 15:18:16
+DROP TABLE IF EXISTS `recipe_nut_info`;
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `recipe_nut_info` AS select `i`.`recipe_id` AS `recipe_id`,`r`.`name` AS `recipe_name`,round(sum(`n`.`calories_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `calories`,round(sum(`n`.`proteins_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `proteins`,round(sum(`n`.`fat_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `fat`,round(sum(`n`.`carbohydrates_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `carbohydrates` from (((`ingredient_quantities` `i` join `nutritional_info` `n` on(`i`.`ingredient_id` = `n`.`ingredient_id`)) join `unit_conversions` `u` on(`u`.`measurement_unit` = `i`.`unit`)) join `recipes` `r` on(`i`.`recipe_id` = `r`.`id`)) group by `i`.`recipe_id`,`r`.`name`;
+
+-- 2024-05-18 15:33:13
