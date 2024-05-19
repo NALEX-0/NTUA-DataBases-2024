@@ -23,7 +23,7 @@ BEGIN
     -- Additional validations can be added here
 
     -- Inserting the chef if validations pass
-    INSERT INTO chef (first_name, last_name, age, email, phone, years_of_experience, chef_level, image_URL)
+    INSERT INTO chefs (first_name, last_name, age, email, phone, years_of_experience, chef_level, image_URL)
     VALUES (p_first_name, p_last_name, p_age, p_email, p_phone, p_years_of_experience, p_chef_level, p_image_URL);
 END;;
 
@@ -34,16 +34,16 @@ BEGIN
     DECLARE national_cuisine_id INT DEFAULT NULL;
 
     -- Check and insert basic ingredient if it does not exist
-    SELECT id INTO basic_ingredient_id FROM ingredient WHERE name = p_basic_ingredient;
+    SELECT id INTO basic_ingredient_id FROM ingredients WHERE name = p_basic_ingredient;
     IF basic_ingredient_id IS NULL THEN
-        INSERT INTO ingredient (name) VALUES (p_basic_ingredient);
+        INSERT INTO ingredients (name) VALUES (p_basic_ingredient);
         SET basic_ingredient_id = LAST_INSERT_ID();
     END IF;
 
     -- Check and insert national cuisine if it does not exist
-    SELECT id INTO national_cuisine_id FROM national_cuisine WHERE name = p_national_cuisine;
+    SELECT id INTO national_cuisine_id FROM national_cuisines WHERE name = p_national_cuisine;
     IF national_cuisine_id IS NULL THEN
-        INSERT INTO national_cuisine (name) VALUES (p_national_cuisine);
+        INSERT INTO national_cuisines (name) VALUES (p_national_cuisine);
         SET national_cuisine_id = LAST_INSERT_ID();
     END IF;
 
@@ -70,14 +70,14 @@ CREATE TABLE `assignments` (
   KEY `chef_id` (`chef_id`),
   KEY `recipe_id` (`recipe_id`),
   CONSTRAINT `assignments_ibfk_1` FOREIGN KEY (`episode_id`) REFERENCES `episodes` (`id`),
-  CONSTRAINT `assignments_ibfk_2` FOREIGN KEY (`national_cuisine_id`) REFERENCES `national_cuisine` (`id`),
-  CONSTRAINT `assignments_ibfk_3` FOREIGN KEY (`chef_id`) REFERENCES `chef` (`id`),
+  CONSTRAINT `assignments_ibfk_2` FOREIGN KEY (`national_cuisine_id`) REFERENCES `national_cuisines` (`id`),
+  CONSTRAINT `assignments_ibfk_3` FOREIGN KEY (`chef_id`) REFERENCES `chefs` (`id`),
   CONSTRAINT `assignments_ibfk_4` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-DROP TABLE IF EXISTS `chef`;
-CREATE TABLE `chef` (
+DROP TABLE IF EXISTS `chefs`;
+CREATE TABLE `chefs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `first_name` varchar(45) NOT NULL,
   `last_name` varchar(45) NOT NULL,
@@ -93,8 +93,8 @@ CREATE TABLE `chef` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-DROP VIEW IF EXISTS `chef_view`;
-CREATE TABLE `chef_view` (`ID` int(11), `Name` varchar(91), `Age` int(11), `Email` varchar(60), `Phone` varchar(11));
+DROP VIEW IF EXISTS `chefs_view`;
+CREATE TABLE `chefs_view` (`ID` int(11), `Name` varchar(91), `Age` int(11), `Email` varchar(60), `Phone` varchar(11));
 
 
 DROP TABLE IF EXISTS `contests`;
@@ -107,7 +107,7 @@ CREATE TABLE `contests` (
   KEY `episode_id` (`episode_id`),
   KEY `chef_id` (`chef_id`),
   CONSTRAINT `contests_ibfk_1` FOREIGN KEY (`episode_id`) REFERENCES `episodes` (`id`),
-  CONSTRAINT `contests_ibfk_2` FOREIGN KEY (`chef_id`) REFERENCES `chef` (`id`)
+  CONSTRAINT `contests_ibfk_2` FOREIGN KEY (`chef_id`) REFERENCES `chefs` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -122,8 +122,8 @@ CREATE TABLE `episodes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-DROP TABLE IF EXISTS `equipment`;
-CREATE TABLE `equipment` (
+DROP TABLE IF EXISTS `equipments`;
+CREATE TABLE `equipments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `usage_instructions` text NOT NULL,
@@ -143,13 +143,13 @@ CREATE TABLE `equipment_requirements` (
   PRIMARY KEY (`id`),
   KEY `eq` (`equipment_id`),
   KEY `recipe_id` (`recipe_id`),
-  CONSTRAINT `eq` FOREIGN KEY (`equipment_id`) REFERENCES `equipment` (`id`),
+  CONSTRAINT `eq` FOREIGN KEY (`equipment_id`) REFERENCES `equipments` (`id`),
   CONSTRAINT `equipment_requirements_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-DROP TABLE IF EXISTS `food_group`;
-CREATE TABLE `food_group` (
+DROP TABLE IF EXISTS `food_groups`;
+CREATE TABLE `food_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `description` text NOT NULL,
@@ -171,8 +171,8 @@ CREATE TABLE `image_recipes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-DROP TABLE IF EXISTS `ingredient`;
-CREATE TABLE `ingredient` (
+DROP TABLE IF EXISTS `ingredients`;
+CREATE TABLE `ingredients` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `food_group_id` int(11) DEFAULT NULL,
@@ -180,7 +180,7 @@ CREATE TABLE `ingredient` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `food_group_id` (`food_group_id`),
-  CONSTRAINT `Ingredient_ibfk_1` FOREIGN KEY (`food_group_id`) REFERENCES `food_group` (`id`)
+  CONSTRAINT `Ingredient_ibfk_1` FOREIGN KEY (`food_group_id`) REFERENCES `food_groups` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -196,7 +196,7 @@ CREATE TABLE `ingredient_quantities` (
   KEY `ingredient_id` (`ingredient_id`),
   KEY `recipe_id` (`recipe_id`),
   CONSTRAINT `ingredient_quantities_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`),
-  CONSTRAINT `ingredient_quantities_ibfk_2` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredient` (`id`)
+  CONSTRAINT `ingredient_quantities_ibfk_2` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredients` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -210,12 +210,12 @@ CREATE TABLE `judges` (
   KEY `episode_id` (`episode_id`),
   KEY `chef_id` (`chef_id`),
   CONSTRAINT `judges_ibfk_1` FOREIGN KEY (`episode_id`) REFERENCES `episodes` (`id`),
-  CONSTRAINT `judges_ibfk_2` FOREIGN KEY (`chef_id`) REFERENCES `chef` (`id`)
+  CONSTRAINT `judges_ibfk_2` FOREIGN KEY (`chef_id`) REFERENCES `chefs` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 DROP VIEW IF EXISTS `knows_view`;
-CREATE TABLE `knows_view` (`chef_id` int(11), `recipe_id` int(11), `recipe_name` varchar(45), `basic_ingredient` varchar(45), `national_cuisine` varchar(45));
+CREATE TABLE `knows_view` ();
 
 
 DROP TABLE IF EXISTS `labels`;
@@ -228,8 +228,8 @@ CREATE TABLE `labels` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-DROP TABLE IF EXISTS `meal_type`;
-CREATE TABLE `meal_type` (
+DROP TABLE IF EXISTS `meal_types`;
+CREATE TABLE `meal_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
@@ -237,8 +237,8 @@ CREATE TABLE `meal_type` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-DROP TABLE IF EXISTS `national_cuisine`;
-CREATE TABLE `national_cuisine` (
+DROP TABLE IF EXISTS `national_cuisines`;
+CREATE TABLE `national_cuisines` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
@@ -257,7 +257,7 @@ CREATE TABLE `nutritional_info` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `ingredient_id` (`ingredient_id`),
-  CONSTRAINT `Nutritional_info_ibfk_1` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredient` (`id`)
+  CONSTRAINT `Nutritional_info_ibfk_1` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredients` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -274,7 +274,7 @@ CREATE TABLE `ratings` (
   KEY `chef_id` (`chef_id`),
   KEY `episode_id` (`episode_id`),
   CONSTRAINT `ratings_ibfk_1` FOREIGN KEY (`judge_id`) REFERENCES `judges` (`id`),
-  CONSTRAINT `ratings_ibfk_2` FOREIGN KEY (`chef_id`) REFERENCES `chef` (`id`),
+  CONSTRAINT `ratings_ibfk_2` FOREIGN KEY (`chef_id`) REFERENCES `chefs` (`id`),
   CONSTRAINT `ratings_ibfk_3` FOREIGN KEY (`episode_id`) REFERENCES `episodes` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -287,7 +287,7 @@ CREATE TABLE `recipes` (
   `basic_ingredient_id` int(11) NOT NULL,
   `national_cuisine_id` int(11) NOT NULL,
   `difficulty_level` varchar(20) NOT NULL,
-  `portions` int(11) DEFAULT NULL,
+  `portions` int(11) NOT NULL,
   `cooking_time` int(11) NOT NULL,
   `preparation_time` int(11) NOT NULL,
   `image_URL` text DEFAULT NULL,
@@ -297,27 +297,13 @@ CREATE TABLE `recipes` (
   UNIQUE KEY `id` (`id`),
   KEY `basic_ingredient_id` (`basic_ingredient_id`),
   KEY `national_cuisine_id` (`national_cuisine_id`),
-  CONSTRAINT `recipes_ibfk_1` FOREIGN KEY (`basic_ingredient_id`) REFERENCES `ingredient` (`id`),
-  CONSTRAINT `recipes_ibfk_2` FOREIGN KEY (`national_cuisine_id`) REFERENCES `national_cuisine` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-
-DROP TABLE IF EXISTS `recipes_themes`;
-CREATE TABLE `recipes_themes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `recipe_id` int(11) NOT NULL,
-  `themes_id` int(11) NOT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `recipe_id` (`recipe_id`),
-  KEY `themes_id` (`themes_id`),
-  CONSTRAINT `recipes_themes_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`),
-  CONSTRAINT `recipes_themes_ibfk_2` FOREIGN KEY (`themes_id`) REFERENCES `themes` (`id`)
+  CONSTRAINT `recipes_ibfk_1` FOREIGN KEY (`basic_ingredient_id`) REFERENCES `ingredients` (`id`),
+  CONSTRAINT `recipes_ibfk_2` FOREIGN KEY (`national_cuisine_id`) REFERENCES `national_cuisines` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 DROP VIEW IF EXISTS `recipes_view`;
-CREATE TABLE `recipes_view` (`ID` int(11), `Name` varchar(45), `Description` text, `Basic Ingredient` varchar(45), `National Cuisine` varchar(45), `Difficulty Level` varchar(20), `Portions` int(11), `Cooking Time` int(11), `Preparation Time` int(11));
+CREATE TABLE `recipes_view` ();
 
 
 DROP TABLE IF EXISTS `recipe_labels`;
@@ -334,8 +320,8 @@ CREATE TABLE `recipe_labels` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-DROP TABLE IF EXISTS `recipe_meal_type`;
-CREATE TABLE `recipe_meal_type` (
+DROP TABLE IF EXISTS `recipe_meal_types`;
+CREATE TABLE `recipe_meal_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `recipe_id` int(11) NOT NULL,
   `meal_type_id` int(11) NOT NULL,
@@ -343,13 +329,27 @@ CREATE TABLE `recipe_meal_type` (
   PRIMARY KEY (`id`),
   KEY `recipe_id` (`recipe_id`),
   KEY `meal_type_id` (`meal_type_id`),
-  CONSTRAINT `recipe_meal_type_ibfk_3` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`),
-  CONSTRAINT `recipe_meal_type_ibfk_4` FOREIGN KEY (`meal_type_id`) REFERENCES `meal_type` (`id`)
+  CONSTRAINT `recipe_meal_types_ibfk_3` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`),
+  CONSTRAINT `recipe_meal_types_ibfk_4` FOREIGN KEY (`meal_type_id`) REFERENCES `meal_types` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 DROP VIEW IF EXISTS `recipe_nut_info`;
 CREATE TABLE `recipe_nut_info` (`recipe_id` int(11), `recipe_name` varchar(45), `calories` double(19,2), `proteins` double(19,2), `fat` double(19,2), `carbohydrates` double(19,2));
+
+
+DROP TABLE IF EXISTS `recipe_themes`;
+CREATE TABLE `recipe_themes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `recipe_id` int(11) NOT NULL,
+  `themes_id` int(11) NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `recipe_id` (`recipe_id`),
+  KEY `themes_id` (`themes_id`),
+  CONSTRAINT `recipe_themes_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`),
+  CONSTRAINT `recipe_themes_ibfk_2` FOREIGN KEY (`themes_id`) REFERENCES `themes` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 DROP TABLE IF EXISTS `specializes`;
@@ -361,8 +361,8 @@ CREATE TABLE `specializes` (
   PRIMARY KEY (`id`),
   KEY `chef_id` (`chef_id`),
   KEY `national_cuisine_id` (`national_cuisine_id`),
-  CONSTRAINT `specializes_ibfk_1` FOREIGN KEY (`chef_id`) REFERENCES `chef` (`id`),
-  CONSTRAINT `specializes_ibfk_2` FOREIGN KEY (`national_cuisine_id`) REFERENCES `national_cuisine` (`id`)
+  CONSTRAINT `specializes_ibfk_1` FOREIGN KEY (`chef_id`) REFERENCES `chefs` (`id`),
+  CONSTRAINT `specializes_ibfk_2` FOREIGN KEY (`national_cuisine_id`) REFERENCES `national_cuisines` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -410,16 +410,16 @@ CREATE TABLE `unit_conversions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-DROP TABLE IF EXISTS `chef_view`;
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `chef_view` AS select `chef`.`id` AS `ID`,concat(`chef`.`first_name`,' ',`chef`.`last_name`) AS `Name`,`chef`.`age` AS `Age`,`chef`.`email` AS `Email`,`chef`.`phone` AS `Phone` from `chef`;
+DROP TABLE IF EXISTS `chefs_view`;
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `chefs_view` AS select `chefs`.`id` AS `ID`,concat(`chefs`.`first_name`,' ',`chefs`.`last_name`) AS `Name`,`chefs`.`age` AS `Age`,`chefs`.`email` AS `Email`,`chefs`.`phone` AS `Phone` from `chefs`;
 
 DROP TABLE IF EXISTS `knows_view`;
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `knows_view` AS select `c`.`chef_id` AS `chef_id`,`n`.`id` AS `recipe_id`,`n`.`name` AS `recipe_name`,`ingredient`.`name` AS `basic_ingredient`,`national_cuisine`.`name` AS `national_cuisine` from (((`specializes` `c` join `recipes` `n` on(`c`.`national_cuisine_id` = `n`.`national_cuisine_id`)) join `ingredient` on(`n`.`basic_ingredient_id` = `ingredient`.`id`)) join `national_cuisine` on(`n`.`national_cuisine_id` = `national_cuisine`.`id`));
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `knows_view` AS select `c`.`chef_id` AS `chef_id`,`n`.`id` AS `recipe_id`,`n`.`name` AS `recipe_name`,`cooking_contest`.`ingredient`.`name` AS `basic_ingredient`,`cooking_contest`.`national_cuisine`.`name` AS `national_cuisine` from (((`specializes` `c` join `recipes` `n` on(`c`.`national_cuisine_id` = `n`.`national_cuisine_id`)) join `ingredient` on(`n`.`basic_ingredient_id` = `cooking_contest`.`ingredient`.`id`)) join `national_cuisine` on(`n`.`national_cuisine_id` = `cooking_contest`.`national_cuisine`.`id`));
 
 DROP TABLE IF EXISTS `recipes_view`;
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `recipes_view` AS select `recipes`.`id` AS `ID`,`recipes`.`name` AS `Name`,`recipes`.`short_description` AS `Description`,`ingredient`.`name` AS `Basic Ingredient`,`national_cuisine`.`name` AS `National Cuisine`,`recipes`.`difficulty_level` AS `Difficulty Level`,`recipes`.`portions` AS `Portions`,`recipes`.`cooking_time` AS `Cooking Time`,`recipes`.`preparation_time` AS `Preparation Time` from ((`recipes` join `ingredient` on(`recipes`.`basic_ingredient_id` = `ingredient`.`id`)) join `national_cuisine` on(`recipes`.`national_cuisine_id` = `national_cuisine`.`id`));
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `recipes_view` AS select `cooking_contest`.`recipes`.`id` AS `ID`,`cooking_contest`.`recipes`.`name` AS `Name`,`cooking_contest`.`recipes`.`short_description` AS `Description`,`cooking_contest`.`ingredient`.`name` AS `Basic Ingredient`,`cooking_contest`.`national_cuisine`.`name` AS `National Cuisine`,`cooking_contest`.`recipes`.`difficulty_level` AS `Difficulty Level`,`cooking_contest`.`recipes`.`portions` AS `Portions`,`cooking_contest`.`recipes`.`cooking_time` AS `Cooking Time`,`cooking_contest`.`recipes`.`preparation_time` AS `Preparation Time` from ((`recipes` join `ingredient` on(`cooking_contest`.`recipes`.`basic_ingredient_id` = `cooking_contest`.`ingredient`.`id`)) join `national_cuisine` on(`cooking_contest`.`recipes`.`national_cuisine_id` = `cooking_contest`.`national_cuisine`.`id`));
 
 DROP TABLE IF EXISTS `recipe_nut_info`;
 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `recipe_nut_info` AS select `i`.`recipe_id` AS `recipe_id`,`r`.`name` AS `recipe_name`,round(sum(`n`.`calories_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `calories`,round(sum(`n`.`proteins_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `proteins`,round(sum(`n`.`fat_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `fat`,round(sum(`n`.`carbohydrates_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `carbohydrates` from (((`ingredient_quantities` `i` join `nutritional_info` `n` on(`i`.`ingredient_id` = `n`.`ingredient_id`)) join `unit_conversions` `u` on(`u`.`measurement_unit` = `i`.`unit`)) join `recipes` `r` on(`i`.`recipe_id` = `r`.`id`)) group by `i`.`recipe_id`,`r`.`name`;
 
--- 2024-05-18 15:33:13
+-- 2024-05-19 09:59:28
