@@ -42,7 +42,7 @@ BEGIN
     AND e.season = ep_season
     AND (e.episode = ep_num - 1 OR e.episode = ep_num - 2);
 
-    IF recency = 2 THEN
+IF (recency = 2) OR EXISTS(SELECT 1 FROM contests WHERE chef_id = new_chef_id AND episode_id = new_episode_id) THEN
         CALL insert_contestant((SELECT id FROM chefs ORDER BY RAND() LIMIT 1), new_episode_id);
     ELSE
         INSERT INTO contests (chef_id, episode_id)
@@ -52,12 +52,12 @@ END //
 DELIMITER ;
 
 
--- fill_contestants: Γεμίζει τον πίνακα των διαγωνιζόμενων σεφ
+-- fill_contests: Γεμίζει τον πίνακα των διαγωνιζόμενων σεφ
 -- χρησιμοποιώντας τη ρουτίνα insert_contestant για να 
 -- ικανοποιηθούν οι περιορισμοί στην εισαγωγή.
 
 DELIMITER //
-CREATE PROCEDURE fill_contestants()
+CREATE PROCEDURE fill_contests()
 BEGIN
     DECLARE episode_id INT;
     DECLARE ep_season INT DEFAULT 1;
@@ -131,7 +131,8 @@ BEGIN
     AND e.season = ep_season
     AND (e.episode = ep_num - 1 OR e.episode = ep_num - 2);
 
-    IF (recency = 2) OR (new_chef_id in(SELECT chef_id FROM contests WHERE episode_id = new_episode_id)) THEN
+    IF (recency = 2) OR (new_chef_id in(SELECT chef_id FROM contests WHERE episode_id = new_episode_id)) 
+     OR EXISTS(SELECT 1 FROM judges WHERE chef_id = new_chef_id AND episode_id = new_episode_id) THEN
         CALL insert_judge((SELECT id FROM chefs ORDER BY RAND() LIMIT 1), new_episode_id);
     ELSE
     INSERT INTO judges(chef_id, episode_id)
