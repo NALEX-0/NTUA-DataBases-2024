@@ -23,7 +23,7 @@ BEGIN
     -- Additional validations can be added here
 
     -- Inserting the chef if validations pass
-    INSERT INTO chef (first_name, last_name, age, email, phone, years_of_experience, chef_level, image_URL)
+    INSERT INTO chefs (first_name, last_name, age, email, phone, years_of_experience, chef_level, image_URL)
     VALUES (p_first_name, p_last_name, p_age, p_email, p_phone, p_years_of_experience, p_chef_level, p_image_URL);
 END;;
 
@@ -34,16 +34,16 @@ BEGIN
     DECLARE national_cuisine_id INT DEFAULT NULL;
 
     -- Check and insert basic ingredient if it does not exist
-    SELECT id INTO basic_ingredient_id FROM ingredient WHERE name = p_basic_ingredient;
+    SELECT id INTO basic_ingredient_id FROM ingredients WHERE name = p_basic_ingredient;
     IF basic_ingredient_id IS NULL THEN
-        INSERT INTO ingredient (name) VALUES (p_basic_ingredient);
+        INSERT INTO ingredients (name) VALUES (p_basic_ingredient);
         SET basic_ingredient_id = LAST_INSERT_ID();
     END IF;
 
     -- Check and insert national cuisine if it does not exist
-    SELECT id INTO national_cuisine_id FROM national_cuisine WHERE name = p_national_cuisine;
+    SELECT id INTO national_cuisine_id FROM national_cuisines WHERE name = p_national_cuisine;
     IF national_cuisine_id IS NULL THEN
-        INSERT INTO national_cuisine (name) VALUES (p_national_cuisine);
+        INSERT INTO national_cuisines (name) VALUES (p_national_cuisine);
         SET national_cuisine_id = LAST_INSERT_ID();
     END IF;
 
@@ -70,8 +70,8 @@ CREATE TABLE `assignments` (
   KEY `chef_id` (`chef_id`),
   KEY `recipe_id` (`recipe_id`),
   CONSTRAINT `assignments_ibfk_1` FOREIGN KEY (`episode_id`) REFERENCES `episodes` (`id`),
-  CONSTRAINT `assignments_ibfk_2` FOREIGN KEY (`national_cuisine_id`) REFERENCES `national_cuisine` (`id`),
-  CONSTRAINT `assignments_ibfk_3` FOREIGN KEY (`chef_id`) REFERENCES `chef` (`id`),
+  CONSTRAINT `assignments_ibfk_2` FOREIGN KEY (`national_cuisine_id`) REFERENCES `national_cuisines` (`id`),
+  CONSTRAINT `assignments_ibfk_3` FOREIGN KEY (`chef_id`) REFERENCES `chefs` (`id`),
   CONSTRAINT `assignments_ibfk_4` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -177,8 +177,8 @@ INSERT INTO `assignments` (`id`, `episode_id`, `national_cuisine_id`, `chef_id`,
 (99,	10,	12,	NULL,	NULL,	'2024-04-29 15:16:49'),
 (100,	10,	14,	NULL,	NULL,	'2024-04-29 15:16:49');
 
-DROP TABLE IF EXISTS `chef`;
-CREATE TABLE `chef` (
+DROP TABLE IF EXISTS `chefs`;
+CREATE TABLE `chefs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `first_name` varchar(45) NOT NULL,
   `last_name` varchar(45) NOT NULL,
@@ -193,7 +193,7 @@ CREATE TABLE `chef` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `chef` (`id`, `first_name`, `last_name`, `age`, `email`, `phone`, `date_of_birth`, `years_of_experience`, `chef_level`, `image_URL`, `updated_at`) VALUES
+INSERT INTO `chefs` (`id`, `first_name`, `last_name`, `age`, `email`, `phone`, `date_of_birth`, `years_of_experience`, `chef_level`, `image_URL`, `updated_at`) VALUES
 (1,	'MARY',	'SMITH',	32,	'MARY.SMITH@chef.org',	'6958274222',	'1992-01-25',	5,	'A chef',	NULL,	'2024-05-01 14:34:54'),
 (2,	'PATRICIA',	'JOHNSON',	27,	'PATRICIA.JOHNSON@chef.org',	'6941792261',	'1996-12-27',	10,	'Master chef',	NULL,	'2024-05-01 14:35:22'),
 (3,	'LINDA',	'WILLIAMS',	20,	'LINDA.WILLIAMS@chef.org',	'6934138642',	'2003-09-30',	4,	'C chef',	NULL,	'2024-05-01 14:35:10'),
@@ -345,8 +345,8 @@ INSERT INTO `chef` (`id`, `first_name`, `last_name`, `age`, `email`, `phone`, `d
 (149,	'VALERIE',	'BLACK',	30,	'VALERIE.BLACK@chef.org',	'6912516602',	'1994-02-03',	9,	'Master chef',	NULL,	'2024-05-01 14:35:22'),
 (150,	'DANIELLE',	'DANIELS',	44,	'DANIELLE.DANIELS@chef.org',	'6976584962',	'1980-02-25',	5,	'B chef',	NULL,	'2024-05-01 14:35:05');
 
-DROP VIEW IF EXISTS `chef_view`;
-CREATE TABLE `chef_view` (`ID` int(11), `Name` varchar(91), `Age` int(11), `Email` varchar(60), `Phone` varchar(11));
+DROP VIEW IF EXISTS `chefs_view`;
+CREATE TABLE `chefs_view` (`ID` int(11), `Name` varchar(91), `Age` int(11), `Email` varchar(60), `Phone` varchar(11));
 
 
 DROP TABLE IF EXISTS `contests`;
@@ -359,7 +359,7 @@ CREATE TABLE `contests` (
   KEY `episode_id` (`episode_id`),
   KEY `chef_id` (`chef_id`),
   CONSTRAINT `contests_ibfk_1` FOREIGN KEY (`episode_id`) REFERENCES `episodes` (`id`),
-  CONSTRAINT `contests_ibfk_2` FOREIGN KEY (`chef_id`) REFERENCES `chef` (`id`)
+  CONSTRAINT `contests_ibfk_2` FOREIGN KEY (`chef_id`) REFERENCES `chefs` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -385,8 +385,8 @@ INSERT INTO `episodes` (`id`, `season`, `episode`, `image_URL`, `updated_at`) VA
 (9,	'01',	'09',	NULL,	'2024-04-29 12:47:50'),
 (10,	'01',	'10',	NULL,	'2024-04-29 12:47:54');
 
-DROP TABLE IF EXISTS `equipment`;
-CREATE TABLE `equipment` (
+DROP TABLE IF EXISTS `equipments`;
+CREATE TABLE `equipments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `usage_instructions` text NOT NULL,
@@ -395,7 +395,7 @@ CREATE TABLE `equipment` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `equipment` (`id`, `name`, `usage_instructions`, `image_URL`, `updated_at`) VALUES
+INSERT INTO `equipments` (`id`, `name`, `usage_instructions`, `image_URL`, `updated_at`) VALUES
 (1,	'Pan',	'Heat evenly before adding ingredients.',	NULL,	'2024-04-29 13:07:19'),
 (2,	'Pot',	'Boil water or cook soups and stews.',	NULL,	'2024-04-29 13:07:19'),
 (3,	'Knife',	'Use for chopping, slicing, and dicing.',	NULL,	'2024-04-29 13:07:19'),
@@ -494,7 +494,7 @@ CREATE TABLE `equipment_requirements` (
   PRIMARY KEY (`id`),
   KEY `eq` (`equipment_id`),
   KEY `recipe_id` (`recipe_id`),
-  CONSTRAINT `eq` FOREIGN KEY (`equipment_id`) REFERENCES `equipment` (`id`),
+  CONSTRAINT `eq` FOREIGN KEY (`equipment_id`) REFERENCES `equipments` (`id`),
   CONSTRAINT `equipment_requirements_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -797,8 +797,8 @@ INSERT INTO `equipment_requirements` (`id`, `recipe_id`, `equipment_id`, `quanti
 (311,	99,	10,	1,	'2024-05-09 10:20:13'),
 (312,	99,	15,	3,	'2024-05-09 10:24:45');
 
-DROP TABLE IF EXISTS `food_group`;
-CREATE TABLE `food_group` (
+DROP TABLE IF EXISTS `food_groups`;
+CREATE TABLE `food_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `description` text NOT NULL,
@@ -807,7 +807,7 @@ CREATE TABLE `food_group` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `food_group` (`id`, `name`, `description`, `image_URL`, `updated_at`) VALUES
+INSERT INTO `food_groups` (`id`, `name`, `description`, `image_URL`, `updated_at`) VALUES
 (1,	'Spices and essential oils',	'Natural flavoring agents derived from plants, used to enhance the taste and aroma of food. Essential oils are concentrated extracts from these spices.',	'',	'2024-05-17 17:31:46'),
 (2,	'Coffee, tea and their products',	'Beverages made from the roasted seeds of the coffee plant and the processed leaves of the tea plant, including various forms like instant coffee, tea bags, and specialty drinks.',	'',	'2024-05-17 17:31:46'),
 (3,	'Preserved foods',	'Foods that have been processed to extend their shelf life through methods like canning, freezing, drying, and pickling.',	'',	'2024-05-17 17:31:46'),
@@ -933,8 +933,8 @@ INSERT INTO `image_recipes` (`id`, `recipe_id`, `image_URL`, `updated_at`) VALUE
 (113,	98,	'https://www.themealdb.com/images/media/meals/do7zps1614349775.jpg',	'2024-05-09 10:30:24'),
 (114,	99,	'https://www.themealdb.com/images/media/meals/ebvuir1699013665.jpg',	'2024-05-09 10:30:24');
 
-DROP TABLE IF EXISTS `ingredient`;
-CREATE TABLE `ingredient` (
+DROP TABLE IF EXISTS `ingredients`;
+CREATE TABLE `ingredients` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `food_group_id` int(11) DEFAULT NULL,
@@ -942,10 +942,10 @@ CREATE TABLE `ingredient` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `food_group_id` (`food_group_id`),
-  CONSTRAINT `Ingredient_ibfk_1` FOREIGN KEY (`food_group_id`) REFERENCES `food_group` (`id`)
+  CONSTRAINT `Ingredient_ibfk_1` FOREIGN KEY (`food_group_id`) REFERENCES `food_groups` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `ingredient` (`id`, `name`, `food_group_id`, `image_URL`, `updated_at`) VALUES
+INSERT INTO `ingredients` (`id`, `name`, `food_group_id`, `image_URL`, `updated_at`) VALUES
 (1,	'Chicken',	7,	'',	'2024-03-26 10:42:55'),
 (2,	'Kielbasa',	7,	'',	'2024-03-26 10:42:55'),
 (3,	'Noodles',	6,	'',	'2024-03-26 10:42:55'),
@@ -1213,7 +1213,7 @@ CREATE TABLE `ingredient_quantities` (
   KEY `ingredient_id` (`ingredient_id`),
   KEY `recipe_id` (`recipe_id`),
   CONSTRAINT `ingredient_quantities_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`),
-  CONSTRAINT `ingredient_quantities_ibfk_2` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredient` (`id`)
+  CONSTRAINT `ingredient_quantities_ibfk_2` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredients` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `ingredient_quantities` (`id`, `recipe_id`, `ingredient_id`, `quantity`, `unit`, `updated_at`) VALUES
@@ -1773,12 +1773,12 @@ CREATE TABLE `judges` (
   KEY `episode_id` (`episode_id`),
   KEY `chef_id` (`chef_id`),
   CONSTRAINT `judges_ibfk_1` FOREIGN KEY (`episode_id`) REFERENCES `episodes` (`id`),
-  CONSTRAINT `judges_ibfk_2` FOREIGN KEY (`chef_id`) REFERENCES `chef` (`id`)
+  CONSTRAINT `judges_ibfk_2` FOREIGN KEY (`chef_id`) REFERENCES `chefs` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 DROP VIEW IF EXISTS `knows_view`;
-CREATE TABLE `knows_view` (`chef_id` int(11), `recipe_id` int(11), `recipe_name` varchar(45), `basic_ingredient` varchar(45), `national_cuisine` varchar(45));
+CREATE TABLE `knows_view` ();
 
 
 DROP TABLE IF EXISTS `labels`;
@@ -1855,30 +1855,30 @@ INSERT INTO `labels` (`id`, `name`, `updated_at`) VALUES
 (63,	'Family recipe',	'2024-05-01 15:06:45'),
 (64,	'No added preservatives',	'2024-05-01 15:06:45');
 
-DROP TABLE IF EXISTS `meal_type`;
-CREATE TABLE `meal_type` (
+DROP TABLE IF EXISTS `meal_types`;
+CREATE TABLE `meal_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `meal_type` (`id`, `name`, `updated_at`) VALUES
+INSERT INTO `meal_types` (`id`, `name`, `updated_at`) VALUES
 (1,	'Breakfast',	'2024-03-28 17:13:06'),
 (2,	'lunch',	'2024-03-28 17:13:31'),
 (3,	'dinner',	'2024-03-28 17:13:35'),
 (4,	'brunch',	'2024-03-28 17:13:53'),
 (5,	'evening meal',	'2024-03-28 17:14:21');
 
-DROP TABLE IF EXISTS `national_cuisine`;
-CREATE TABLE `national_cuisine` (
+DROP TABLE IF EXISTS `national_cuisines`;
+CREATE TABLE `national_cuisines` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `national_cuisine` (`id`, `name`, `updated_at`) VALUES
+INSERT INTO `national_cuisines` (`id`, `name`, `updated_at`) VALUES
 (1,	'Greek',	'2024-03-26 13:33:10'),
 (2,	'Mexican',	'2024-03-26 13:33:15'),
 (3,	'British',	'2024-03-26 13:33:20'),
@@ -1917,7 +1917,7 @@ CREATE TABLE `nutritional_info` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `ingredient_id` (`ingredient_id`),
-  CONSTRAINT `Nutritional_info_ibfk_1` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredient` (`id`)
+  CONSTRAINT `Nutritional_info_ibfk_1` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredients` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `nutritional_info` (`id`, `ingredient_id`, `calories_per_100`, `proteins_per_100`, `fat_per_100`, `carbohydrates_per_100`, `updated_at`) VALUES
@@ -2189,7 +2189,7 @@ CREATE TABLE `ratings` (
   KEY `chef_id` (`chef_id`),
   KEY `episode_id` (`episode_id`),
   CONSTRAINT `ratings_ibfk_1` FOREIGN KEY (`judge_id`) REFERENCES `judges` (`id`),
-  CONSTRAINT `ratings_ibfk_2` FOREIGN KEY (`chef_id`) REFERENCES `chef` (`id`),
+  CONSTRAINT `ratings_ibfk_2` FOREIGN KEY (`chef_id`) REFERENCES `chefs` (`id`),
   CONSTRAINT `ratings_ibfk_3` FOREIGN KEY (`episode_id`) REFERENCES `episodes` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -2202,7 +2202,7 @@ CREATE TABLE `recipes` (
   `basic_ingredient_id` int(11) NOT NULL,
   `national_cuisine_id` int(11) NOT NULL,
   `difficulty_level` varchar(20) NOT NULL,
-  `portions` int(11) DEFAULT NULL,
+  `portions` int(11) NOT NULL,
   `cooking_time` int(11) NOT NULL,
   `preparation_time` int(11) NOT NULL,
   `image_URL` text DEFAULT NULL,
@@ -2212,8 +2212,8 @@ CREATE TABLE `recipes` (
   UNIQUE KEY `id` (`id`),
   KEY `basic_ingredient_id` (`basic_ingredient_id`),
   KEY `national_cuisine_id` (`national_cuisine_id`),
-  CONSTRAINT `recipes_ibfk_1` FOREIGN KEY (`basic_ingredient_id`) REFERENCES `ingredient` (`id`),
-  CONSTRAINT `recipes_ibfk_2` FOREIGN KEY (`national_cuisine_id`) REFERENCES `national_cuisine` (`id`)
+  CONSTRAINT `recipes_ibfk_1` FOREIGN KEY (`basic_ingredient_id`) REFERENCES `ingredients` (`id`),
+  CONSTRAINT `recipes_ibfk_2` FOREIGN KEY (`national_cuisine_id`) REFERENCES `national_cuisines` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `recipes` (`id`, `name`, `short_description`, `basic_ingredient_id`, `national_cuisine_id`, `difficulty_level`, `portions`, `cooking_time`, `preparation_time`, `image_URL`, `updated_at`, `API_id`) VALUES
@@ -2317,8 +2317,424 @@ INSERT INTO `recipes` (`id`, `name`, `short_description`, `basic_ingredient_id`,
 (98,	'Portuguese Seafood Stew',	'A traditional Portuguese stew made with a variety of seafood, potatoes, and vegetables.',	103,	24,	'Medium',	1,	25,	24,	NULL,	'2024-05-17 17:44:31',	NULL),
 (99,	'Russian Potato Salad',	'A Russian salad made with diced potatoes, vegetables, and often meat, dressed with mayonnaise.',	7,	15,	'Medium',	3,	8,	19,	NULL,	'2024-05-17 17:44:31',	NULL);
 
-DROP TABLE IF EXISTS `recipes_themes`;
-CREATE TABLE `recipes_themes` (
+DROP VIEW IF EXISTS `recipes_view`;
+CREATE TABLE `recipes_view` ();
+
+
+DROP TABLE IF EXISTS `recipe_labels`;
+CREATE TABLE `recipe_labels` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `labels_id` int(11) NOT NULL,
+  `recipe_id` int(11) NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `labels_id` (`labels_id`),
+  KEY `recipe_id` (`recipe_id`),
+  CONSTRAINT `recipe_labels_ibfk_1` FOREIGN KEY (`labels_id`) REFERENCES `labels` (`id`),
+  CONSTRAINT `recipe_labels_ibfk_2` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `recipe_labels` (`id`, `labels_id`, `recipe_id`, `updated_at`) VALUES
+(1,	1,	1,	'2024-03-28 17:52:28'),
+(2,	1,	21,	'2024-03-28 17:52:36'),
+(3,	1,	38,	'2024-03-28 17:52:51'),
+(4,	2,	1,	'2024-03-28 17:53:44'),
+(5,	3,	1,	'2024-03-28 17:54:04'),
+(6,	3,	38,	'2024-03-28 17:54:10'),
+(7,	3,	43,	'2024-03-28 17:54:13'),
+(8,	5,	2,	'2024-03-28 17:54:39'),
+(9,	5,	12,	'2024-03-28 17:54:42'),
+(10,	6,	2,	'2024-03-28 17:54:57'),
+(11,	7,	2,	'2024-03-28 17:55:23'),
+(12,	8,	3,	'2024-03-28 17:55:48'),
+(13,	8,	15,	'2024-03-28 17:55:53'),
+(14,	8,	37,	'2024-03-28 17:55:57'),
+(15,	9,	4,	'2024-03-28 17:56:14'),
+(16,	9,	15,	'2024-03-28 17:56:20'),
+(17,	9,	34,	'2024-03-28 17:56:26'),
+(18,	9,	37,	'2024-03-28 17:56:30'),
+(19,	10,	6,	'2024-03-28 17:56:47'),
+(20,	10,	37,	'2024-03-28 17:56:51'),
+(21,	10,	43,	'2024-03-28 17:56:58'),
+(22,	11,	6,	'2024-03-28 17:57:17'),
+(23,	13,	7,	'2024-03-28 17:57:42'),
+(24,	14,	7,	'2024-03-28 17:57:53'),
+(25,	15,	7,	'2024-03-28 17:58:06'),
+(26,	15,	17,	'2024-03-28 17:58:18'),
+(27,	16,	10,	'2024-03-28 17:58:39'),
+(28,	16,	35,	'2024-03-28 17:58:43'),
+(29,	17,	12,	'2024-03-28 17:59:05'),
+(30,	17,	28,	'2024-03-28 17:59:13'),
+(31,	17,	30,	'2024-03-28 17:59:17'),
+(32,	17,	32,	'2024-03-28 17:59:22'),
+(33,	18,	17,	'2024-03-28 17:59:43'),
+(34,	18,	43,	'2024-03-28 17:59:49'),
+(35,	19,	17,	'2024-03-28 18:00:07'),
+(36,	19,	22,	'2024-03-28 18:00:13'),
+(37,	20,	22,	'2024-03-28 18:00:32'),
+(38,	21,	25,	'2024-03-28 18:00:49'),
+(39,	22,	17,	'2024-03-28 18:01:10'),
+(40,	23,	18,	'2024-03-28 18:01:40'),
+(41,	24,	20,	'2024-03-28 18:01:53'),
+(42,	25,	21,	'2024-03-28 18:02:09'),
+(43,	26,	21,	'2024-03-28 18:02:22'),
+(44,	26,	36,	'2024-03-28 18:02:26'),
+(45,	27,	28,	'2024-03-28 18:02:46'),
+(46,	27,	32,	'2024-03-28 18:02:51'),
+(47,	28,	32,	'2024-03-28 18:03:07'),
+(48,	28,	28,	'2024-03-28 18:03:12'),
+(49,	29,	30,	'2024-03-28 18:03:24'),
+(50,	30,	36,	'2024-03-28 18:03:37'),
+(51,	31,	38,	'2024-03-28 18:03:49'),
+(52,	31,	47,	'2024-03-28 18:04:26'),
+(53,	32,	38,	'2024-03-28 18:04:50'),
+(54,	32,	39,	'2024-03-28 18:05:06'),
+(55,	32,	40,	'2024-03-28 18:05:09'),
+(56,	32,	41,	'2024-03-28 18:05:12'),
+(57,	33,	42,	'2024-03-28 18:05:25'),
+(58,	33,	40,	'2024-03-28 18:05:36'),
+(59,	33,	5,	'2024-03-28 18:06:02'),
+(60,	33,	41,	'2024-03-28 18:06:05'),
+(61,	34,	42,	'2024-03-28 18:06:32'),
+(62,	35,	42,	'2024-03-28 18:06:50'),
+(63,	36,	43,	'2024-03-28 18:07:11'),
+(64,	37,	44,	'2024-03-28 18:07:24'),
+(65,	38,	45,	'2024-03-28 18:07:37'),
+(66,	39,	50,	'2024-03-28 18:07:57'),
+(67,	8,	16,	'2024-03-28 18:08:39'),
+(68,	8,	33,	'2024-03-28 18:09:07'),
+(69,	8,	34,	'2024-03-28 18:09:17'),
+(70,	8,	41,	'2024-03-28 18:09:46'),
+(71,	8,	39,	'2024-03-28 18:09:49'),
+(72,	8,	47,	'2024-03-28 18:10:06'),
+(73,	8,	48,	'2024-03-28 18:10:09'),
+(74,	31,	49,	'2024-03-28 18:11:17'),
+(101,	40,	5,	'2024-05-01 16:01:28'),
+(102,	41,	32,	'2024-05-01 16:01:28'),
+(103,	42,	11,	'2024-05-01 16:01:28'),
+(104,	43,	17,	'2024-05-01 16:01:28'),
+(105,	44,	28,	'2024-05-01 16:01:28'),
+(106,	45,	8,	'2024-05-01 16:01:28'),
+(107,	46,	46,	'2024-05-01 16:01:28'),
+(108,	47,	22,	'2024-05-01 16:01:28'),
+(109,	48,	39,	'2024-05-01 16:01:28'),
+(110,	49,	13,	'2024-05-01 16:01:28'),
+(111,	50,	41,	'2024-05-01 16:01:28'),
+(112,	51,	9,	'2024-05-01 16:01:28'),
+(113,	52,	24,	'2024-05-01 16:01:28'),
+(114,	53,	3,	'2024-05-01 16:01:28'),
+(115,	54,	36,	'2024-05-01 16:01:28'),
+(116,	55,	20,	'2024-05-01 16:01:28'),
+(117,	56,	50,	'2024-05-01 16:01:28'),
+(118,	57,	12,	'2024-05-01 16:01:28'),
+(119,	58,	14,	'2024-05-01 16:01:28'),
+(120,	59,	49,	'2024-05-01 16:01:28'),
+(121,	60,	19,	'2024-05-01 16:01:28'),
+(122,	61,	43,	'2024-05-01 16:01:28'),
+(123,	62,	7,	'2024-05-01 16:01:28'),
+(124,	63,	45,	'2024-05-01 16:01:28'),
+(125,	40,	42,	'2024-05-01 16:05:21'),
+(126,	41,	1,	'2024-05-01 16:05:21'),
+(127,	42,	46,	'2024-05-01 16:05:21'),
+(128,	43,	20,	'2024-05-01 16:05:21'),
+(129,	44,	43,	'2024-05-01 16:05:21'),
+(130,	45,	8,	'2024-05-01 16:05:21'),
+(131,	46,	50,	'2024-05-01 16:05:21'),
+(132,	47,	17,	'2024-05-01 16:05:21'),
+(133,	48,	5,	'2024-05-01 16:05:21'),
+(134,	49,	11,	'2024-05-01 16:05:21'),
+(135,	50,	13,	'2024-05-01 16:05:21'),
+(136,	51,	24,	'2024-05-01 16:05:21'),
+(137,	52,	19,	'2024-05-01 16:05:21'),
+(138,	53,	36,	'2024-05-01 16:05:21'),
+(139,	54,	5,	'2024-05-01 16:05:21'),
+(140,	55,	7,	'2024-05-01 16:05:21'),
+(141,	56,	22,	'2024-05-01 16:05:21'),
+(142,	57,	48,	'2024-05-01 16:05:21'),
+(143,	58,	45,	'2024-05-01 16:05:21'),
+(144,	59,	41,	'2024-05-01 16:05:21'),
+(145,	60,	9,	'2024-05-01 16:05:21'),
+(146,	61,	3,	'2024-05-01 16:05:21'),
+(147,	62,	14,	'2024-05-01 16:05:21'),
+(148,	63,	40,	'2024-05-01 16:05:21'),
+(243,	1,	50,	'2024-05-08 12:59:13'),
+(244,	2,	50,	'2024-05-08 12:59:13'),
+(245,	3,	50,	'2024-05-08 12:59:13'),
+(272,	41,	50,	'2024-05-08 12:59:13'),
+(433,	1,	51,	'2024-05-08 13:04:48'),
+(434,	2,	51,	'2024-05-08 13:04:48'),
+(435,	3,	51,	'2024-05-08 13:04:48'),
+(436,	5,	52,	'2024-05-08 13:04:48'),
+(437,	5,	62,	'2024-05-08 13:04:48'),
+(438,	6,	52,	'2024-05-08 13:04:48'),
+(439,	7,	52,	'2024-05-08 13:04:48'),
+(440,	8,	53,	'2024-05-08 13:04:48'),
+(441,	8,	65,	'2024-05-08 13:04:48'),
+(442,	9,	54,	'2024-05-08 13:04:48'),
+(443,	9,	65,	'2024-05-08 13:04:48'),
+(444,	10,	56,	'2024-05-08 13:04:48'),
+(445,	11,	56,	'2024-05-08 13:04:48'),
+(446,	13,	57,	'2024-05-08 13:04:48'),
+(447,	14,	57,	'2024-05-08 13:04:48'),
+(448,	15,	57,	'2024-05-08 13:04:48'),
+(449,	16,	60,	'2024-05-08 13:04:48'),
+(450,	17,	62,	'2024-05-08 13:04:48'),
+(451,	33,	55,	'2024-05-08 13:04:48'),
+(452,	8,	66,	'2024-05-08 13:04:48'),
+(453,	40,	55,	'2024-05-08 13:04:48'),
+(454,	42,	61,	'2024-05-08 13:04:48'),
+(455,	45,	58,	'2024-05-08 13:04:48'),
+(456,	49,	63,	'2024-05-08 13:04:48'),
+(457,	51,	59,	'2024-05-08 13:04:48'),
+(458,	53,	53,	'2024-05-08 13:04:48'),
+(459,	57,	62,	'2024-05-08 13:04:48'),
+(460,	58,	64,	'2024-05-08 13:04:48'),
+(461,	62,	57,	'2024-05-08 13:04:48'),
+(462,	41,	51,	'2024-05-08 13:04:48'),
+(463,	45,	58,	'2024-05-08 13:04:48'),
+(464,	48,	55,	'2024-05-08 13:04:48'),
+(465,	49,	61,	'2024-05-08 13:04:48'),
+(466,	50,	63,	'2024-05-08 13:04:48'),
+(467,	54,	55,	'2024-05-08 13:04:48'),
+(468,	55,	57,	'2024-05-08 13:04:48'),
+(469,	60,	59,	'2024-05-08 13:04:48'),
+(470,	61,	53,	'2024-05-08 13:04:48'),
+(471,	62,	64,	'2024-05-08 13:04:48'),
+(496,	1,	70,	'2024-05-08 13:04:58'),
+(497,	1,	87,	'2024-05-08 13:04:58'),
+(498,	3,	87,	'2024-05-08 13:04:58'),
+(499,	3,	92,	'2024-05-08 13:04:58'),
+(500,	8,	86,	'2024-05-08 13:04:58'),
+(501,	9,	83,	'2024-05-08 13:04:58'),
+(502,	9,	86,	'2024-05-08 13:04:58'),
+(503,	10,	86,	'2024-05-08 13:04:58'),
+(504,	10,	92,	'2024-05-08 13:04:58'),
+(505,	16,	84,	'2024-05-08 13:04:58'),
+(506,	17,	77,	'2024-05-08 13:04:58'),
+(507,	17,	79,	'2024-05-08 13:04:58'),
+(508,	17,	81,	'2024-05-08 13:04:58'),
+(509,	18,	92,	'2024-05-08 13:04:58'),
+(510,	19,	71,	'2024-05-08 13:04:58'),
+(511,	20,	71,	'2024-05-08 13:04:58'),
+(512,	21,	74,	'2024-05-08 13:04:58'),
+(513,	23,	67,	'2024-05-08 13:04:58'),
+(514,	24,	69,	'2024-05-08 13:04:58'),
+(515,	25,	70,	'2024-05-08 13:04:58'),
+(516,	26,	70,	'2024-05-08 13:04:58'),
+(517,	26,	85,	'2024-05-08 13:04:58'),
+(518,	27,	77,	'2024-05-08 13:04:58'),
+(519,	27,	81,	'2024-05-08 13:04:58'),
+(520,	28,	81,	'2024-05-08 13:04:58'),
+(521,	28,	77,	'2024-05-08 13:04:58'),
+(522,	29,	79,	'2024-05-08 13:04:58'),
+(523,	30,	85,	'2024-05-08 13:04:58'),
+(524,	31,	87,	'2024-05-08 13:04:58'),
+(525,	31,	96,	'2024-05-08 13:04:58'),
+(526,	32,	87,	'2024-05-08 13:04:58'),
+(527,	32,	88,	'2024-05-08 13:04:58'),
+(528,	32,	89,	'2024-05-08 13:04:58'),
+(529,	32,	90,	'2024-05-08 13:04:58'),
+(530,	33,	91,	'2024-05-08 13:04:58'),
+(531,	33,	89,	'2024-05-08 13:04:58'),
+(532,	33,	90,	'2024-05-08 13:04:58'),
+(533,	34,	91,	'2024-05-08 13:04:58'),
+(534,	35,	91,	'2024-05-08 13:04:58'),
+(535,	36,	92,	'2024-05-08 13:04:58'),
+(536,	37,	93,	'2024-05-08 13:04:58'),
+(537,	38,	94,	'2024-05-08 13:04:58'),
+(538,	39,	99,	'2024-05-08 13:04:58'),
+(539,	8,	82,	'2024-05-08 13:04:58'),
+(540,	8,	83,	'2024-05-08 13:04:58'),
+(541,	8,	90,	'2024-05-08 13:04:58'),
+(542,	8,	88,	'2024-05-08 13:04:58'),
+(543,	8,	96,	'2024-05-08 13:04:58'),
+(544,	8,	97,	'2024-05-08 13:04:58'),
+(545,	31,	98,	'2024-05-08 13:04:58'),
+(546,	41,	81,	'2024-05-08 13:04:58'),
+(547,	44,	77,	'2024-05-08 13:04:58'),
+(548,	46,	95,	'2024-05-08 13:04:58'),
+(549,	47,	71,	'2024-05-08 13:04:58'),
+(550,	48,	88,	'2024-05-08 13:04:58'),
+(551,	50,	90,	'2024-05-08 13:04:58'),
+(552,	52,	73,	'2024-05-08 13:04:58'),
+(553,	54,	85,	'2024-05-08 13:04:58'),
+(554,	55,	69,	'2024-05-08 13:04:58'),
+(555,	56,	99,	'2024-05-08 13:04:58'),
+(556,	59,	98,	'2024-05-08 13:04:58'),
+(557,	60,	68,	'2024-05-08 13:04:58'),
+(558,	61,	92,	'2024-05-08 13:04:58'),
+(559,	63,	94,	'2024-05-08 13:04:58'),
+(560,	40,	91,	'2024-05-08 13:04:58'),
+(561,	42,	95,	'2024-05-08 13:04:58'),
+(562,	43,	69,	'2024-05-08 13:04:58'),
+(563,	44,	92,	'2024-05-08 13:04:58'),
+(564,	46,	99,	'2024-05-08 13:04:58'),
+(565,	51,	73,	'2024-05-08 13:04:58'),
+(566,	52,	68,	'2024-05-08 13:04:58'),
+(567,	53,	85,	'2024-05-08 13:04:58'),
+(568,	56,	71,	'2024-05-08 13:04:58'),
+(569,	57,	97,	'2024-05-08 13:04:58'),
+(570,	58,	94,	'2024-05-08 13:04:58'),
+(571,	59,	90,	'2024-05-08 13:04:58'),
+(572,	63,	89,	'2024-05-08 13:04:58'),
+(573,	1,	99,	'2024-05-08 13:04:58'),
+(574,	2,	99,	'2024-05-08 13:04:58'),
+(575,	3,	99,	'2024-05-08 13:04:58'),
+(576,	41,	99,	'2024-05-08 13:04:58');
+
+DROP TABLE IF EXISTS `recipe_meal_types`;
+CREATE TABLE `recipe_meal_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `recipe_id` int(11) NOT NULL,
+  `meal_type_id` int(11) NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `recipe_id` (`recipe_id`),
+  KEY `meal_type_id` (`meal_type_id`),
+  CONSTRAINT `recipe_meal_types_ibfk_3` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`),
+  CONSTRAINT `recipe_meal_types_ibfk_4` FOREIGN KEY (`meal_type_id`) REFERENCES `meal_types` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `recipe_meal_types` (`id`, `recipe_id`, `meal_type_id`, `updated_at`) VALUES
+(12,	6,	1,	'2024-03-30 14:08:54'),
+(13,	9,	1,	'2024-03-30 14:08:54'),
+(14,	23,	1,	'2024-03-30 14:08:54'),
+(15,	25,	1,	'2024-03-30 14:08:54'),
+(16,	27,	1,	'2024-03-30 14:08:54'),
+(17,	31,	1,	'2024-03-30 14:08:54'),
+(18,	33,	1,	'2024-03-30 14:08:54'),
+(19,	40,	1,	'2024-03-30 14:08:54'),
+(20,	43,	1,	'2024-03-30 14:08:54'),
+(21,	46,	1,	'2024-03-30 14:08:54'),
+(22,	2,	2,	'2024-03-30 14:08:54'),
+(23,	5,	2,	'2024-03-30 14:08:54'),
+(24,	12,	2,	'2024-03-30 14:08:54'),
+(25,	15,	2,	'2024-03-30 14:08:54'),
+(26,	22,	2,	'2024-03-30 14:08:54'),
+(27,	28,	2,	'2024-03-30 14:08:54'),
+(28,	36,	2,	'2024-03-30 14:08:54'),
+(29,	38,	2,	'2024-03-30 14:08:54'),
+(30,	49,	2,	'2024-03-30 14:08:54'),
+(31,	1,	3,	'2024-03-30 14:08:54'),
+(32,	3,	3,	'2024-03-30 14:08:54'),
+(33,	4,	3,	'2024-03-30 14:08:54'),
+(34,	7,	3,	'2024-03-30 14:08:54'),
+(35,	8,	3,	'2024-03-30 14:08:54'),
+(36,	10,	3,	'2024-03-30 14:08:54'),
+(37,	11,	3,	'2024-03-30 14:08:54'),
+(38,	13,	3,	'2024-03-30 14:08:54'),
+(39,	14,	3,	'2024-03-30 14:08:54'),
+(40,	16,	3,	'2024-03-30 14:08:54'),
+(41,	17,	3,	'2024-03-30 14:08:54'),
+(42,	18,	3,	'2024-03-30 14:08:54'),
+(43,	20,	3,	'2024-03-30 14:08:54'),
+(44,	24,	3,	'2024-03-30 14:08:54'),
+(45,	26,	3,	'2024-03-30 14:08:54'),
+(46,	29,	3,	'2024-03-30 14:08:54'),
+(47,	32,	3,	'2024-03-30 14:08:54'),
+(48,	34,	3,	'2024-03-30 14:08:54'),
+(49,	35,	3,	'2024-03-30 14:08:54'),
+(50,	39,	3,	'2024-03-30 14:08:54'),
+(51,	41,	3,	'2024-03-30 14:08:54'),
+(52,	42,	3,	'2024-03-30 14:08:54'),
+(53,	44,	3,	'2024-03-30 14:08:54'),
+(54,	45,	3,	'2024-03-30 14:08:54'),
+(55,	47,	3,	'2024-03-30 14:08:54'),
+(56,	48,	3,	'2024-03-30 14:08:54'),
+(57,	21,	4,	'2024-03-30 14:08:54'),
+(58,	19,	5,	'2024-03-30 14:08:54'),
+(59,	30,	5,	'2024-03-30 14:08:54'),
+(60,	37,	5,	'2024-03-30 14:08:54'),
+(61,	50,	5,	'2024-03-30 14:08:54'),
+(62,	4,	2,	'2024-03-30 14:14:12'),
+(63,	7,	2,	'2024-03-30 14:14:12'),
+(64,	8,	2,	'2024-03-30 14:14:12'),
+(65,	10,	2,	'2024-03-30 14:14:12'),
+(66,	11,	2,	'2024-03-30 14:14:12'),
+(67,	13,	2,	'2024-03-30 14:14:12'),
+(68,	14,	2,	'2024-03-30 14:14:12'),
+(69,	16,	2,	'2024-03-30 14:14:12'),
+(70,	20,	2,	'2024-03-30 14:14:12'),
+(71,	24,	2,	'2024-03-30 14:14:12'),
+(72,	26,	2,	'2024-03-30 14:14:12'),
+(73,	29,	2,	'2024-03-30 14:14:12'),
+(74,	32,	2,	'2024-03-30 14:14:12'),
+(75,	34,	2,	'2024-03-30 14:14:12'),
+(76,	35,	2,	'2024-03-30 14:14:12'),
+(77,	39,	2,	'2024-03-30 14:14:12'),
+(98,	50,	3,	'2024-05-08 12:07:28'),
+(231,	56,	1,	'2024-05-08 13:03:01'),
+(232,	59,	1,	'2024-05-08 13:03:01'),
+(233,	52,	2,	'2024-05-08 13:03:01'),
+(234,	55,	2,	'2024-05-08 13:03:01'),
+(235,	62,	2,	'2024-05-08 13:03:01'),
+(236,	65,	2,	'2024-05-08 13:03:01'),
+(237,	51,	3,	'2024-05-08 13:03:01'),
+(238,	53,	3,	'2024-05-08 13:03:01'),
+(239,	54,	3,	'2024-05-08 13:03:01'),
+(240,	57,	3,	'2024-05-08 13:03:01'),
+(241,	58,	3,	'2024-05-08 13:03:01'),
+(242,	60,	3,	'2024-05-08 13:03:01'),
+(243,	61,	3,	'2024-05-08 13:03:01'),
+(244,	63,	3,	'2024-05-08 13:03:01'),
+(245,	64,	3,	'2024-05-08 13:03:01'),
+(246,	66,	3,	'2024-05-08 13:03:01'),
+(247,	54,	2,	'2024-05-08 13:03:01'),
+(248,	57,	2,	'2024-05-08 13:03:01'),
+(249,	58,	2,	'2024-05-08 13:03:01'),
+(250,	60,	2,	'2024-05-08 13:03:01'),
+(251,	61,	2,	'2024-05-08 13:03:01'),
+(252,	63,	2,	'2024-05-08 13:03:01'),
+(253,	64,	2,	'2024-05-08 13:03:01'),
+(254,	66,	2,	'2024-05-08 13:03:01'),
+(262,	72,	1,	'2024-05-08 13:03:12'),
+(263,	74,	1,	'2024-05-08 13:03:12'),
+(264,	76,	1,	'2024-05-08 13:03:12'),
+(265,	80,	1,	'2024-05-08 13:03:12'),
+(266,	82,	1,	'2024-05-08 13:03:12'),
+(267,	89,	1,	'2024-05-08 13:03:12'),
+(268,	92,	1,	'2024-05-08 13:03:12'),
+(269,	95,	1,	'2024-05-08 13:03:12'),
+(270,	71,	2,	'2024-05-08 13:03:12'),
+(271,	77,	2,	'2024-05-08 13:03:12'),
+(272,	85,	2,	'2024-05-08 13:03:12'),
+(273,	87,	2,	'2024-05-08 13:03:12'),
+(274,	98,	2,	'2024-05-08 13:03:12'),
+(275,	69,	3,	'2024-05-08 13:03:12'),
+(276,	73,	3,	'2024-05-08 13:03:12'),
+(277,	75,	3,	'2024-05-08 13:03:12'),
+(278,	78,	3,	'2024-05-08 13:03:12'),
+(279,	81,	3,	'2024-05-08 13:03:12'),
+(280,	83,	3,	'2024-05-08 13:03:12'),
+(281,	84,	3,	'2024-05-08 13:03:12'),
+(282,	88,	3,	'2024-05-08 13:03:12'),
+(283,	90,	3,	'2024-05-08 13:03:12'),
+(284,	91,	3,	'2024-05-08 13:03:12'),
+(285,	93,	3,	'2024-05-08 13:03:12'),
+(286,	94,	3,	'2024-05-08 13:03:12'),
+(287,	96,	3,	'2024-05-08 13:03:12'),
+(288,	97,	3,	'2024-05-08 13:03:12'),
+(289,	70,	4,	'2024-05-08 13:03:12'),
+(290,	68,	5,	'2024-05-08 13:03:12'),
+(291,	79,	5,	'2024-05-08 13:03:12'),
+(292,	86,	5,	'2024-05-08 13:03:12'),
+(293,	99,	5,	'2024-05-08 13:03:12'),
+(294,	69,	2,	'2024-05-08 13:03:12'),
+(295,	73,	2,	'2024-05-08 13:03:12'),
+(296,	75,	2,	'2024-05-08 13:03:12'),
+(297,	78,	2,	'2024-05-08 13:03:12'),
+(298,	81,	2,	'2024-05-08 13:03:12'),
+(299,	83,	2,	'2024-05-08 13:03:12'),
+(300,	84,	2,	'2024-05-08 13:03:12'),
+(301,	88,	2,	'2024-05-08 13:03:12'),
+(302,	99,	3,	'2024-05-08 13:03:12');
+
+DROP VIEW IF EXISTS `recipe_nut_info`;
+CREATE TABLE `recipe_nut_info` (`recipe_id` int(11), `recipe_name` varchar(45), `calories` double(19,2), `proteins` double(19,2), `fat` double(19,2), `carbohydrates` double(19,2));
+
+
+DROP TABLE IF EXISTS `recipe_themes`;
+CREATE TABLE `recipe_themes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `recipe_id` int(11) NOT NULL,
   `themes_id` int(11) NOT NULL,
@@ -2326,11 +2742,11 @@ CREATE TABLE `recipes_themes` (
   PRIMARY KEY (`id`),
   KEY `recipe_id` (`recipe_id`),
   KEY `themes_id` (`themes_id`),
-  CONSTRAINT `recipes_themes_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`),
-  CONSTRAINT `recipes_themes_ibfk_2` FOREIGN KEY (`themes_id`) REFERENCES `themes` (`id`)
+  CONSTRAINT `recipe_themes_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`),
+  CONSTRAINT `recipe_themes_ibfk_2` FOREIGN KEY (`themes_id`) REFERENCES `themes` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `recipes_themes` (`id`, `recipe_id`, `themes_id`, `updated_at`) VALUES
+INSERT INTO `recipe_themes` (`id`, `recipe_id`, `themes_id`, `updated_at`) VALUES
 (1,	1,	6,	'2024-05-18 15:44:10'),
 (2,	1,	4,	'2024-05-18 15:44:10'),
 (3,	1,	12,	'2024-05-18 15:44:10'),
@@ -2629,422 +3045,6 @@ INSERT INTO `recipes_themes` (`id`, `recipe_id`, `themes_id`, `updated_at`) VALU
 (296,	99,	2,	'2024-05-18 15:44:10'),
 (297,	99,	11,	'2024-05-18 15:44:10');
 
-DROP VIEW IF EXISTS `recipes_view`;
-CREATE TABLE `recipes_view` (`ID` int(11), `Name` varchar(45), `Description` text, `Basic Ingredient` varchar(45), `National Cuisine` varchar(45), `Difficulty Level` varchar(20), `Portions` int(11), `Cooking Time` int(11), `Preparation Time` int(11));
-
-
-DROP TABLE IF EXISTS `recipe_labels`;
-CREATE TABLE `recipe_labels` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `labels_id` int(11) NOT NULL,
-  `recipe_id` int(11) NOT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `labels_id` (`labels_id`),
-  KEY `recipe_id` (`recipe_id`),
-  CONSTRAINT `recipe_labels_ibfk_1` FOREIGN KEY (`labels_id`) REFERENCES `labels` (`id`),
-  CONSTRAINT `recipe_labels_ibfk_2` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO `recipe_labels` (`id`, `labels_id`, `recipe_id`, `updated_at`) VALUES
-(1,	1,	1,	'2024-03-28 17:52:28'),
-(2,	1,	21,	'2024-03-28 17:52:36'),
-(3,	1,	38,	'2024-03-28 17:52:51'),
-(4,	2,	1,	'2024-03-28 17:53:44'),
-(5,	3,	1,	'2024-03-28 17:54:04'),
-(6,	3,	38,	'2024-03-28 17:54:10'),
-(7,	3,	43,	'2024-03-28 17:54:13'),
-(8,	5,	2,	'2024-03-28 17:54:39'),
-(9,	5,	12,	'2024-03-28 17:54:42'),
-(10,	6,	2,	'2024-03-28 17:54:57'),
-(11,	7,	2,	'2024-03-28 17:55:23'),
-(12,	8,	3,	'2024-03-28 17:55:48'),
-(13,	8,	15,	'2024-03-28 17:55:53'),
-(14,	8,	37,	'2024-03-28 17:55:57'),
-(15,	9,	4,	'2024-03-28 17:56:14'),
-(16,	9,	15,	'2024-03-28 17:56:20'),
-(17,	9,	34,	'2024-03-28 17:56:26'),
-(18,	9,	37,	'2024-03-28 17:56:30'),
-(19,	10,	6,	'2024-03-28 17:56:47'),
-(20,	10,	37,	'2024-03-28 17:56:51'),
-(21,	10,	43,	'2024-03-28 17:56:58'),
-(22,	11,	6,	'2024-03-28 17:57:17'),
-(23,	13,	7,	'2024-03-28 17:57:42'),
-(24,	14,	7,	'2024-03-28 17:57:53'),
-(25,	15,	7,	'2024-03-28 17:58:06'),
-(26,	15,	17,	'2024-03-28 17:58:18'),
-(27,	16,	10,	'2024-03-28 17:58:39'),
-(28,	16,	35,	'2024-03-28 17:58:43'),
-(29,	17,	12,	'2024-03-28 17:59:05'),
-(30,	17,	28,	'2024-03-28 17:59:13'),
-(31,	17,	30,	'2024-03-28 17:59:17'),
-(32,	17,	32,	'2024-03-28 17:59:22'),
-(33,	18,	17,	'2024-03-28 17:59:43'),
-(34,	18,	43,	'2024-03-28 17:59:49'),
-(35,	19,	17,	'2024-03-28 18:00:07'),
-(36,	19,	22,	'2024-03-28 18:00:13'),
-(37,	20,	22,	'2024-03-28 18:00:32'),
-(38,	21,	25,	'2024-03-28 18:00:49'),
-(39,	22,	17,	'2024-03-28 18:01:10'),
-(40,	23,	18,	'2024-03-28 18:01:40'),
-(41,	24,	20,	'2024-03-28 18:01:53'),
-(42,	25,	21,	'2024-03-28 18:02:09'),
-(43,	26,	21,	'2024-03-28 18:02:22'),
-(44,	26,	36,	'2024-03-28 18:02:26'),
-(45,	27,	28,	'2024-03-28 18:02:46'),
-(46,	27,	32,	'2024-03-28 18:02:51'),
-(47,	28,	32,	'2024-03-28 18:03:07'),
-(48,	28,	28,	'2024-03-28 18:03:12'),
-(49,	29,	30,	'2024-03-28 18:03:24'),
-(50,	30,	36,	'2024-03-28 18:03:37'),
-(51,	31,	38,	'2024-03-28 18:03:49'),
-(52,	31,	47,	'2024-03-28 18:04:26'),
-(53,	32,	38,	'2024-03-28 18:04:50'),
-(54,	32,	39,	'2024-03-28 18:05:06'),
-(55,	32,	40,	'2024-03-28 18:05:09'),
-(56,	32,	41,	'2024-03-28 18:05:12'),
-(57,	33,	42,	'2024-03-28 18:05:25'),
-(58,	33,	40,	'2024-03-28 18:05:36'),
-(59,	33,	5,	'2024-03-28 18:06:02'),
-(60,	33,	41,	'2024-03-28 18:06:05'),
-(61,	34,	42,	'2024-03-28 18:06:32'),
-(62,	35,	42,	'2024-03-28 18:06:50'),
-(63,	36,	43,	'2024-03-28 18:07:11'),
-(64,	37,	44,	'2024-03-28 18:07:24'),
-(65,	38,	45,	'2024-03-28 18:07:37'),
-(66,	39,	50,	'2024-03-28 18:07:57'),
-(67,	8,	16,	'2024-03-28 18:08:39'),
-(68,	8,	33,	'2024-03-28 18:09:07'),
-(69,	8,	34,	'2024-03-28 18:09:17'),
-(70,	8,	41,	'2024-03-28 18:09:46'),
-(71,	8,	39,	'2024-03-28 18:09:49'),
-(72,	8,	47,	'2024-03-28 18:10:06'),
-(73,	8,	48,	'2024-03-28 18:10:09'),
-(74,	31,	49,	'2024-03-28 18:11:17'),
-(101,	40,	5,	'2024-05-01 16:01:28'),
-(102,	41,	32,	'2024-05-01 16:01:28'),
-(103,	42,	11,	'2024-05-01 16:01:28'),
-(104,	43,	17,	'2024-05-01 16:01:28'),
-(105,	44,	28,	'2024-05-01 16:01:28'),
-(106,	45,	8,	'2024-05-01 16:01:28'),
-(107,	46,	46,	'2024-05-01 16:01:28'),
-(108,	47,	22,	'2024-05-01 16:01:28'),
-(109,	48,	39,	'2024-05-01 16:01:28'),
-(110,	49,	13,	'2024-05-01 16:01:28'),
-(111,	50,	41,	'2024-05-01 16:01:28'),
-(112,	51,	9,	'2024-05-01 16:01:28'),
-(113,	52,	24,	'2024-05-01 16:01:28'),
-(114,	53,	3,	'2024-05-01 16:01:28'),
-(115,	54,	36,	'2024-05-01 16:01:28'),
-(116,	55,	20,	'2024-05-01 16:01:28'),
-(117,	56,	50,	'2024-05-01 16:01:28'),
-(118,	57,	12,	'2024-05-01 16:01:28'),
-(119,	58,	14,	'2024-05-01 16:01:28'),
-(120,	59,	49,	'2024-05-01 16:01:28'),
-(121,	60,	19,	'2024-05-01 16:01:28'),
-(122,	61,	43,	'2024-05-01 16:01:28'),
-(123,	62,	7,	'2024-05-01 16:01:28'),
-(124,	63,	45,	'2024-05-01 16:01:28'),
-(125,	40,	42,	'2024-05-01 16:05:21'),
-(126,	41,	1,	'2024-05-01 16:05:21'),
-(127,	42,	46,	'2024-05-01 16:05:21'),
-(128,	43,	20,	'2024-05-01 16:05:21'),
-(129,	44,	43,	'2024-05-01 16:05:21'),
-(130,	45,	8,	'2024-05-01 16:05:21'),
-(131,	46,	50,	'2024-05-01 16:05:21'),
-(132,	47,	17,	'2024-05-01 16:05:21'),
-(133,	48,	5,	'2024-05-01 16:05:21'),
-(134,	49,	11,	'2024-05-01 16:05:21'),
-(135,	50,	13,	'2024-05-01 16:05:21'),
-(136,	51,	24,	'2024-05-01 16:05:21'),
-(137,	52,	19,	'2024-05-01 16:05:21'),
-(138,	53,	36,	'2024-05-01 16:05:21'),
-(139,	54,	5,	'2024-05-01 16:05:21'),
-(140,	55,	7,	'2024-05-01 16:05:21'),
-(141,	56,	22,	'2024-05-01 16:05:21'),
-(142,	57,	48,	'2024-05-01 16:05:21'),
-(143,	58,	45,	'2024-05-01 16:05:21'),
-(144,	59,	41,	'2024-05-01 16:05:21'),
-(145,	60,	9,	'2024-05-01 16:05:21'),
-(146,	61,	3,	'2024-05-01 16:05:21'),
-(147,	62,	14,	'2024-05-01 16:05:21'),
-(148,	63,	40,	'2024-05-01 16:05:21'),
-(243,	1,	50,	'2024-05-08 12:59:13'),
-(244,	2,	50,	'2024-05-08 12:59:13'),
-(245,	3,	50,	'2024-05-08 12:59:13'),
-(272,	41,	50,	'2024-05-08 12:59:13'),
-(433,	1,	51,	'2024-05-08 13:04:48'),
-(434,	2,	51,	'2024-05-08 13:04:48'),
-(435,	3,	51,	'2024-05-08 13:04:48'),
-(436,	5,	52,	'2024-05-08 13:04:48'),
-(437,	5,	62,	'2024-05-08 13:04:48'),
-(438,	6,	52,	'2024-05-08 13:04:48'),
-(439,	7,	52,	'2024-05-08 13:04:48'),
-(440,	8,	53,	'2024-05-08 13:04:48'),
-(441,	8,	65,	'2024-05-08 13:04:48'),
-(442,	9,	54,	'2024-05-08 13:04:48'),
-(443,	9,	65,	'2024-05-08 13:04:48'),
-(444,	10,	56,	'2024-05-08 13:04:48'),
-(445,	11,	56,	'2024-05-08 13:04:48'),
-(446,	13,	57,	'2024-05-08 13:04:48'),
-(447,	14,	57,	'2024-05-08 13:04:48'),
-(448,	15,	57,	'2024-05-08 13:04:48'),
-(449,	16,	60,	'2024-05-08 13:04:48'),
-(450,	17,	62,	'2024-05-08 13:04:48'),
-(451,	33,	55,	'2024-05-08 13:04:48'),
-(452,	8,	66,	'2024-05-08 13:04:48'),
-(453,	40,	55,	'2024-05-08 13:04:48'),
-(454,	42,	61,	'2024-05-08 13:04:48'),
-(455,	45,	58,	'2024-05-08 13:04:48'),
-(456,	49,	63,	'2024-05-08 13:04:48'),
-(457,	51,	59,	'2024-05-08 13:04:48'),
-(458,	53,	53,	'2024-05-08 13:04:48'),
-(459,	57,	62,	'2024-05-08 13:04:48'),
-(460,	58,	64,	'2024-05-08 13:04:48'),
-(461,	62,	57,	'2024-05-08 13:04:48'),
-(462,	41,	51,	'2024-05-08 13:04:48'),
-(463,	45,	58,	'2024-05-08 13:04:48'),
-(464,	48,	55,	'2024-05-08 13:04:48'),
-(465,	49,	61,	'2024-05-08 13:04:48'),
-(466,	50,	63,	'2024-05-08 13:04:48'),
-(467,	54,	55,	'2024-05-08 13:04:48'),
-(468,	55,	57,	'2024-05-08 13:04:48'),
-(469,	60,	59,	'2024-05-08 13:04:48'),
-(470,	61,	53,	'2024-05-08 13:04:48'),
-(471,	62,	64,	'2024-05-08 13:04:48'),
-(496,	1,	70,	'2024-05-08 13:04:58'),
-(497,	1,	87,	'2024-05-08 13:04:58'),
-(498,	3,	87,	'2024-05-08 13:04:58'),
-(499,	3,	92,	'2024-05-08 13:04:58'),
-(500,	8,	86,	'2024-05-08 13:04:58'),
-(501,	9,	83,	'2024-05-08 13:04:58'),
-(502,	9,	86,	'2024-05-08 13:04:58'),
-(503,	10,	86,	'2024-05-08 13:04:58'),
-(504,	10,	92,	'2024-05-08 13:04:58'),
-(505,	16,	84,	'2024-05-08 13:04:58'),
-(506,	17,	77,	'2024-05-08 13:04:58'),
-(507,	17,	79,	'2024-05-08 13:04:58'),
-(508,	17,	81,	'2024-05-08 13:04:58'),
-(509,	18,	92,	'2024-05-08 13:04:58'),
-(510,	19,	71,	'2024-05-08 13:04:58'),
-(511,	20,	71,	'2024-05-08 13:04:58'),
-(512,	21,	74,	'2024-05-08 13:04:58'),
-(513,	23,	67,	'2024-05-08 13:04:58'),
-(514,	24,	69,	'2024-05-08 13:04:58'),
-(515,	25,	70,	'2024-05-08 13:04:58'),
-(516,	26,	70,	'2024-05-08 13:04:58'),
-(517,	26,	85,	'2024-05-08 13:04:58'),
-(518,	27,	77,	'2024-05-08 13:04:58'),
-(519,	27,	81,	'2024-05-08 13:04:58'),
-(520,	28,	81,	'2024-05-08 13:04:58'),
-(521,	28,	77,	'2024-05-08 13:04:58'),
-(522,	29,	79,	'2024-05-08 13:04:58'),
-(523,	30,	85,	'2024-05-08 13:04:58'),
-(524,	31,	87,	'2024-05-08 13:04:58'),
-(525,	31,	96,	'2024-05-08 13:04:58'),
-(526,	32,	87,	'2024-05-08 13:04:58'),
-(527,	32,	88,	'2024-05-08 13:04:58'),
-(528,	32,	89,	'2024-05-08 13:04:58'),
-(529,	32,	90,	'2024-05-08 13:04:58'),
-(530,	33,	91,	'2024-05-08 13:04:58'),
-(531,	33,	89,	'2024-05-08 13:04:58'),
-(532,	33,	90,	'2024-05-08 13:04:58'),
-(533,	34,	91,	'2024-05-08 13:04:58'),
-(534,	35,	91,	'2024-05-08 13:04:58'),
-(535,	36,	92,	'2024-05-08 13:04:58'),
-(536,	37,	93,	'2024-05-08 13:04:58'),
-(537,	38,	94,	'2024-05-08 13:04:58'),
-(538,	39,	99,	'2024-05-08 13:04:58'),
-(539,	8,	82,	'2024-05-08 13:04:58'),
-(540,	8,	83,	'2024-05-08 13:04:58'),
-(541,	8,	90,	'2024-05-08 13:04:58'),
-(542,	8,	88,	'2024-05-08 13:04:58'),
-(543,	8,	96,	'2024-05-08 13:04:58'),
-(544,	8,	97,	'2024-05-08 13:04:58'),
-(545,	31,	98,	'2024-05-08 13:04:58'),
-(546,	41,	81,	'2024-05-08 13:04:58'),
-(547,	44,	77,	'2024-05-08 13:04:58'),
-(548,	46,	95,	'2024-05-08 13:04:58'),
-(549,	47,	71,	'2024-05-08 13:04:58'),
-(550,	48,	88,	'2024-05-08 13:04:58'),
-(551,	50,	90,	'2024-05-08 13:04:58'),
-(552,	52,	73,	'2024-05-08 13:04:58'),
-(553,	54,	85,	'2024-05-08 13:04:58'),
-(554,	55,	69,	'2024-05-08 13:04:58'),
-(555,	56,	99,	'2024-05-08 13:04:58'),
-(556,	59,	98,	'2024-05-08 13:04:58'),
-(557,	60,	68,	'2024-05-08 13:04:58'),
-(558,	61,	92,	'2024-05-08 13:04:58'),
-(559,	63,	94,	'2024-05-08 13:04:58'),
-(560,	40,	91,	'2024-05-08 13:04:58'),
-(561,	42,	95,	'2024-05-08 13:04:58'),
-(562,	43,	69,	'2024-05-08 13:04:58'),
-(563,	44,	92,	'2024-05-08 13:04:58'),
-(564,	46,	99,	'2024-05-08 13:04:58'),
-(565,	51,	73,	'2024-05-08 13:04:58'),
-(566,	52,	68,	'2024-05-08 13:04:58'),
-(567,	53,	85,	'2024-05-08 13:04:58'),
-(568,	56,	71,	'2024-05-08 13:04:58'),
-(569,	57,	97,	'2024-05-08 13:04:58'),
-(570,	58,	94,	'2024-05-08 13:04:58'),
-(571,	59,	90,	'2024-05-08 13:04:58'),
-(572,	63,	89,	'2024-05-08 13:04:58'),
-(573,	1,	99,	'2024-05-08 13:04:58'),
-(574,	2,	99,	'2024-05-08 13:04:58'),
-(575,	3,	99,	'2024-05-08 13:04:58'),
-(576,	41,	99,	'2024-05-08 13:04:58');
-
-DROP TABLE IF EXISTS `recipe_meal_type`;
-CREATE TABLE `recipe_meal_type` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `recipe_id` int(11) NOT NULL,
-  `meal_type_id` int(11) NOT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `recipe_id` (`recipe_id`),
-  KEY `meal_type_id` (`meal_type_id`),
-  CONSTRAINT `recipe_meal_type_ibfk_3` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`),
-  CONSTRAINT `recipe_meal_type_ibfk_4` FOREIGN KEY (`meal_type_id`) REFERENCES `meal_type` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO `recipe_meal_type` (`id`, `recipe_id`, `meal_type_id`, `updated_at`) VALUES
-(12,	6,	1,	'2024-03-30 14:08:54'),
-(13,	9,	1,	'2024-03-30 14:08:54'),
-(14,	23,	1,	'2024-03-30 14:08:54'),
-(15,	25,	1,	'2024-03-30 14:08:54'),
-(16,	27,	1,	'2024-03-30 14:08:54'),
-(17,	31,	1,	'2024-03-30 14:08:54'),
-(18,	33,	1,	'2024-03-30 14:08:54'),
-(19,	40,	1,	'2024-03-30 14:08:54'),
-(20,	43,	1,	'2024-03-30 14:08:54'),
-(21,	46,	1,	'2024-03-30 14:08:54'),
-(22,	2,	2,	'2024-03-30 14:08:54'),
-(23,	5,	2,	'2024-03-30 14:08:54'),
-(24,	12,	2,	'2024-03-30 14:08:54'),
-(25,	15,	2,	'2024-03-30 14:08:54'),
-(26,	22,	2,	'2024-03-30 14:08:54'),
-(27,	28,	2,	'2024-03-30 14:08:54'),
-(28,	36,	2,	'2024-03-30 14:08:54'),
-(29,	38,	2,	'2024-03-30 14:08:54'),
-(30,	49,	2,	'2024-03-30 14:08:54'),
-(31,	1,	3,	'2024-03-30 14:08:54'),
-(32,	3,	3,	'2024-03-30 14:08:54'),
-(33,	4,	3,	'2024-03-30 14:08:54'),
-(34,	7,	3,	'2024-03-30 14:08:54'),
-(35,	8,	3,	'2024-03-30 14:08:54'),
-(36,	10,	3,	'2024-03-30 14:08:54'),
-(37,	11,	3,	'2024-03-30 14:08:54'),
-(38,	13,	3,	'2024-03-30 14:08:54'),
-(39,	14,	3,	'2024-03-30 14:08:54'),
-(40,	16,	3,	'2024-03-30 14:08:54'),
-(41,	17,	3,	'2024-03-30 14:08:54'),
-(42,	18,	3,	'2024-03-30 14:08:54'),
-(43,	20,	3,	'2024-03-30 14:08:54'),
-(44,	24,	3,	'2024-03-30 14:08:54'),
-(45,	26,	3,	'2024-03-30 14:08:54'),
-(46,	29,	3,	'2024-03-30 14:08:54'),
-(47,	32,	3,	'2024-03-30 14:08:54'),
-(48,	34,	3,	'2024-03-30 14:08:54'),
-(49,	35,	3,	'2024-03-30 14:08:54'),
-(50,	39,	3,	'2024-03-30 14:08:54'),
-(51,	41,	3,	'2024-03-30 14:08:54'),
-(52,	42,	3,	'2024-03-30 14:08:54'),
-(53,	44,	3,	'2024-03-30 14:08:54'),
-(54,	45,	3,	'2024-03-30 14:08:54'),
-(55,	47,	3,	'2024-03-30 14:08:54'),
-(56,	48,	3,	'2024-03-30 14:08:54'),
-(57,	21,	4,	'2024-03-30 14:08:54'),
-(58,	19,	5,	'2024-03-30 14:08:54'),
-(59,	30,	5,	'2024-03-30 14:08:54'),
-(60,	37,	5,	'2024-03-30 14:08:54'),
-(61,	50,	5,	'2024-03-30 14:08:54'),
-(62,	4,	2,	'2024-03-30 14:14:12'),
-(63,	7,	2,	'2024-03-30 14:14:12'),
-(64,	8,	2,	'2024-03-30 14:14:12'),
-(65,	10,	2,	'2024-03-30 14:14:12'),
-(66,	11,	2,	'2024-03-30 14:14:12'),
-(67,	13,	2,	'2024-03-30 14:14:12'),
-(68,	14,	2,	'2024-03-30 14:14:12'),
-(69,	16,	2,	'2024-03-30 14:14:12'),
-(70,	20,	2,	'2024-03-30 14:14:12'),
-(71,	24,	2,	'2024-03-30 14:14:12'),
-(72,	26,	2,	'2024-03-30 14:14:12'),
-(73,	29,	2,	'2024-03-30 14:14:12'),
-(74,	32,	2,	'2024-03-30 14:14:12'),
-(75,	34,	2,	'2024-03-30 14:14:12'),
-(76,	35,	2,	'2024-03-30 14:14:12'),
-(77,	39,	2,	'2024-03-30 14:14:12'),
-(98,	50,	3,	'2024-05-08 12:07:28'),
-(231,	56,	1,	'2024-05-08 13:03:01'),
-(232,	59,	1,	'2024-05-08 13:03:01'),
-(233,	52,	2,	'2024-05-08 13:03:01'),
-(234,	55,	2,	'2024-05-08 13:03:01'),
-(235,	62,	2,	'2024-05-08 13:03:01'),
-(236,	65,	2,	'2024-05-08 13:03:01'),
-(237,	51,	3,	'2024-05-08 13:03:01'),
-(238,	53,	3,	'2024-05-08 13:03:01'),
-(239,	54,	3,	'2024-05-08 13:03:01'),
-(240,	57,	3,	'2024-05-08 13:03:01'),
-(241,	58,	3,	'2024-05-08 13:03:01'),
-(242,	60,	3,	'2024-05-08 13:03:01'),
-(243,	61,	3,	'2024-05-08 13:03:01'),
-(244,	63,	3,	'2024-05-08 13:03:01'),
-(245,	64,	3,	'2024-05-08 13:03:01'),
-(246,	66,	3,	'2024-05-08 13:03:01'),
-(247,	54,	2,	'2024-05-08 13:03:01'),
-(248,	57,	2,	'2024-05-08 13:03:01'),
-(249,	58,	2,	'2024-05-08 13:03:01'),
-(250,	60,	2,	'2024-05-08 13:03:01'),
-(251,	61,	2,	'2024-05-08 13:03:01'),
-(252,	63,	2,	'2024-05-08 13:03:01'),
-(253,	64,	2,	'2024-05-08 13:03:01'),
-(254,	66,	2,	'2024-05-08 13:03:01'),
-(262,	72,	1,	'2024-05-08 13:03:12'),
-(263,	74,	1,	'2024-05-08 13:03:12'),
-(264,	76,	1,	'2024-05-08 13:03:12'),
-(265,	80,	1,	'2024-05-08 13:03:12'),
-(266,	82,	1,	'2024-05-08 13:03:12'),
-(267,	89,	1,	'2024-05-08 13:03:12'),
-(268,	92,	1,	'2024-05-08 13:03:12'),
-(269,	95,	1,	'2024-05-08 13:03:12'),
-(270,	71,	2,	'2024-05-08 13:03:12'),
-(271,	77,	2,	'2024-05-08 13:03:12'),
-(272,	85,	2,	'2024-05-08 13:03:12'),
-(273,	87,	2,	'2024-05-08 13:03:12'),
-(274,	98,	2,	'2024-05-08 13:03:12'),
-(275,	69,	3,	'2024-05-08 13:03:12'),
-(276,	73,	3,	'2024-05-08 13:03:12'),
-(277,	75,	3,	'2024-05-08 13:03:12'),
-(278,	78,	3,	'2024-05-08 13:03:12'),
-(279,	81,	3,	'2024-05-08 13:03:12'),
-(280,	83,	3,	'2024-05-08 13:03:12'),
-(281,	84,	3,	'2024-05-08 13:03:12'),
-(282,	88,	3,	'2024-05-08 13:03:12'),
-(283,	90,	3,	'2024-05-08 13:03:12'),
-(284,	91,	3,	'2024-05-08 13:03:12'),
-(285,	93,	3,	'2024-05-08 13:03:12'),
-(286,	94,	3,	'2024-05-08 13:03:12'),
-(287,	96,	3,	'2024-05-08 13:03:12'),
-(288,	97,	3,	'2024-05-08 13:03:12'),
-(289,	70,	4,	'2024-05-08 13:03:12'),
-(290,	68,	5,	'2024-05-08 13:03:12'),
-(291,	79,	5,	'2024-05-08 13:03:12'),
-(292,	86,	5,	'2024-05-08 13:03:12'),
-(293,	99,	5,	'2024-05-08 13:03:12'),
-(294,	69,	2,	'2024-05-08 13:03:12'),
-(295,	73,	2,	'2024-05-08 13:03:12'),
-(296,	75,	2,	'2024-05-08 13:03:12'),
-(297,	78,	2,	'2024-05-08 13:03:12'),
-(298,	81,	2,	'2024-05-08 13:03:12'),
-(299,	83,	2,	'2024-05-08 13:03:12'),
-(300,	84,	2,	'2024-05-08 13:03:12'),
-(301,	88,	2,	'2024-05-08 13:03:12'),
-(302,	99,	3,	'2024-05-08 13:03:12');
-
-DROP VIEW IF EXISTS `recipe_nut_info`;
-CREATE TABLE `recipe_nut_info` (`recipe_id` int(11), `recipe_name` varchar(45), `calories` double(19,2), `proteins` double(19,2), `fat` double(19,2), `carbohydrates` double(19,2));
-
-
 DROP TABLE IF EXISTS `specializes`;
 CREATE TABLE `specializes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3054,8 +3054,8 @@ CREATE TABLE `specializes` (
   PRIMARY KEY (`id`),
   KEY `chef_id` (`chef_id`),
   KEY `national_cuisine_id` (`national_cuisine_id`),
-  CONSTRAINT `specializes_ibfk_1` FOREIGN KEY (`chef_id`) REFERENCES `chef` (`id`),
-  CONSTRAINT `specializes_ibfk_2` FOREIGN KEY (`national_cuisine_id`) REFERENCES `national_cuisine` (`id`)
+  CONSTRAINT `specializes_ibfk_1` FOREIGN KEY (`chef_id`) REFERENCES `chefs` (`id`),
+  CONSTRAINT `specializes_ibfk_2` FOREIGN KEY (`national_cuisine_id`) REFERENCES `national_cuisines` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `specializes` (`id`, `chef_id`, `national_cuisine_id`, `updated_at`) VALUES
@@ -4199,16 +4199,16 @@ INSERT INTO `unit_conversions` (`id`, `measurement_unit`, `quantity`, `updated_a
 (39,	'pack',	50,	'2024-05-09 16:32:28'),
 (40,	'halved',	50,	'2024-05-09 16:32:28');
 
-DROP TABLE IF EXISTS `chef_view`;
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `chef_view` AS select `chef`.`id` AS `ID`,concat(`chef`.`first_name`,' ',`chef`.`last_name`) AS `Name`,`chef`.`age` AS `Age`,`chef`.`email` AS `Email`,`chef`.`phone` AS `Phone` from `chef`;
+DROP TABLE IF EXISTS `chefs_view`;
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `chefs_view` AS select `chefs`.`id` AS `ID`,concat(`chefs`.`first_name`,' ',`chefs`.`last_name`) AS `Name`,`chefs`.`age` AS `Age`,`chefs`.`email` AS `Email`,`chefs`.`phone` AS `Phone` from `chefs`;
 
 DROP TABLE IF EXISTS `knows_view`;
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `knows_view` AS select `c`.`chef_id` AS `chef_id`,`n`.`id` AS `recipe_id`,`n`.`name` AS `recipe_name`,`ingredient`.`name` AS `basic_ingredient`,`national_cuisine`.`name` AS `national_cuisine` from (((`specializes` `c` join `recipes` `n` on(`c`.`national_cuisine_id` = `n`.`national_cuisine_id`)) join `ingredient` on(`n`.`basic_ingredient_id` = `ingredient`.`id`)) join `national_cuisine` on(`n`.`national_cuisine_id` = `national_cuisine`.`id`));
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `knows_view` AS select `c`.`chef_id` AS `chef_id`,`n`.`id` AS `recipe_id`,`n`.`name` AS `recipe_name`,`cooking_contest`.`ingredient`.`name` AS `basic_ingredient`,`cooking_contest`.`national_cuisine`.`name` AS `national_cuisine` from (((`specializes` `c` join `recipes` `n` on(`c`.`national_cuisine_id` = `n`.`national_cuisine_id`)) join `ingredient` on(`n`.`basic_ingredient_id` = `cooking_contest`.`ingredient`.`id`)) join `national_cuisine` on(`n`.`national_cuisine_id` = `cooking_contest`.`national_cuisine`.`id`));
 
 DROP TABLE IF EXISTS `recipes_view`;
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `recipes_view` AS select `recipes`.`id` AS `ID`,`recipes`.`name` AS `Name`,`recipes`.`short_description` AS `Description`,`ingredient`.`name` AS `Basic Ingredient`,`national_cuisine`.`name` AS `National Cuisine`,`recipes`.`difficulty_level` AS `Difficulty Level`,`recipes`.`portions` AS `Portions`,`recipes`.`cooking_time` AS `Cooking Time`,`recipes`.`preparation_time` AS `Preparation Time` from ((`recipes` join `ingredient` on(`recipes`.`basic_ingredient_id` = `ingredient`.`id`)) join `national_cuisine` on(`recipes`.`national_cuisine_id` = `national_cuisine`.`id`));
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `recipes_view` AS select `cooking_contest`.`recipes`.`id` AS `ID`,`cooking_contest`.`recipes`.`name` AS `Name`,`cooking_contest`.`recipes`.`short_description` AS `Description`,`cooking_contest`.`ingredient`.`name` AS `Basic Ingredient`,`cooking_contest`.`national_cuisine`.`name` AS `National Cuisine`,`cooking_contest`.`recipes`.`difficulty_level` AS `Difficulty Level`,`cooking_contest`.`recipes`.`portions` AS `Portions`,`cooking_contest`.`recipes`.`cooking_time` AS `Cooking Time`,`cooking_contest`.`recipes`.`preparation_time` AS `Preparation Time` from ((`recipes` join `ingredient` on(`cooking_contest`.`recipes`.`basic_ingredient_id` = `cooking_contest`.`ingredient`.`id`)) join `national_cuisine` on(`cooking_contest`.`recipes`.`national_cuisine_id` = `cooking_contest`.`national_cuisine`.`id`));
 
 DROP TABLE IF EXISTS `recipe_nut_info`;
 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `recipe_nut_info` AS select `i`.`recipe_id` AS `recipe_id`,`r`.`name` AS `recipe_name`,round(sum(`n`.`calories_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `calories`,round(sum(`n`.`proteins_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `proteins`,round(sum(`n`.`fat_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `fat`,round(sum(`n`.`carbohydrates_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `carbohydrates` from (((`ingredient_quantities` `i` join `nutritional_info` `n` on(`i`.`ingredient_id` = `n`.`ingredient_id`)) join `unit_conversions` `u` on(`u`.`measurement_unit` = `i`.`unit`)) join `recipes` `r` on(`i`.`recipe_id` = `r`.`id`)) group by `i`.`recipe_id`,`r`.`name`;
 
--- 2024-05-18 15:48:42
+-- 2024-05-19 09:58:56
