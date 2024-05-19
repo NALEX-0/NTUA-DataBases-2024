@@ -81,6 +81,12 @@ UPDATE
 SET 
 	unit = REPLACE(unit, '.', '');
 
+UPDATE `ingredient_quantities`
+SET quantity = 1.0
+WHERE
+    quantity LIKE '%/%' OR
+    quantity LIKE '%-%';
+
 UPDATE 
 	ingredient_quantities
 SET 
