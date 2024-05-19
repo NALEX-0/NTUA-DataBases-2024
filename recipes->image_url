@@ -1,0 +1,3 @@
+UPDATE recipes r
+JOIN image_recipes ir ON r.id = ir.recipe_id
+SET r.image_URL = ir.image_URL;
