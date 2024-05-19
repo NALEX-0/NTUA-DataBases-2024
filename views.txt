@@ -1,7 +1,7 @@
--- Επερώτηση που χρησιμοποιήθηκε για τη δημιουργία
--- της όψης 'knows'.
+-- knows: συνταγές που γνωρίζει κάθε μάγειρας.
+CREATE VIEW knows(chef_id, recipe_id) AS
 SELECT 
-    c.chef_id, 
+    c.chef_id AS chef_id, 
     n.id AS recipe_id
 FROM 
     specializes AS c
@@ -9,18 +9,6 @@ JOIN
     recipes AS n
 ON 
     c.national_cuisine_id = n.national_cuisine_id;
-
-
--- Ενημέρωση ingredient_quantities, ώστε να απαλειφθούν 
--- τα δεδομένα τύπου varchar (μέρος του καθαρισμού που έπρεπε
--- να γίνει στο ingredient_quantities_cleaning). 
-UPDATE `ingredient_quantities`
-SET quantity = 1.0
-WHERE
-    quantity = '' OR
-    quantity LIKE '%/%' OR
-    quantity LIKE '%-%';
-    
 
 -- Επερώτηση που χρησιμοποιήθηκε για τη δημιουργία
 -- της όψης 'recipe_nut_info'.
