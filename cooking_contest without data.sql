@@ -159,18 +159,6 @@ CREATE TABLE `food_groups` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-DROP TABLE IF EXISTS `image_recipes`;
-CREATE TABLE `image_recipes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `recipe_id` int(11) NOT NULL,
-  `image_URL` text NOT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `recipe_id` (`recipe_id`),
-  CONSTRAINT `image_recipes_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-
 DROP TABLE IF EXISTS `ingredients`;
 CREATE TABLE `ingredients` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -422,4 +410,4 @@ CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `recipes_view` AS select `c
 DROP TABLE IF EXISTS `recipe_nut_info`;
 CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `recipe_nut_info` AS select `i`.`recipe_id` AS `recipe_id`,`r`.`name` AS `recipe_name`,round(sum(`n`.`calories_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `calories`,round(sum(`n`.`proteins_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `proteins`,round(sum(`n`.`fat_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `fat`,round(sum(`n`.`carbohydrates_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `carbohydrates` from (((`ingredient_quantities` `i` join `nutritional_info` `n` on(`i`.`ingredient_id` = `n`.`ingredient_id`)) join `unit_conversions` `u` on(`u`.`measurement_unit` = `i`.`unit`)) join `recipes` `r` on(`i`.`recipe_id` = `r`.`id`)) group by `i`.`recipe_id`,`r`.`name`;
 
--- 2024-05-19 09:59:28
+-- 2024-05-19 10:36:17
