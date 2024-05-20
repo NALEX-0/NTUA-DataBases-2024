@@ -194,6 +194,88 @@ CREATE TRIGGER `judge_recency` BEFORE INSERT ON `judges`
     END IF;
 END
 
+-- Ρουτίνα fill_assignments: επιλογή εθνικής κουζίνας και συνταγής,
+-- ώστε να επιλέγεται μοναδική κουζίνα για κάθε μάγειρα.
+-- Ο πίνακας specializes πρέπει να αναθέτει σε κάθε μάγειρα τουλάχιστον 10 κουζίνες
+-- ώστε να υπάρχει σίγουρα κάποια μοναδική για κάθε μάγειρα στο επεισόδιο. 
+-- Οι περιορισμοί "3 στη σειρά" θα δοκιμαστούν αργότερα.
+
+DELIMITER //
+
+CREATE PROCEDURE fill_assignments()
+BEGIN
+    DECLARE done INT DEFAULT 0;
+    DECLARE chef_id INT;
+    DECLARE episode_id INT;
+    DECLARE recipe_id INT;
+    DECLARE cuisine_id INT;
+    DECLARE valid_assignment INT DEFAULT 0;
+    DECLARE attempt_counter INT DEFAULT 0;
+    DECLARE max_attempts INT DEFAULT 10;
+
+    DECLARE contest_cursor CURSOR FOR 
+    SELECT 
+        c.chef_id,
+        c.episode_id
+    FROM 
+        contests c;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+    OPEN contest_cursor;
+
+    read_loop: LOOP
+        FETCH contest_cursor INTO chef_id, episode_id;
+
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+
+        SET valid_assignment = 0;
+        SET attempt_counter = 0;
+
+        find_valid_assignment: LOOP
+            SET attempt_counter = attempt_counter + 1;
+            IF attempt_counter > max_attempts THEN
+                LEAVE find_valid_assignment;
+            END IF;
+
+            SELECT 
+                r.id AS recipe_id,
+                nc.id AS cuisine_id
+            INTO 
+                recipe_id,
+                cuisine_id
+            FROM
+                knows k
+            JOIN recipes r ON r.id = k.recipe_id
+            JOIN national_cuisines nc ON nc.id = r.national_cuisine_id
+            WHERE k.chef_id = chef_id
+            ORDER BY RAND()
+            LIMIT 1;
+
+            IF NOT EXISTS (
+                SELECT 1
+                FROM assignments a
+                WHERE a.episode_id = episode_id
+                AND a.national_cuisine_id = cuisine_id
+            ) THEN
+                SET valid_assignment = 1;
+                LEAVE find_valid_assignment;
+            END IF;
+        END LOOP;
+
+        IF valid_assignment = 1 THEN
+            INSERT INTO assignments(chef_id, episode_id, recipe_id, national_cuisine_id)
+            VALUES (chef_id, episode_id, recipe_id, cuisine_id);
+        END IF;
+    END LOOP;
+
+    CLOSE contest_cursor;
+END//
+
+DELIMITER ;
+
 
 
 
