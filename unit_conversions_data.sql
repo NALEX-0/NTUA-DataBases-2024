@@ -1,3 +1,5 @@
+-- Κάθε μονάδα measurement_unit αντιστοιχεί σε quantity γραμμάρια ή ml.
+
 INSERT INTO `unit_conversions` (`id`, `measurement_unit`, `quantity`, `updated_at`) VALUES
 (1, 'grams', 1, '2024-05-09 14:22:13'),
 (2, 'large', 50, '2024-05-09 14:20:54'),
