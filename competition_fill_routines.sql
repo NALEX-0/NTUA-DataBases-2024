@@ -276,6 +276,29 @@ END//
 
 DELIMITER ;
 
+-- Ρουτίνα για ανάθεση βαθμολογιών.
+
+DELIMITER $$
+CREATE PROCEDURE fill_ratings()
+BEGIN
+
+DELETE FROM ratings;
+
+INSERT INTO ratings (chef_id, episode_id, judge_id, rating)
+SELECT 
+    c.chef_id AS chef_id,
+    c.episode_id AS episode_id,
+    j.chef_id AS judge_id,
+    FLOOR(RAND() * 5) + 1 AS rating
+FROM 
+    contests c
+JOIN 
+    judges j 
+ON c.episode_id = j.episode_id;
+
+END$$
+DELIMITER ;
+
 
 
 
