@@ -1,18 +1,17 @@
+-- Διορθωμένο, ώστε η μέση βαθμολογία να προκύπτει ανά κουζίνα.
+-- Επιδέχεται καλλωπισμού.
+
 SELECT 
     c.id AS chef_id,
-    c.first_name,
-    c.last_name,
-    nc.name AS national_cuisine_name,
-    AVG(r.rating) AS average_rating
+    nc.name as national_cuisine,
+    AVG(r.rating) AS average_cuisine_rating
 FROM 
     chefs c
 JOIN 
-    specializes s ON c.id = s.chef_id
-JOIN 
-    national_cuisines nc ON s.national_cuisine_id = nc.id
-JOIN 
     ratings r ON c.id = r.chef_id
+JOIN
+	assignments a ON (a.chef_id = c.id AND a.episode_id = r.episode_id)
 JOIN 
-    episodes e ON r.episode_id = e.id
+	national_cuisines nc ON nc.id  = a.national_cuisine_id
 GROUP BY 
-    c.id, c.first_name, c.last_name, nc.name;
+    c.id, a.national_cuisine_id;
