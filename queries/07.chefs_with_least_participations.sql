@@ -1,15 +1,15 @@
 WITH ChefParticipation AS (
     SELECT 
-        p.chef_id,
+        a.chef_id,
         c.first_name,
         c.last_name,
-        COUNT(p.episode_id) AS participation_count
+        COUNT(a.episode_id) AS participation_count
     FROM 
-        participates p
+        assignments a
     JOIN 
-        chefs c ON p.chef_id = c.id
+        chefs c ON a.chef_id = c.id
     GROUP BY 
-        p.chef_id, c.first_name, c.last_name
+        a.chef_id, c.first_name, c.last_name
 ),
 MaxParticipation AS (
     SELECT 
