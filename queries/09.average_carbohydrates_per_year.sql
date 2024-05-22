@@ -14,7 +14,7 @@ WITH RecipeCarbohydrates AS (
 EpisodeCarbohydrates AS (
     SELECT 
         e.id AS episode_id,
-        YEAR(e.updated_at) AS year,
+        e.season,
         AVG(rc.total_carbohydrates) AS avg_carbohydrates
     FROM 
         episodes e
@@ -23,18 +23,18 @@ EpisodeCarbohydrates AS (
     JOIN 
         RecipeCarbohydrates rc ON a.recipe_id = rc.recipe_id
     GROUP BY 
-        e.id, YEAR(e.updated_at)
+        e.id, e.season
 )
 
 SELECT 
-    ec.year,
-    AVG(ec.avg_carbohydrates) AS avg_carbohydrates_per_year
+    ec.season,
+    AVG(ec.avg_carbohydrates) AS avg_carbohydrates_per_season
 FROM 
     EpisodeCarbohydrates ec
 GROUP BY 
-    ec.year
+    ec.season
 ORDER BY 
-    ec.year;
+    ec.season;
 
 -- EXPLAIN statement to get the execution plan
 EXPLAIN 
