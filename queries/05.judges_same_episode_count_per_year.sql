@@ -1,3 +1,34 @@
+-- Without the CLAUSE it works. With it doesn't. 
+
+WITH JudgeParticipation AS (
+    SELECT 
+        j.chef_id AS judge_id,
+        c.first_name,
+        c.last_name,
+        YEAR(e.updated_at) AS year,
+        COUNT(j.episode_id) AS episode_count
+    FROM 
+        judges j
+    JOIN 
+        chefs c ON j.chef_id = c.id
+    JOIN 
+        episodes e ON j.episode_id = e.id
+    GROUP BY 
+        j.chef_id, c.first_name, c.last_name, YEAR(e.updated_at)
+)
+
+SELECT 
+    jp.*
+FROM 
+    JudgeParticipation jp
+ORDER BY 
+    jp.year, jp.episode_count DESC;
+
+
+
+
+
+
 WITH JudgeParticipation AS (
     SELECT 
         j.chef_id AS judge_id,
