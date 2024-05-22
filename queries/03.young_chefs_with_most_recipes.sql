@@ -6,7 +6,9 @@ SELECT
 FROM 
     chefs c
 JOIN 
-    recipes r ON c.id = r.chef_id
+    assignments a ON c.id = a.chef_id
+JOIN 
+    recipes r ON a.recipe_id = r.id
 WHERE 
     c.age < 30
 GROUP BY 
@@ -14,3 +16,4 @@ GROUP BY
 ORDER BY 
     recipe_count DESC
 LIMIT 5;
+
