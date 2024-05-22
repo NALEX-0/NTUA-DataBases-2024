@@ -28,4 +28,6 @@ FROM
 JOIN 
     MaxParticipation mp ON cp.participation_count <= (mp.max_participation - 5)
 ORDER BY 
-    cp.participation_count DESC, cp.last_name, cp.first_name;
+    cp.participation_count DESC, 
+    cp.last_name, 
+    cp.first_name;
