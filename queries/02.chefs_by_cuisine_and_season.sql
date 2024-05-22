@@ -3,7 +3,6 @@ SELECT
     c.first_name,
     c.last_name,
     nc.name AS national_cuisine_name,
-    YEAR(e.updated_at) AS year,
     e.season,
     e.episode
 FROM 
@@ -18,7 +17,7 @@ JOIN
     episodes e ON r.episode_id = e.id
 WHERE 
     nc.name = 'specified_national_cuisine'  -- Replace with the actual national cuisine name
-    AND YEAR(e.updated_at) = specified_year  -- Replace with the actual year
+    AND e.season = specified_season  -- Replace with the season you want
 GROUP BY 
     c.id, c.first_name, c.last_name, nc.name, e.season, e.episode
 ORDER BY 
