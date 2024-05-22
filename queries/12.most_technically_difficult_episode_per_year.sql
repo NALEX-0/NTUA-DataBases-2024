@@ -1,41 +1,64 @@
-WITH EpisodeDifficulty AS (
+WITH RecipeDifficulty AS (
     SELECT 
         e.id AS episode_id,
-        YEAR(e.updated_at) AS year,
-        AVG(
-            CASE 
-                WHEN r.difficulty_level = 'very easy' THEN 1
-                WHEN r.difficulty_level = 'easy' THEN 2
-                WHEN r.difficulty_level = 'medium' THEN 3
-                WHEN r.difficulty_level = 'hard' THEN 4
-                WHEN r.difficulty_level = 'very hard' THEN 5
-                ELSE 0
-            END
-        ) AS avg_difficulty
+        e.season,
+        CASE 
+            WHEN r.difficulty_level = 'Very easy' THEN 1
+            WHEN r.difficulty_level = 'Easy' THEN 2
+            WHEN r.difficulty_level = 'Medium' THEN 3
+            WHEN r.difficulty_level = 'Hard' THEN 4
+            WHEN r.difficulty_level = 'Very hard' THEN 5
+            ELSE NULL
+        END AS difficulty_score
     FROM 
         episodes e
     JOIN 
         assignments a ON e.id = a.episode_id
     JOIN 
         recipes r ON a.recipe_id = r.id
-    GROUP BY 
-        e.id, YEAR(e.updated_at)
-)
+),
 
-SELECT 
-    ed.year,
-    ed.episode_id,
-    ed.avg_difficulty
-FROM 
-    EpisodeDifficulty ed
-JOIN (
+EpisodeDifficulty AS (
     SELECT 
-        year,
-        MAX(avg_difficulty) AS max_difficulty
+        episode_id,
+        season,
+        SUM(difficulty_score) AS total_difficulty,
+        COUNT(difficulty_score) AS recipe_count
+    FROM 
+        RecipeDifficulty
+    GROUP BY 
+        episode_id, season
+),
+
+MaxDifficultyPerSeason AS (
+    SELECT 
+        season,
+        MAX(total_difficulty / recipe_count) AS max_avg_difficulty
     FROM 
         EpisodeDifficulty
     GROUP BY 
-        year
-) ed_max ON ed.year = ed_max.year AND ed.avg_difficulty = ed_max.max_difficulty
-ORDER BY 
-    ed.year;
+        season
+),
+
+RankedEpisodes AS (
+    SELECT
+        ed.season,
+        ed.episode_id,
+        ed.total_difficulty / ed.recipe_count AS avg_difficulty,
+        ROW_NUMBER() OVER (PARTITION BY ed.season ORDER BY ed.total_difficulty / ed.recipe_count DESC, ed.episode_id ASC) AS rank
+    FROM
+        EpisodeDifficulty ed
+    JOIN
+        MaxDifficultyPerSeason mdps ON ed.season = mdps.season AND ed.total_difficulty / ed.recipe_count = mdps.max_avg_difficulty
+)
+
+SELECT
+    season,
+    episode_id,
+    avg_difficulty
+FROM
+    RankedEpisodes
+WHERE
+    rank = 1
+ORDER BY
+    season;
