@@ -1,25 +1,34 @@
-WITH EpisodeEquipmentUsage AS (
+-- Query with no indexes
+
+WITH EpisodeTotalEquipmentUsage AS (
     SELECT 
         e.id AS episode_id,
-        COUNT(er.equipment_id) AS equipment_count
+        e.season,
+        SUM(er.quantity) AS total_equipment_used
     FROM 
         episodes e
     JOIN 
-        assignments a FORCE INDEX (idx_assignments_recipe_id, idx_assignments_episode_id) ON e.id = a.episode_id
+        assignments a ON e.id = a.episode_id
     JOIN 
-        equipment_requirements er FORCE INDEX (idx_equipment_requirements_recipe_id, idx_equipment_requirements_equipment_id) ON a.recipe_id = er.recipe_id
+        equipment_requirements er ON a.recipe_id = er.recipe_id
     GROUP BY 
-        e.id
+        e.id, e.season
+),
+
+MaxTotalEquipment AS (
+    SELECT 
+        MAX(total_equipment_used) AS max_equipment_used
+    FROM 
+        EpisodeTotalEquipmentUsage
 )
 
 SELECT 
-    eu.episode_id,
-    eu.equipment_count
+    ete.episode_id,
+    ete.season,
+    ete.total_equipment_used
 FROM 
-    EpisodeEquipmentUsage eu
+    EpisodeTotalEquipmentUsage ete
+JOIN 
+    MaxTotalEquipment mte ON ete.total_equipment_used = mte.max_equipment_used
 ORDER BY 
-    eu.equipment_count DESC
-LIMIT 1;
-
--- EXPLAIN statement to get the execution plan
-EXPLAIN
+    ete.total_equipment_used DESC
