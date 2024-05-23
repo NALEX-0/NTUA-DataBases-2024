@@ -1,19 +1,16 @@
 SELECT 
-    c.id AS chef_id,
-    c.first_name,
-    c.last_name,
-    COUNT(r.id) AS recipe_count
+    c.first_name AS "First Name",
+    c.last_name AS "Last Name",
+    c.age AS "Age",
+    COUNT(k.recipe_id) AS "Recipe Count"
 FROM 
     chefs c
 JOIN 
-    assignments a ON c.id = a.chef_id
-JOIN 
-    recipes r ON a.recipe_id = r.id
+	knows k ON k.chef_id = c.id
 WHERE 
     c.age < 30
 GROUP BY 
-    c.id, c.first_name, c.last_name
+    c.id
 ORDER BY 
-    recipe_count DESC
-LIMIT 5;
-
+    COUNT(k.recipe_id) DESC, c.age, c.first_name, c.last_name
+LIMIT 15;
