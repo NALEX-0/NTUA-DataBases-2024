@@ -27,14 +27,11 @@ EpisodeCarbohydrates AS (
 )
 
 SELECT 
-    ec.season,
-    AVG(ec.avg_carbohydrates) AS avg_carbohydrates_per_season
+    ec.season AS Season,
+    ROUND(AVG(ec.avg_carbohydrates), 2) AS "Average Recipe Carbohydrates"
 FROM 
     EpisodeCarbohydrates ec
 GROUP BY 
     ec.season
 ORDER BY 
     ec.season;
-
--- EXPLAIN statement to get the execution plan
-EXPLAIN 
