@@ -14,7 +14,7 @@ WITH JudgeParticipation AS (
     GROUP BY 
         j.chef_id, c.first_name, c.last_name, e.season
     HAVING 
-        COUNT(j.episode_id) > 1
+        COUNT(j.episode_id) > 2
 ),
 SameParticipation AS (
     SELECT 
