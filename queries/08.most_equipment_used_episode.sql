@@ -1,8 +1,8 @@
--- Query with no indexes
+-- Without indexes.
 
-WITH EpisodeTotalEquipmentUsage AS (
+WITH EpisodeEquipment AS (
     SELECT 
-        e.id AS episode_id,
+        e.episode AS episode,
         e.season,
         SUM(er.quantity) AS total_equipment_used
     FROM 
@@ -14,21 +14,19 @@ WITH EpisodeTotalEquipmentUsage AS (
     GROUP BY 
         e.id, e.season
 ),
-
-MaxTotalEquipment AS (
+MaxEquipment AS (
     SELECT 
         MAX(total_equipment_used) AS max_equipment_used
     FROM 
-        EpisodeTotalEquipmentUsage
+        EpisodeEquipment
 )
-
 SELECT 
-    ete.episode_id,
+    ete.episode,
     ete.season,
     ete.total_equipment_used
 FROM 
-    EpisodeTotalEquipmentUsage ete
+    EpisodeEquipment ete
 JOIN 
-    MaxTotalEquipment mte ON ete.total_equipment_used = mte.max_equipment_used
+    MaxEquipment mte ON ete.total_equipment_used = mte.max_equipment_used
 ORDER BY 
     ete.total_equipment_used DESC
