@@ -1,9 +1,9 @@
 SELECT 
-    c.id AS chef_id,
-    nc.name as national_cuisine,
-    AVG(r.rating) AS average_cuisine_rating
+    c.Name AS "Chef",
+    nc.name as "National Cuisine",
+    ROUND(AVG(r.rating), 2) AS "Average Cuisine Rating"
 FROM 
-    chefs c
+    chefs_view c
 JOIN 
     ratings r ON c.id = r.chef_id
 JOIN
