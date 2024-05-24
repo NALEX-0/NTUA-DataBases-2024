@@ -12,7 +12,7 @@ WITH JudgeParticipation AS (
     JOIN 
         episodes e ON j.episode_id = e.id
     GROUP BY 
-        j.chef_id, c.first_name, c.last_name, e.season
+        j.chef_id, c.first_name, c.last_name
     HAVING 
         COUNT(j.episode_id) > 2
 ),
@@ -29,8 +29,8 @@ SameParticipation AS (
     FROM 
         JudgeParticipation jp1
     JOIN 
-        JudgeParticipation jp2 ON jp1.season = jp2.season
-        AND jp1.episode_count = jp2.episode_count
+        JudgeParticipation jp2 ON 
+        jp1.episode_count = jp2.episode_count
         AND jp1.judge_id < jp2.judge_id 
 )
 
@@ -46,4 +46,4 @@ SELECT
 FROM 
     SameParticipation sp
 ORDER BY 
-   sp.episode_count DESC, sp.season, sp.judge1_last_name, sp.judge1_first_name;
+   sp.episode_count DESC,  sp.judge1_last_name, sp.judge1_first_name;
