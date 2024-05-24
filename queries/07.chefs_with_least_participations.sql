@@ -19,12 +19,12 @@ MaxParticipation AS (
 )
 
 SELECT 
-    cp.chef_id,
-    cp.first_name,
-    cp.last_name,
-    cp.participation_count
+    c.Name AS Chef,
+    cp.participation_count AS Participations
 FROM 
     ChefParticipation cp
+JOIN 
+    chefs_view c ON c.id = cp.chef_id
 JOIN 
     MaxParticipation mp ON cp.participation_count <= (mp.max_participation - 5)
 ORDER BY 
