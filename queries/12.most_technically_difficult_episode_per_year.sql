@@ -55,7 +55,7 @@ RankedEpisodes AS (
 SELECT
     season,
     episode,
-    ROUND(avg_difficulty, 2) AS "Average Difficulty"
+    ROUND(avg_difficulty, 2) AS "Average Episode Difficulty"
 FROM
     RankedEpisodes
 WHERE
