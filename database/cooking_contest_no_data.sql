@@ -369,8 +369,8 @@ CREATE TABLE `episodes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-DROP TABLE IF EXISTS `equipments`;
-CREATE TABLE `equipments` (
+DROP TABLE IF EXISTS `equipment`;
+CREATE TABLE `equipment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `usage_instructions` text NOT NULL,
@@ -390,7 +390,7 @@ CREATE TABLE `equipment_requirements` (
   PRIMARY KEY (`id`),
   KEY `eq` (`equipment_id`),
   KEY `recipe_id` (`recipe_id`),
-  CONSTRAINT `eq` FOREIGN KEY (`equipment_id`) REFERENCES `equipments` (`id`),
+  CONSTRAINT `eq` FOREIGN KEY (`equipment_id`) REFERENCES `equipment` (`id`),
   CONSTRAINT `equipment_requirements_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -681,4 +681,4 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `recipe_nut_info`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `recipe_nut_info` AS select `i`.`recipe_id` AS `recipe_id`,`r`.`name` AS `recipe_name`,round(sum(`n`.`calories_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `calories`,round(sum(`n`.`proteins_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `proteins`,round(sum(`n`.`fat_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `fat`,round(sum(`n`.`carbohydrates_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `carbohydrates` from (((`ingredient_quantities` `i` join `nutritional_info` `n` on(`i`.`ingredient_id` = `n`.`ingredient_id`)) join `unit_conversions` `u` on(`u`.`measurement_unit` = `i`.`unit`)) join `recipes` `r` on(`i`.`recipe_id` = `r`.`id`)) group by `i`.`recipe_id`,`r`.`name`;
 
--- 2024-05-24 11:03:26
+-- 2024-05-24 13:40:56
