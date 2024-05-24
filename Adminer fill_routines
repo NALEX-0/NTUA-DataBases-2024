@@ -1,0 +1,275 @@
+-- Adminer 4.8.1 MySQL 5.5.5-10.8.3-MariaDB-1:10.8.3+maria~jammy dump
+
+SET NAMES utf8;
+SET time_zone = '+00:00';
+SET foreign_key_checks = 0;
+SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
+
+DELIMITER ;;
+
+DROP PROCEDURE IF EXISTS `AddChef`;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AddChef`(IN `p_first_name` VARCHAR(45), IN `p_last_name` VARCHAR(45), IN `p_age` INT, IN `p_email` VARCHAR(60), IN `p_phone` VARCHAR(20), IN `p_years_of_experience` INT, IN `p_chef_level` VARCHAR(20), IN `p_image_URL` TEXT)
+BEGIN
+    IF (LENGTH(p_phone) != 10) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Phone number must be 10 digits';
+    END IF;
+
+    IF (p_email NOT LIKE '%@%') THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Invalid email format';
+    END IF;
+
+    -- Additional validations can be added here
+
+    -- Inserting the chef if validations pass
+    INSERT INTO chefs (first_name, last_name, age, email, phone, years_of_experience, chef_level, image_URL)
+    VALUES (p_first_name, p_last_name, p_age, p_email, p_phone, p_years_of_experience, p_chef_level, p_image_URL);
+END;;
+
+DROP PROCEDURE IF EXISTS `AddRecipe`;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AddRecipe`(IN `p_name` VARCHAR(45), IN `p_short_description` TEXT, IN `p_basic_ingredient` VARCHAR(45), IN `p_national_cuisine` VARCHAR(20), IN `p_difficulty_level` VARCHAR(20), IN `p_portions` INT, IN `p_cooking_time` INT, IN `p_preparation_time` INT, IN `p_image_URL` TEXT)
+BEGIN
+    DECLARE basic_ingredient_id INT DEFAULT NULL;
+    DECLARE national_cuisine_id INT DEFAULT NULL;
+
+    -- Check and insert basic ingredient if it does not exist
+    SELECT id INTO basic_ingredient_id FROM ingredients WHERE name = p_basic_ingredient;
+    IF basic_ingredient_id IS NULL THEN
+        INSERT INTO ingredients (name) VALUES (p_basic_ingredient);
+        SET basic_ingredient_id = LAST_INSERT_ID();
+    END IF;
+
+    -- Check and insert national cuisine if it does not exist
+    SELECT id INTO national_cuisine_id FROM national_cuisines WHERE name = p_national_cuisine;
+    IF national_cuisine_id IS NULL THEN
+        INSERT INTO national_cuisines (name) VALUES (p_national_cuisine);
+        SET national_cuisine_id = LAST_INSERT_ID();
+    END IF;
+
+    -- Insert the recipe into the chefs table
+    INSERT INTO recipes (name, short_description, basic_ingredient_id, national_cuisine_id, difficulty_level, portions, cooking_time, preparation_time, image_URL)
+    VALUES (p_name, p_short_description, basic_ingredient_id, national_cuisine_id, p_difficulty_level, p_portions, p_cooking_time, p_preparation_time, p_image_URL);
+END;;
+
+DROP PROCEDURE IF EXISTS `fill_assignments`;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `fill_assignments`()
+BEGIN
+    DECLARE done INT DEFAULT 0;
+    DECLARE chef_id INT;
+    DECLARE episode_id INT;
+    DECLARE recipe_id INT;
+    DECLARE cuisine_id INT;
+    DECLARE valid_assignment INT DEFAULT 0;
+    DECLARE attempt_counter INT DEFAULT 0;
+    DECLARE max_attempts INT DEFAULT 10;
+
+    -- Declare a cursor to iterate through the contests table
+    DECLARE contest_cursor CURSOR FOR 
+    SELECT 
+        c.chef_id,
+        c.episode_id
+    FROM 
+        contests c;
+
+    -- Declare a handler to set the done flag when the cursor reaches the end of the results
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+    OPEN contest_cursor;
+
+    -- Loop through each row in the contests table
+    read_loop: LOOP
+        FETCH contest_cursor INTO chef_id, episode_id;
+
+        -- Exit the loop if no more rows
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+
+        -- Reset valid_assignment and attempt_counter for each chef and episode
+        SET valid_assignment = 0;
+        SET attempt_counter = 0;
+
+        -- Loop to find a valid assignment
+        find_valid_assignment:LOOP
+            SET attempt_counter = attempt_counter + 1;
+            IF attempt_counter > max_attempts THEN
+                LEAVE find_valid_assignment;
+            END IF;
+
+            SELECT 
+                r.id AS recipe_id,
+                nc.id AS cuisine_id
+            INTO 
+                recipe_id,
+                cuisine_id
+            FROM
+                knows k
+            JOIN recipes r ON r.id = k.recipe_id
+            JOIN national_cuisines nc ON nc.id = r.national_cuisine_id
+            WHERE k.chef_id = chef_id
+            ORDER BY RAND()
+            LIMIT 1;
+
+            -- Check if the selected cuisine is already present for the same episode
+            IF NOT EXISTS (
+                SELECT 1
+                FROM assignments a
+                WHERE a.episode_id = episode_id
+                AND a.national_cuisine_id = cuisine_id
+            ) THEN
+                SET valid_assignment = 1;
+                LEAVE find_valid_assignment;
+            END IF;
+        END LOOP;
+
+        -- Insert the valid assignment into the assignments table
+        IF valid_assignment = 1 THEN
+            INSERT INTO assignments(chef_id, episode_id, recipe_id, national_cuisine_id)
+            VALUES (chef_id, episode_id, recipe_id, cuisine_id);
+        END IF;
+    END LOOP;
+
+    CLOSE contest_cursor;
+END;;
+
+DROP PROCEDURE IF EXISTS `fill_contests`;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `fill_contests`()
+BEGIN
+    DECLARE episode_id INT;
+    DECLARE ep_season INT DEFAULT 1;
+    DECLARE ep_num INT DEFAULT 1;
+    DECLARE chef_count INT DEFAULT 1;
+
+    WHILE ep_season <= 5 DO
+        SET ep_num = 1;
+        WHILE ep_num <= 10 DO
+            SET chef_count = 1;
+            WHILE chef_count <= 10 DO
+                SET episode_id = (SELECT id FROM episodes WHERE season = ep_season AND episode = ep_num);
+                CALL insert_contestant((SELECT id FROM chefs ORDER BY RAND() LIMIT 1), episode_id);
+                SET chef_count = chef_count + 1;
+            END WHILE;
+            SET ep_num = ep_num + 1;
+        END WHILE;
+        SET ep_season = ep_season + 1;
+    END WHILE;
+END;;
+
+DROP PROCEDURE IF EXISTS `fill_episodes`;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `fill_episodes`()
+BEGIN
+    DECLARE season INT DEFAULT 1;
+    DECLARE episode INT DEFAULT 1;
+
+    WHILE season <= 5 DO
+        SET episode = 1;
+        WHILE episode <= 10 DO
+            INSERT INTO episodes (episode, season) VALUES (episode, season);
+            SET episode = episode + 1;
+        END WHILE;
+        SET season = season + 1;
+    END WHILE;
+END;;
+
+DROP PROCEDURE IF EXISTS `fill_judges`;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `fill_judges`()
+BEGIN
+    DECLARE episode_id INT;
+    DECLARE ep_season INT DEFAULT 1;
+    DECLARE ep_num INT DEFAULT 1;
+    DECLARE chef_count INT DEFAULT 1;
+
+    WHILE ep_season <= 5 DO
+        SET ep_num = 1;
+        WHILE ep_num <= 10 DO
+            SET chef_count = 1;
+            WHILE chef_count <= 3 DO
+                SET episode_id = (SELECT id FROM episodes WHERE season = ep_season AND episode = ep_num);
+                CALL insert_judge((SELECT id FROM chefs ORDER BY RAND() LIMIT 1), episode_id);
+                SET chef_count = chef_count + 1;
+            END WHILE;
+            SET ep_num = ep_num + 1;
+        END WHILE;
+        SET ep_season = ep_season + 1;
+    END WHILE;
+END;;
+
+DROP PROCEDURE IF EXISTS `fill_ratings`;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `fill_ratings`()
+BEGIN
+
+DELETE FROM ratings;
+
+INSERT INTO ratings (chef_id, episode_id, judge_id, rating)
+SELECT 
+    c.chef_id AS chef_id,
+    c.episode_id AS episode_id,
+    j.chef_id AS judge_id,
+    FLOOR(RAND() * 5) + 1 AS rating
+FROM 
+    contests c
+JOIN 
+    judges j 
+ON c.episode_id = j.episode_id;
+
+END;;
+
+DROP PROCEDURE IF EXISTS `insert_contestant`;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_contestant`(IN `new_chef_id` INT, IN `new_episode_id` INT)
+BEGIN
+    DECLARE ep_num INT;
+    DECLARE ep_season INT;
+    DECLARE recency INT;
+
+    SELECT episode, season INTO ep_num, ep_season
+    FROM episodes
+    WHERE id = new_episode_id;
+
+    SELECT COUNT(*)
+    INTO recency
+    FROM contests c
+    JOIN episodes e ON c.episode_id = e.id
+    WHERE c.chef_id = new_chef_id
+    AND e.season = ep_season
+    AND (e.episode = ep_num - 1 OR e.episode = ep_num - 2);
+
+    IF (recency = 2) OR EXISTS(SELECT 1 FROM contests WHERE chef_id = new_chef_id AND episode_id = new_episode_id) THEN
+        CALL insert_contestant((SELECT id FROM chefs ORDER BY RAND() LIMIT 1), new_episode_id);
+    ELSE
+    INSERT INTO contests (chef_id, episode_id)
+        VALUES (new_chef_id, new_episode_id);
+    END IF;
+END;;
+
+DROP PROCEDURE IF EXISTS `insert_judge`;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insert_judge`(IN `new_chef_id` INT, IN `new_episode_id` INT)
+BEGIN
+    DECLARE ep_num INT;
+    DECLARE ep_season INT;
+    DECLARE recency INT;
+
+    SELECT episode, season INTO ep_num, ep_season
+    FROM episodes
+    WHERE id = new_episode_id;
+
+    SELECT COUNT(*)
+    INTO recency
+    FROM judges j
+    JOIN episodes e ON j.episode_id = e.id
+    WHERE j.chef_id = new_chef_id
+    AND e.season = ep_season
+    AND (e.episode = ep_num - 1 OR e.episode = ep_num - 2);
+
+    IF (recency = 2) OR (new_chef_id in(SELECT chef_id FROM contests WHERE episode_id = new_episode_id)) 
+     OR EXISTS(SELECT 1 FROM judges WHERE chef_id = new_chef_id AND episode_id = new_episode_id) THEN
+        CALL insert_judge((SELECT id FROM chefs ORDER BY RAND() LIMIT 1), new_episode_id);
+    ELSE
+    INSERT INTO judges(chef_id, episode_id)
+        VALUES (new_chef_id, new_episode_id);
+    END IF;
+END;;
+
+DELIMITER ;
+
+-- 2024-05-24 09:41:51
