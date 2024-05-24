@@ -46,4 +46,4 @@ SELECT
 FROM 
     SameParticipation sp
 ORDER BY 
-    sp.season, sp.episode_count DESC, sp.judge1_last_name, sp.judge1_first_name;
+   sp.episode_count DESC, sp.season, sp.judge1_last_name, sp.judge1_first_name;
