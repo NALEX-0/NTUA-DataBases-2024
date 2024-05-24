@@ -40,4 +40,4 @@ SELECT
 FROM 
     CuisineParticipationPairs
 ORDER BY 
-    cuisine1_name, season1;
+    participation_count desc, season1
