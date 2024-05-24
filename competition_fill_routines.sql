@@ -169,6 +169,7 @@ DELIMITER ;
 
 -- judge_recency: trigger για εισαγωγή judge μέσω άμεσων VALUES.
 
+DELIMITER //
 CREATE TRIGGER `judge_recency` BEFORE INSERT ON `judges`
  FOR EACH ROW BEGIN
     DECLARE ep_num INT;
