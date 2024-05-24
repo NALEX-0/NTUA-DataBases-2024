@@ -1,6 +1,6 @@
 WITH RecipeDifficulty AS (
     SELECT 
-        e.id AS episode_id,
+        e.episode,
         e.season,
         CASE 
             WHEN r.difficulty_level = 'Very easy' THEN 1
@@ -20,14 +20,14 @@ WITH RecipeDifficulty AS (
 
 EpisodeDifficulty AS (
     SELECT 
-        episode_id,
+        episode,
         season,
         SUM(difficulty_score) AS total_difficulty,
         COUNT(difficulty_score) AS recipe_count
     FROM 
         RecipeDifficulty
     GROUP BY 
-        episode_id, season
+        episode, season
 ),
 
 MaxDifficultyPerSeason AS (
@@ -43,9 +43,9 @@ MaxDifficultyPerSeason AS (
 RankedEpisodes AS (
     SELECT
         ed.season,
-        ed.episode_id,
+        ed.episode,
         ed.total_difficulty / ed.recipe_count AS avg_difficulty,
-        ROW_NUMBER() OVER (PARTITION BY ed.season ORDER BY ed.total_difficulty / ed.recipe_count DESC, ed.episode_id ASC) AS rank
+        ROW_NUMBER() OVER (PARTITION BY ed.season ORDER BY ed.total_difficulty / ed.recipe_count DESC, ed.episode ASC) AS rank
     FROM
         EpisodeDifficulty ed
     JOIN
@@ -54,8 +54,8 @@ RankedEpisodes AS (
 
 SELECT
     season,
-    episode_id,
-    avg_difficulty
+    episode,
+    ROUND(avg_difficulty, 2) AS "Average Difficulty"
 FROM
     RankedEpisodes
 WHERE
