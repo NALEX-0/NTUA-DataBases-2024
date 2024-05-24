@@ -82,7 +82,7 @@ DELIMITER ;
 
 
 -- chef_recency: trigger για εισαγωγή contestant μέσω άμεσων VALUES.
-
+DELIMITER //
 CREATE TRIGGER `chef_recency` BEFORE INSERT ON `contests`
  FOR EACH ROW BEGIN
     DECLARE ep_num INT;
@@ -105,15 +105,14 @@ CREATE TRIGGER `chef_recency` BEFORE INSERT ON `contests`
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Ο σεφ συμμετείχε στα δύο προηγούμενα επεισόδια';
     END IF;
-END
+END//
+DELIMITER ;
 
 
 -- insert_judge: όπως το insert_contestant, αλλά ελέγχεται επίσης εάν 
 -- είναι ο σεφ είναι διαγωνιζόμενος στο επεισόδιο.
-
+DELIMITER //
 CREATE PROCEDURE insert_judge(IN new_chef_id INT, IN new_episode_id INT)
-BEGIN
-DELIMITER//
 BEGIN
     DECLARE ep_num INT;
     DECLARE ep_season INT;
@@ -192,7 +191,8 @@ CREATE TRIGGER `judge_recency` BEFORE INSERT ON `judges`
         SIGNAL SQLSTATE '45000' 
             SET MESSAGE_TEXT = 'Ο σεφ συμμετέχει στο επεισόδιο ως διαγωνιζόμενος ή έχει συμμετάσχει ως κριτής στα δύο προηγούμενα επεισόδια.';
     END IF;
-END
+END//
+DELIMITER ;
 
 -- Ρουτίνα fill_assignments: επιλογή εθνικής κουζίνας και συνταγής,
 -- ώστε να επιλέγεται μοναδική κουζίνα για κάθε μάγειρα.
