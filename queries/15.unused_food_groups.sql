@@ -1,5 +1,5 @@
 SELECT 
-    fg.name AS food_group_name
+    fg.name AS "Unused Food Groups"
 FROM 
     food_groups fg
 LEFT JOIN (
