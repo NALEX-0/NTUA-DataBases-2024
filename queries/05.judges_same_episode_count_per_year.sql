@@ -1,31 +1,28 @@
 WITH JudgeParticipation AS (
     SELECT 
         j.chef_id AS judge_id,
-        c.first_name,
-        c.last_name,
+        c.Name,
         e.season,
         COUNT(j.episode_id) AS episode_count
     FROM 
         judges j
     JOIN 
-        chefs c ON j.chef_id = c.id
+        chefs_view c ON j.chef_id = c.id
     JOIN 
         episodes e ON j.episode_id = e.id
     GROUP BY 
-        j.chef_id, c.first_name, c.last_name
+        j.chef_id, c.Name
     HAVING 
         COUNT(j.episode_id) > 2
 ),
 SameParticipation AS (
     SELECT 
         jp1.judge_id AS judge1_id,
-        jp1.first_name AS judge1_first_name,
-        jp1.last_name AS judge1_last_name,
+        jp1.Name AS judge1_Name,
         jp1.season,
         jp1.episode_count,
         jp2.judge_id AS judge2_id,
-        jp2.first_name AS judge2_first_name,
-        jp2.last_name AS judge2_last_name
+        jp2.Name AS judge2_Name
     FROM 
         JudgeParticipation jp1
     JOIN 
@@ -36,14 +33,12 @@ SameParticipation AS (
 
 SELECT 
     sp.judge1_id,
-    sp.judge1_first_name,
-    sp.judge1_last_name,
+    sp.judge1_Name,
     sp.judge2_id,
-    sp.judge2_first_name,
-    sp.judge2_last_name,
+    sp.judge2_Name,
     sp.season,
     sp.episode_count
 FROM 
     SameParticipation sp
 ORDER BY 
-   sp.episode_count DESC,  sp.judge1_last_name, sp.judge1_first_name;
+   sp.episode_count DESC,  sp.judge1_Name;
