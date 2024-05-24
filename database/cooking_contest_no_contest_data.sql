@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 24, 2024 at 11:26 AM
+-- Generation Time: May 24, 2024 at 11:32 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -27,6 +27,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `assignments`
 --
 
+DROP TABLE IF EXISTS `assignments`;
 CREATE TABLE `assignments` (
   `id` int(11) NOT NULL,
   `episode_id` int(11) NOT NULL,
@@ -42,6 +43,7 @@ CREATE TABLE `assignments` (
 -- Table structure for table `chefs`
 --
 
+DROP TABLE IF EXISTS `chefs`;
 CREATE TABLE `chefs` (
   `id` int(11) NOT NULL,
   `first_name` varchar(45) NOT NULL,
@@ -218,6 +220,7 @@ INSERT INTO `chefs` (`id`, `first_name`, `last_name`, `age`, `email`, `phone`, `
 -- Stand-in structure for view `chefs_view`
 -- (See below for the actual view)
 --
+DROP VIEW IF EXISTS `chefs_view`;
 CREATE TABLE `chefs_view` (
 `ID` int(11)
 ,`Name` varchar(91)
@@ -232,6 +235,7 @@ CREATE TABLE `chefs_view` (
 -- Table structure for table `contests`
 --
 
+DROP TABLE IF EXISTS `contests`;
 CREATE TABLE `contests` (
   `id` int(11) NOT NULL,
   `episode_id` int(11) NOT NULL,
@@ -242,6 +246,7 @@ CREATE TABLE `contests` (
 --
 -- Triggers `contests`
 --
+DROP TRIGGER IF EXISTS `chef_recency`;
 DELIMITER $$
 CREATE TRIGGER `chef_recency` BEFORE INSERT ON `contests` FOR EACH ROW BEGIN
     DECLARE ep_num INT;
@@ -274,6 +279,7 @@ DELIMITER ;
 -- Table structure for table `episodes`
 --
 
+DROP TABLE IF EXISTS `episodes`;
 CREATE TABLE `episodes` (
   `id` int(11) NOT NULL,
   `season` int(5) NOT NULL,
@@ -288,6 +294,7 @@ CREATE TABLE `episodes` (
 -- Table structure for table `equipments`
 --
 
+DROP TABLE IF EXISTS `equipments`;
 CREATE TABLE `equipments` (
   `id` int(11) NOT NULL,
   `name` varchar(45) NOT NULL,
@@ -395,6 +402,7 @@ INSERT INTO `equipments` (`id`, `name`, `usage_instructions`, `image_URL`, `upda
 -- Table structure for table `equipment_requirements`
 --
 
+DROP TABLE IF EXISTS `equipment_requirements`;
 CREATE TABLE `equipment_requirements` (
   `id` int(11) NOT NULL,
   `recipe_id` int(11) NOT NULL,
@@ -712,6 +720,7 @@ INSERT INTO `equipment_requirements` (`id`, `recipe_id`, `equipment_id`, `quanti
 -- Table structure for table `food_groups`
 --
 
+DROP TABLE IF EXISTS `food_groups`;
 CREATE TABLE `food_groups` (
   `id` int(11) NOT NULL,
   `name` varchar(45) NOT NULL,
@@ -744,6 +753,7 @@ INSERT INTO `food_groups` (`id`, `name`, `description`, `image_URL`, `updated_at
 -- Table structure for table `ingredients`
 --
 
+DROP TABLE IF EXISTS `ingredients`;
 CREATE TABLE `ingredients` (
   `id` int(11) NOT NULL,
   `name` varchar(45) NOT NULL,
@@ -1018,6 +1028,7 @@ INSERT INTO `ingredients` (`id`, `name`, `food_group_id`, `image_URL`, `updated_
 -- Table structure for table `ingredient_quantities`
 --
 
+DROP TABLE IF EXISTS `ingredient_quantities`;
 CREATE TABLE `ingredient_quantities` (
   `id` int(11) NOT NULL,
   `recipe_id` int(11) NOT NULL,
@@ -1584,6 +1595,7 @@ INSERT INTO `ingredient_quantities` (`id`, `recipe_id`, `ingredient_id`, `quanti
 -- Table structure for table `judges`
 --
 
+DROP TABLE IF EXISTS `judges`;
 CREATE TABLE `judges` (
   `id` int(11) NOT NULL,
   `episode_id` int(11) NOT NULL,
@@ -1594,6 +1606,7 @@ CREATE TABLE `judges` (
 --
 -- Triggers `judges`
 --
+DROP TRIGGER IF EXISTS `judge_recency`;
 DELIMITER $$
 CREATE TRIGGER `judge_recency` BEFORE INSERT ON `judges` FOR EACH ROW BEGIN
     DECLARE ep_num INT;
@@ -1626,6 +1639,7 @@ DELIMITER ;
 -- Stand-in structure for view `knows`
 -- (See below for the actual view)
 --
+DROP VIEW IF EXISTS `knows`;
 CREATE TABLE `knows` (
 `chef_id` int(11)
 ,`recipe_id` int(11)
@@ -1637,6 +1651,7 @@ CREATE TABLE `knows` (
 -- Table structure for table `labels`
 --
 
+DROP TABLE IF EXISTS `labels`;
 CREATE TABLE `labels` (
   `id` int(11) NOT NULL,
   `name` varchar(45) NOT NULL,
@@ -1718,6 +1733,7 @@ INSERT INTO `labels` (`id`, `name`, `updated_at`) VALUES
 -- Table structure for table `meal_types`
 --
 
+DROP TABLE IF EXISTS `meal_types`;
 CREATE TABLE `meal_types` (
   `id` int(11) NOT NULL,
   `name` varchar(45) NOT NULL,
@@ -1741,6 +1757,7 @@ INSERT INTO `meal_types` (`id`, `name`, `updated_at`) VALUES
 -- Table structure for table `national_cuisines`
 --
 
+DROP TABLE IF EXISTS `national_cuisines`;
 CREATE TABLE `national_cuisines` (
   `id` int(11) NOT NULL,
   `name` varchar(45) NOT NULL,
@@ -1785,6 +1802,7 @@ INSERT INTO `national_cuisines` (`id`, `name`, `updated_at`) VALUES
 -- Table structure for table `nutritional_info`
 --
 
+DROP TABLE IF EXISTS `nutritional_info`;
 CREATE TABLE `nutritional_info` (
   `id` int(11) NOT NULL,
   `ingredient_id` int(11) NOT NULL,
@@ -2061,6 +2079,7 @@ INSERT INTO `nutritional_info` (`id`, `ingredient_id`, `calories_per_100`, `prot
 -- Table structure for table `ratings`
 --
 
+DROP TABLE IF EXISTS `ratings`;
 CREATE TABLE `ratings` (
   `id` int(11) NOT NULL,
   `judge_id` int(11) NOT NULL,
@@ -2076,6 +2095,7 @@ CREATE TABLE `ratings` (
 -- Table structure for table `recipes`
 --
 
+DROP TABLE IF EXISTS `recipes`;
 CREATE TABLE `recipes` (
   `id` int(11) NOT NULL,
   `name` varchar(45) NOT NULL,
@@ -2202,6 +2222,7 @@ INSERT INTO `recipes` (`id`, `name`, `short_description`, `basic_ingredient_id`,
 -- Table structure for table `recipe_labels`
 --
 
+DROP TABLE IF EXISTS `recipe_labels`;
 CREATE TABLE `recipe_labels` (
   `id` int(11) NOT NULL,
   `labels_id` int(11) NOT NULL,
@@ -2467,6 +2488,7 @@ INSERT INTO `recipe_labels` (`id`, `labels_id`, `recipe_id`, `updated_at`) VALUE
 -- Table structure for table `recipe_meal_types`
 --
 
+DROP TABLE IF EXISTS `recipe_meal_types`;
 CREATE TABLE `recipe_meal_types` (
   `id` int(11) NOT NULL,
   `recipe_id` int(11) NOT NULL,
@@ -2618,6 +2640,7 @@ INSERT INTO `recipe_meal_types` (`id`, `recipe_id`, `meal_type_id`, `updated_at`
 -- Stand-in structure for view `recipe_nut_info`
 -- (See below for the actual view)
 --
+DROP VIEW IF EXISTS `recipe_nut_info`;
 CREATE TABLE `recipe_nut_info` (
 `recipe_id` int(11)
 ,`recipe_name` varchar(45)
@@ -2633,6 +2656,7 @@ CREATE TABLE `recipe_nut_info` (
 -- Table structure for table `recipe_themes`
 --
 
+DROP TABLE IF EXISTS `recipe_themes`;
 CREATE TABLE `recipe_themes` (
   `id` int(11) NOT NULL,
   `recipe_id` int(11) NOT NULL,
@@ -2949,6 +2973,7 @@ INSERT INTO `recipe_themes` (`id`, `recipe_id`, `themes_id`, `updated_at`) VALUE
 -- Table structure for table `specializes`
 --
 
+DROP TABLE IF EXISTS `specializes`;
 CREATE TABLE `specializes` (
   `id` int(11) NOT NULL,
   `chef_id` int(11) NOT NULL,
@@ -4469,6 +4494,7 @@ INSERT INTO `specializes` (`id`, `chef_id`, `national_cuisine_id`, `updated_at`)
 -- Table structure for table `steps`
 --
 
+DROP TABLE IF EXISTS `steps`;
 CREATE TABLE `steps` (
   `id` int(11) NOT NULL,
   `step_number` tinyint(4) NOT NULL,
@@ -4955,6 +4981,7 @@ INSERT INTO `steps` (`id`, `step_number`, `step_description`, `recipe_id`, `upda
 -- Table structure for table `themes`
 --
 
+DROP TABLE IF EXISTS `themes`;
 CREATE TABLE `themes` (
   `id` int(11) NOT NULL,
   `theme` varchar(45) NOT NULL,
@@ -4985,6 +5012,7 @@ INSERT INTO `themes` (`id`, `theme`, `updated_at`) VALUES
 -- Table structure for table `tips`
 --
 
+DROP TABLE IF EXISTS `tips`;
 CREATE TABLE `tips` (
   `id` int(11) NOT NULL,
   `recipe_id` int(11) NOT NULL,
@@ -5128,6 +5156,7 @@ INSERT INTO `tips` (`id`, `recipe_id`, `tip`, `updated_at`) VALUES
 -- Table structure for table `unit_conversions`
 --
 
+DROP TABLE IF EXISTS `unit_conversions`;
 CREATE TABLE `unit_conversions` (
   `id` tinyint(4) NOT NULL,
   `measurement_unit` varchar(15) NOT NULL,
@@ -5188,6 +5217,7 @@ INSERT INTO `unit_conversions` (`id`, `measurement_unit`, `quantity`, `updated_a
 --
 DROP TABLE IF EXISTS `chefs_view`;
 
+DROP VIEW IF EXISTS `chefs_view`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `chefs_view`  AS SELECT `chefs`.`id` AS `ID`, concat(`chefs`.`first_name`,' ',`chefs`.`last_name`) AS `Name`, `chefs`.`age` AS `Age`, `chefs`.`email` AS `Email`, `chefs`.`phone` AS `Phone` FROM `chefs` ;
 
 -- --------------------------------------------------------
@@ -5197,6 +5227,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `knows`;
 
+DROP VIEW IF EXISTS `knows`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `knows`  AS SELECT `c`.`chef_id` AS `chef_id`, `n`.`id` AS `recipe_id` FROM (`specializes` `c` join `recipes` `n` on(`c`.`national_cuisine_id` = `n`.`national_cuisine_id`)) ;
 
 -- --------------------------------------------------------
@@ -5206,6 +5237,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `recipe_nut_info`;
 
+DROP VIEW IF EXISTS `recipe_nut_info`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `recipe_nut_info`  AS SELECT `i`.`recipe_id` AS `recipe_id`, `r`.`name` AS `recipe_name`, round(sum(`n`.`calories_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `calories`, round(sum(`n`.`proteins_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `proteins`, round(sum(`n`.`fat_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `fat`, round(sum(`n`.`carbohydrates_per_100` * `i`.`quantity` * `u`.`quantity` / 100),2) AS `carbohydrates` FROM (((`ingredient_quantities` `i` join `nutritional_info` `n` on(`i`.`ingredient_id` = `n`.`ingredient_id`)) join `unit_conversions` `u` on(`u`.`measurement_unit` = `i`.`unit`)) join `recipes` `r` on(`i`.`recipe_id` = `r`.`id`)) GROUP BY `i`.`recipe_id`, `r`.`name` ;
 
 --
