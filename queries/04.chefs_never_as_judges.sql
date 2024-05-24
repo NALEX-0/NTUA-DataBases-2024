@@ -1,12 +1,11 @@
 SELECT 
-    c.id AS chef_id,
-    c.first_name,
-    c.last_name
+    c.id AS "Chef_id",
+    c.Name AS "Chef"
 FROM 
-    chefs c
+    chefs_view c
 LEFT JOIN 
     judges j ON c.id = j.chef_id
 WHERE 
     j.chef_id IS NULL
 ORDER BY 
-    c.last_name, c.first_name;
+    c.Name;
