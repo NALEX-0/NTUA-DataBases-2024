@@ -7,9 +7,9 @@ WITH CuisineParticipation AS (
     FROM 
         national_cuisines nc
     JOIN 
-        specializes s ON nc.id = s.national_cuisine_id
+        assignments a ON a.national_cuisine_id = nc.id
     JOIN 
-        episodes e ON s.chef_id = e.id
+        episodes e ON e.id = a.episode_id
     GROUP BY 
         nc.id, nc.name, e.season
     HAVING 
@@ -40,4 +40,4 @@ SELECT
 FROM 
     CuisineParticipationPairs
 ORDER BY 
-    participation_count desc, season1
+    participation_count DESC, season1;
