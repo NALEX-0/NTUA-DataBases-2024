@@ -4,6 +4,8 @@ WITH ChefTraining AS (
         c.first_name,
         c.last_name,
         e.id AS episode_id,
+        e.season,
+        e.episode AS episode_number,
         CASE 
             WHEN c.chef_level = 'Chef Assistant' THEN 1
             WHEN c.chef_level = 'C chef' THEN 2
@@ -25,6 +27,8 @@ JudgeTraining AS (
         c.first_name,
         c.last_name,
         e.id AS episode_id,
+        e.season,
+        e.episode AS episode_number,
         CASE 
             WHEN c.chef_level = 'Chef Assistant' THEN 1
             WHEN c.chef_level = 'C chef' THEN 2
@@ -43,6 +47,8 @@ JudgeTraining AS (
 EpisodeTraining AS (
     SELECT 
         episode_id,
+        season,
+        episode_number,
         AVG(training_level) AS avg_training_level
     FROM (
         SELECT * FROM ChefTraining
@@ -50,14 +56,16 @@ EpisodeTraining AS (
         SELECT * FROM JudgeTraining
     ) AS combined_training
     GROUP BY 
-        episode_id
+        episode_id, season, episode_number
 )
 
 SELECT 
-    et.episode_id,
+    et.season,
+    et.episode_number,
     et.avg_training_level
 FROM 
     EpisodeTraining et
 ORDER BY 
     et.avg_training_level ASC
 LIMIT 1;
+
